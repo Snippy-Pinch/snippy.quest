@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>West Sioux Falls Chiropractor Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 60px 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .intro {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .intro h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .clinic-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .clinic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .clinic-card h3 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #4facfe;
+        }
+        
+        .info-section {
+            margin: 20px 0;
+        }
+        
+        .info-section .label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .info-section .value {
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+        
+        .phone-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .phone-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .hours-table {
+            margin-top: 10px;
+            font-size: 0.95em;
+        }
+        
+        .hours-table .day {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .hours-table .day:last-child {
+            border-bottom: none;
+        }
+        
+        .hours-table .day-name {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .hours-table .day-hours {
+            color: #666;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #f39c12;
+        }
+        
+        .highlight strong {
+            color: #d35400;
+        }
+        
+        .comparison-table {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+        
+        .comparison-table h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        table th {
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        table td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #4facfe;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .badge.rating {
+            background: #f39c12;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                font-size: 0.85em;
+            }
+            
+            table th,
+            table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>🏥 West Sioux Falls Chiropractors</h1>
+        <div class="subtitle">Comprehensive Comparison Guide</div>
+    </div>
+    
+    <div class="container">
+        <div class="intro">
+            <h2>Quick Overview</h2>
+            <p>Three highly-rated chiropractors on the west side of Sioux Falls, all near the 26th St & Marion Rd area. All specialize in musculoskeletal care, adjustments, and pain management.</p>
+            <div class="highlight">
+                <strong>🎯 Quick Pick:</strong> All three have good reputations. Sioux Spine & Sport has the most reviews (5 stars from 53 patients) and offers the broadest services (chiro + acupuncture + massage).
+            </div>
+        </div>
+        
+        <div class="comparison-grid">
+            <!-- Sioux Spine & Sport -->
+            <div class="clinic-card">
+                <h3>Sioux Spine & Sport</h3>
+                
+                <div class="info-section">
+                    <span class="label">📍 Address</span>
+                    <span class="value">5412 W 26th Street<br>Sioux Falls, SD 57106<br>(Two doors from Dairy Queen at 26th & Marion)</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">📞 Phone</span>
+                    <span class="value">605-362-1230</span>
+                    <a href="tel:605-362-1230" class="phone-link">📱 Call Now</a>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">⏰ Hours</span>
+                    <div class="hours-table">
+                        <div class="day">
+                            <span class="day-name">Monday:</span>
+                            <span class="day-hours">Closed</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-name">Tuesday:</span>
+                            <span class="day-hours">8:30 AM - 5:30 PM</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-name">Wednesday:</span>
+                            <span class="day-hours">8:30 AM - 5:30 PM</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-name">Thursday:</span>
+                            <span class="day-hours">Closed</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-name">Friday:</span>
+                            <span class="day-hours">8:30 AM - 5:30 PM</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-name">Weekend:</span>
+                            <span class="day-hours">Closed</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">🌐 Website</span>
+                    <span class="value"><a href="http://siouxspineandsport.com" target="_blank">siouxspineandsport.com</a></span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">👨‍⚕️ Doctor</span>
+                    <span class="value">Dr. Wade Scheurenbrand</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">💼 Services</span>
+                    <span class="value">Chiropractic adjustments, acupuncture, massage therapy, stretching, sports injury treatment, chronic pain management</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">⭐ Reviews</span>
+                    <span class="value"><span class="badge rating">5.0 stars</span> from 53 reviews (Birdeye)</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">📅 How to Schedule</span>
+                    <span class="value">Call 605-362-1230 to schedule appointment</span>
+                </div>
+            </div>
+            
+            <!-- Westside Chiropractic Center -->
+            <div class="clinic-card">
+                <h3>Westside Chiropractic Center</h3>
+                
+                <div class="info-section">
+                    <span class="label">📍 Address</span>
+                    <span class="value">817 S Marion Rd<br>Sioux Falls, SD 57106</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">📞 Phone</span>
+                    <span class="value">605-362-8084</span>
+                    <a href="tel:605-362-8084" class="phone-link">📱 Call Now</a>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">📧 Email</span>
+                    <span class="value">westsidechiropracticcenter@gmail.com</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">⏰ Hours</span>
+                    <div class="hours-table">
+                        <div class="day">
+                            <span class="day-name">Monday:</span>
+                            <span class="day-hours">10 AM - 1 PM, 3 PM - 6 PM</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-name">Tuesday:</span>
+                            <span class="day-hours">3 PM - 6 PM</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-name">Wednesday:</span>
+                            <span class="day-hours">10 AM - 1 PM, 3 PM - 6 PM</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-name">Thursday:</span>
+                            <span class="day-hours">10 AM - 1 PM</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-name">Friday:</span>
+                            <span class="day-hours">10 AM - 1 PM, 3 PM - 6 PM</span>
+                        </div>
+                        <div class="day">
+                            <span class="day-name">Weekend:</span>
+                            <span class="day-hours">Closed</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">🌐 Website</span>
+                    <span class="value"><a href="https://www.westsidechiropracticcenter.com" target="_blank">westsidechiropracticcenter.com</a></span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">👩‍⚕️ Doctor</span>
+                    <span class="value">Dr. Jennifer Foss</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">💼 Services</span>
+                    <span class="value">Chiropractic care, spinal adjustments, pain relief</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">📅 How to Schedule</span>
+                    <span class="value">Call 605-362-8084 or email westsidechiropracticcenter@gmail.com</span>
+                </div>
+            </div>
+            
+            <!-- Johnson Chiropractic -->
+            <div class="clinic-card">
+                <h3>Johnson Chiropractic & Acupuncture</h3>
+                
+                <div class="info-section">
+                    <span class="label">📍 Address</span>
+                    <span class="value">4627 West Homefield Drive<br>Sioux Falls, SD 57106</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">📞 Phone</span>
+                    <span class="value">605-336-2010</span>
+                    <a href="tel:605-336-2010" class="phone-link">📱 Call Now</a>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">📠 Fax</span>
+                    <span class="value">605-336-0249</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">⏰ Hours</span>
+                    <div class="hours-table">
+                        <div class="day">
+                            <span class="day-hours" style="color: #999;">Call for current hours</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">🌐 Website</span>
+                    <span class="value"><a href="https://www.johnsonchiropracticandacupuncture.com" target="_blank">johnsonchiropracticandacupuncture.com</a></span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">💼 Services</span>
+                    <span class="value">Chiropractic care, acupuncture, physical exam, x-rays (if needed), personalized care plans</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">🏥 Service Area</span>
+                    <span class="value">Sioux Falls, Mitchell, Freeman</span>
+                </div>
+                
+                <div class="info-section">
+                    <span class="label">📅 How to Schedule</span>
+                    <span class="value">Call 605-336-2010 or use contact form on website<br><br>
+                    <strong>New Patient Process:</strong><br>
+                    1. Complete paperwork<br>
+                    2. Discuss concerns with doctor<br>
+                    3. Physical exam (possibly x-rays)<br>
+                    4. Agree on care plan</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comparison-table">
+            <h2>📋 Quick Comparison Table</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Sioux Spine & Sport</th>
+                        <th>Westside Chiro Center</th>
+                        <th>Johnson Chiro & Acupuncture</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Phone</strong></td>
+                        <td>605-362-1230</td>
+                        <td>605-362-8084</td>
+                        <td>605-336-2010</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Address</strong></td>
+                        <td>5412 W 26th St</td>
+                        <td>817 S Marion Rd</td>
+                        <td>4627 W Homefield Dr</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Days Open</strong></td>
+                        <td>Tue, Wed, Fri</td>
+                        <td>Mon-Fri (varied hours)</td>
+                        <td>Call for hours</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Services</strong></td>
+                        <td><span class="badge">Chiro</span> <span class="badge">Acupuncture</span> <span class="badge">Massage</span></td>
+                        <td><span class="badge">Chiro</span> <span class="badge">Adjustments</span></td>
+                        <td><span class="badge">Chiro</span> <span class="badge">Acupuncture</span> <span class="badge">X-rays</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Specialty</strong></td>
+                        <td>Sports injuries, chronic pain</td>
+                        <td>General chiropractic</td>
+                        <td>Comprehensive care plans</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scheduling</strong></td>
+                        <td>Call only</td>
+                        <td>Call or email</td>
+                        <td>Call or web form</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reviews</strong></td>
+                        <td>⭐ 5.0 (53 reviews)</td>
+                        <td>Good reputation</td>
+                        <td>Established practice</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="intro" style="margin-top: 40px;">
+            <h2>💡 Recommendation</h2>
+            <p><strong>If you want the most services:</strong> Sioux Spine & Sport (adjustments + acupuncture + massage)</p>
+            <p><strong>If you want flexibility:</strong> Westside Chiropractic Center (most days open, email option)</p>
+            <p><strong>If you want a structured approach:</strong> Johnson Chiropractic (detailed new patient process with care plans)</p>
+            <br>
+            <p style="color: #666; font-style: italic;">All three are on the west side and have good reputations. Your best bet is to call each one and see which feels like the best fit for your needs and schedule.</p>
+        </div>
+    </div>
+</body>
+</html>
