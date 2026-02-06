@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Train Your Dragon | Berk</title>
+    <meta name="description" content="Welcome to the world of dragons and Vikings">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Trebuchet MS', Arial, sans-serif;
+            background: linear-gradient(135deg, #0a1929 0%, #1e3a5f 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+        
+        .hero {
+            position: relative;
+            height: 500px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6)), url('images/night-fury.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-bottom: 5px solid #ff6b35;
+        }
+        
+        .hero-content h1 {
+            font-size: 4em;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(255,107,53,0.8), 0 0 60px rgba(0,0,0,0.9);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .hero-content .tagline {
+            font-size: 1.6em;
+            color: #ffb347;
+            font-style: italic;
+            text-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .section {
+            background: rgba(30, 58, 95, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #ff6b35;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+        }
+        
+        .section h2 {
+            color: #ffb347;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ff6b35;
+            padding-bottom: 10px;
+        }
+        
+        .section p {
+            line-height: 1.8;
+            color: #d0d0d0;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .image-section {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 12px;
+            margin: 30px auto;
+            display: block;
+            border: 3px solid #ff6b35;
+            box-shadow: 0 5px 30px rgba(255,107,53,0.3);
+        }
+        
+        .dragon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .dragon-card {
+            background: linear-gradient(135deg, rgba(255,107,53,0.2) 0%, rgba(30,58,95,0.6) 100%);
+            backdrop-filter: blur(5px);
+            padding: 30px;
+            border-radius: 12px;
+            border-top: 3px solid #ff6b35;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .dragon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(255,107,53,0.4);
+        }
+        
+        .dragon-card h3 {
+            color: #ffb347;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+        
+        .dragon-card .class {
+            color: #ff6b35;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .dragon-card p {
+            color: #b0b0b0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .quote-box {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            padding: 35px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 5px solid #ffb347;
+            box-shadow: 0 5px 25px rgba(255,107,53,0.5);
+        }
+        
+        .quote-box blockquote {
+            font-size: 1.5em;
+            font-style: italic;
+            color: #fff;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .quote-box cite {
+            color: #1e3a5f;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        .characters-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .character-card {
+            background: rgba(10, 25, 41, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #ff6b35;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .character-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 30px rgba(255,107,53,0.4);
+        }
+        
+        .character-card h3 {
+            color: #ffb347;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .character-card .role {
+            color: #ff6b35;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .character-card p {
+            color: #b0b0b0;
+            font-size: 0.9em;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            border-top: 2px solid #ff6b35;
+            margin-top: 50px;
+        }
+        
+        .footer a {
+            color: #ffb347;
+            text-decoration: none;
+            border-bottom: 1px dashed #ffb347;
+        }
+        
+        .footer a:hover {
+            color: #fff;
+            border-bottom-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-content">
+            <h1>HOW TO TRAIN YOUR DRAGON</h1>
+            <p class="tagline">This is Berk 🐉</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="section">
+            <h2>The Story</h2>
+            <p>
+                Long ago, on the island of Berk, Vikings and dragons were mortal enemies. For generations, 
+                the people of Berk defended their homes from dragon raids, while hunting the beasts that 
+                plagued their shores.
+            </p>
+            <p>
+                Everything changed when a young Viking named Hiccup Horrendous Haddock III befriended a rare 
+                Night Fury dragon he named Toothless. Through their unlikely friendship, Hiccup discovered 
+                that dragons weren't mindless monsters—they were intelligent creatures capable of loyalty, 
+                courage, and friendship.
+            </p>
+            <img src="images/berk-village.png" alt="The Island of Berk" class="image-section">
+            <p>
+                What began as a forbidden friendship sparked a revolution that would forever change the 
+                relationship between Vikings and dragons, proving that understanding and compassion can 
+                bridge even the deepest divides.
+            </p>
+        </div>
+        
+        <div class="quote-box">
+            <blockquote>
+                "Everything we know about you guys is wrong."
+            </blockquote>
+            <cite>— Hiccup Haddock</cite>
+        </div>
+        
+        <div class="section">
+            <h2>Dragon Classes</h2>
+            <img src="images/dragon-squad.png" alt="Dragon Species" class="image-section">
+            <div class="dragon-grid">
+                <div class="dragon-card">
+                    <h3>Strike Class</h3>
+                    <div class="class">Speed • Stealth • Power</div>
+                    <p>
+                        Lightning-fast dragons with deadly precision. The Night Fury, Toothless, is the 
+                        unholy offspring of lightning and death itself—the rarest and most powerful Strike 
+                        Class dragon.
+                    </p>
+                </div>
+                <div class="dragon-card">
+                    <h3>Tracker Class</h3>
+                    <div class="class">Intelligence • Senses</div>
+                    <p>
+                        Highly intelligent dragons with exceptional tracking abilities. The Rumblehorn and 
+                        Deadly Nadder use their keen senses to hunt and navigate.
+                    </p>
+                </div>
+                <div class="dragon-card">
+                    <h3>Boulder Class</h3>
+                    <div class="class">Strength • Defense</div>
+                    <p>
+                        Armored tanks of the dragon world. Gronckles and Whispering Deaths are tough, 
+                        powerful, and eat rocks for breakfast (literally).
+                    </p>
+                </div>
+                <div class="dragon-card">
+                    <h3>Sharp Class</h3>
+                    <div class="class">Agility • Offense</div>
+                    <p>
+                        Masters of aerial combat with razor-sharp natural weapons. Deadly Nadders and 
+                        Stormcutters dominate the skies with speed and precision.
+                    </p>
+                </div>
+                <div class="dragon-card">
+                    <h3>Tidal Class</h3>
+                    <div class="class">Aquatic • Adaptable</div>
+                    <p>
+                        Masters of sea and sky. Scauldrons and Thunderdrums thrive in water and can 
+                        unleash devastating sonic attacks.
+                    </p>
+                </div>
+                <div class="dragon-card">
+                    <h3>Stoker Class</h3>
+                    <div class="class">Fire Power • Endurance</div>
+                    <p>
+                        Dragons that live and breathe fire. Monstrous Nightmares can set themselves ablaze, 
+                        while Typhoomerangs are walking infernos.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Main Characters</h2>
+            <div class="characters-section">
+                <div class="character-card">
+                    <h3>Hiccup</h3>
+                    <div class="role">Dragon Rider • Chief of Berk</div>
+                    <p>
+                        The inventive son of Stoick the Vast who proved that brains can be just as valuable 
+                        as brawn. Rider of Toothless.
+                    </p>
+                </div>
+                <div class="character-card">
+                    <h3>Astrid</h3>
+                    <div class="role">Dragon Rider • Warrior</div>
+                    <p>
+                        Fierce shield-maiden and Hiccup's closest ally. A skilled fighter who rides the 
+                        deadly Stormfly.
+                    </p>
+                </div>
+                <div class="character-card">
+                    <h3>Toothless</h3>
+                    <div class="role">Night Fury • Alpha</div>
+                    <p>
+                        The last known Night Fury and Hiccup's loyal companion. Intelligent, powerful, and 
+                        protective of his rider.
+                    </p>
+                </div>
+                <div class="character-card">
+                    <h3>Stoick the Vast</h3>
+                    <div class="role">Chief of Berk • Father</div>
+                    <p>
+                        Former chief of Berk and Hiccup's father. A legendary warrior who learned that 
+                        strength comes in many forms.
+                    </p>
+                </div>
+                <div class="character-card">
+                    <h3>Gobber</h3>
+                    <div class="role">Blacksmith • Mentor</div>
+                    <p>
+                        The village blacksmith and Hiccup's mentor. Lost limbs to dragons but never lost 
+                        his humor or wisdom.
+                    </p>
+                </div>
+                <div class="character-card">
+                    <h3>Valka</h3>
+                    <div class="role">Dragon Protector • Mother</div>
+                    <p>
+                        Hiccup's mother who spent years living among dragons, protecting them from hunters 
+                        and learning their secrets.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quote-box">
+            <blockquote>
+                "A chief protects his own. We're going back!"
+            </blockquote>
+            <cite>— Stoick the Vast</cite>
+        </div>
+        
+        <div class="section">
+            <h2>About the Franchise</h2>
+            <p>
+                How to Train Your Dragon is a DreamWorks Animation franchise based on the book series by 
+                Cressida Cowell. The film trilogy follows the journey of Hiccup and Toothless from their 
+                first encounter through years of friendship, adventure, and growth.
+            </p>
+            <p>
+                The three films—<em>How to Train Your Dragon</em> (2010), <em>How to Train Your Dragon 2</em> 
+                (2014), and <em>How to Train Your Dragon: The Hidden World</em> (2019)—tell a complete story 
+                about acceptance, friendship, and letting go. The franchise also includes TV series, short films, 
+                and games.
+            </p>
+            <p>
+                Known for its stunning animation, emotional depth, and unforgettable musical score by John Powell, 
+                the franchise has touched millions of hearts worldwide with its message that true strength comes 
+                from understanding, not conquest.
+            </p>
+        </div>
+        
+        <div class="quote-box">
+            <blockquote>
+                "Thank you... for being my friend."
+            </blockquote>
+            <cite>— Hiccup to Toothless</cite>
+        </div>
+        
+        <div class="footer">
+            <p>Page created by <a href="https://snippy.quest">Snippy</a> 🦀</p>
+            <p style="margin-top: 10px;">Fly free, bud 🐉</p>
+        </div>
+    </div>
+</body>
+</html>
