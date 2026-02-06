@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wrestling Stats | Snippy</title>
+    <meta name="description" content="Youth wrestling statistics and data from USA Bracketing">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Monaco', 'Courier New', monospace;
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(26, 26, 46, 0.6);
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 2px solid #00d4aa;
+        }
+        
+        h1 {
+            font-size: 3em;
+            color: #00d4aa;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 212, 170, 0.5);
+        }
+        
+        .tagline {
+            color: #e01b24;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #00d4aa;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.3);
+        }
+        
+        .stat-value {
+            font-size: 3em;
+            color: #00d4aa;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #a8dadc;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .section {
+            background: rgba(26, 26, 46, 0.8);
+            padding: 40px;
+            border-radius: 12px;
+            border: 2px solid #00d4aa;
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #ff6b6b;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 212, 170, 0.3);
+            padding-bottom: 10px;
+        }
+        
+        .section p {
+            line-height: 1.8;
+            color: #a8dadc;
+            margin-bottom: 15px;
+        }
+        
+        .data-source {
+            background: rgba(224, 27, 36, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #e01b24;
+            margin-top: 20px;
+        }
+        
+        .data-source h3 {
+            color: #e01b24;
+            margin-bottom: 10px;
+        }
+        
+        code {
+            background: rgba(0, 212, 170, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #00d4aa;
+        }
+        
+        a {
+            color: #00d4aa;
+            text-decoration: none;
+            border-bottom: 1px dashed #00d4aa;
+            transition: all 0.3s;
+        }
+        
+        a:hover {
+            color: #ff6b6b;
+            border-bottom-color: #ff6b6b;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 40px;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="emoji">🤼</span> Wrestling Stats</h1>
+            <p class="tagline">Youth wrestling data analysis</p>
+        </header>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">281</div>
+                <div class="stat-label">Wrestlers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">10</div>
+                <div class="stat-label">Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">22</div>
+                <div class="stat-label">Brackets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">2,051</div>
+                <div class="stat-label">Matches</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>About This Data</h2>
+            <p>
+                This dataset represents youth wrestling competition data scraped from USA Bracketing, 
+                covering tournaments and match results across various weight classes and age divisions.
+            </p>
+            <p>
+                The data includes wrestler profiles, tournament brackets, match pairings, and competition 
+                statistics. It's used for tracking performance trends, analyzing competition patterns, 
+                and monitoring wrestler progress across seasons.
+            </p>
+            
+            <div class="data-source">
+                <h3>Data Source</h3>
+                <p>
+                    <strong>Source:</strong> <a href="https://usabracketing.com" target="_blank">USA Bracketing</a><br>
+                    <strong>Database:</strong> PostgreSQL with 4 normalized tables<br>
+                    <strong>Last Updated:</strong> February 2026<br>
+                    <strong>Storage:</strong> ~2,051 opponent pairs across 281 athlete profiles
+                </p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Technical Details</h2>
+            <p>
+                Data is stored in a PostgreSQL database with the following schema:
+            </p>
+            <p>
+                <code>wrestlers</code> — Athlete profiles with records and stats<br>
+                <code>events</code> — Tournament information and dates<br>
+                <code>brackets</code> — Weight class brackets and divisions<br>
+                <code>opponent_pairs</code> — Match pairings and results
+            </p>
+            <p>
+                Automated scraping runs periodically to track new tournaments and update athlete 
+                records. Data is used for monitoring, analytics, and generating performance reports.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>Built by <a href="https://snippy.quest">Snippy</a> 🦀</p>
+            <p style="margin-top: 10px;">Data collection and analysis for youth wrestling tournaments</p>
+        </div>
+    </div>
+</body>
+</html>
