@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BattleTech: Complete Lore Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #e0e0e0;
+            line-height: 1.7;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #8b0000 0%, #ff4500 100%);
+            padding: 80px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border-bottom: 5px solid #ffd700;
+        }
+        
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            color: #fff;
+            letter-spacing: 2px;
+        }
+        
+        .hero .tagline {
+            font-size: 1.5em;
+            font-style: italic;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .timeline-nav {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 2px solid #ffd700;
+        }
+        
+        .timeline-nav h2 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .timeline-nav a {
+            display: inline-block;
+            background: #8b0000;
+            color: #ffd700;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .timeline-nav a:hover {
+            background: #ff4500;
+            transform: scale(1.05);
+        }
+        
+        .section {
+            background: rgba(45, 45, 45, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border-left: 6px solid #ffd700;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .section h2 {
+            color: #ffd700;
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #8b0000;
+        }
+        
+        .section h3 {
+            color: #ff4500;
+            font-size: 1.8em;
+            margin: 30px 0 15px 0;
+        }
+        
+        .section h4 {
+            color: #ffa500;
+            font-size: 1.4em;
+            margin: 20px 0 10px 0;
+        }
+        
+        .intro-box {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.3) 0%, rgba(255, 69, 0, 0.2) 100%);
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #ffd700;
+            margin-bottom: 30px;
+            font-size: 1.15em;
+        }
+        
+        .faction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .faction-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(139, 0, 0, 0.1) 100%);
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid #8b0000;
+            transition: all 0.3s;
+        }
+        
+        .faction-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+        
+        .faction-card h4 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+        
+        .faction-card .state-name {
+            color: #ff4500;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-item {
+            padding: 20px;
+            margin: 15px 0;
+            background: rgba(139, 0, 0, 0.2);
+            border-left: 4px solid #ffd700;
+            border-radius: 8px;
+        }
+        
+        .timeline-item .year {
+            color: #ffd700;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-item .event {
+            color: #e0e0e0;
+            font-size: 1.05em;
+        }
+        
+        .mech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .mech-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(139, 0, 0, 0.3) 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ff4500;
+        }
+        
+        .mech-card h4 {
+            color: #ffd700;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+        
+        .mech-card .tonnage {
+            color: #ff4500;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .mech-card .role {
+            color: #ffa500;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #8b0000 0%, #ff4500 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 3px solid #ffd700;
+        }
+        
+        .highlight-box h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        table thead {
+            background: linear-gradient(135deg, #8b0000 0%, #ff4500 100%);
+        }
+        
+        table th {
+            padding: 15px;
+            text-align: left;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        table tbody tr:hover {
+            background: rgba(139, 0, 0, 0.3);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffd700;
+            margin-top: 50px;
+            border-top: 3px solid #8b0000;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .section {
+                padding: 25px 20px;
+            }
+            
+            .faction-grid, .mech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>⚔️ BATTLETECH ⚔️</h1>
+        <div class="tagline">The Complete Lore Guide</div>
+        <div style="margin-top: 15px; font-size: 1.1em; color: #fff;">3,000+ Years of Giant Robot Warfare</div>
+    </div>
+    
+    <div class="container">
+        <div class="timeline-nav">
+            <h2>📅 Jump to Era:</h2>
+            <a href="#early">Early History</a>
+            <a href="#star-league">Star League</a>
+            <a href="#succession">Succession Wars</a>
+            <a href="#clans">Clan Invasion</a>
+            <a href="#houses">Great Houses</a>
+            <a href="#mechs">Iconic Mechs</a>
+        </div>
+        
+        <div class="intro-box">
+            <strong>What is BattleTech?</strong> A military science fiction universe spanning from the 21st to 32nd century, centered on massive bipedal combat vehicles called BattleMechs. It's a story of interstellar empires, technological decline, and endless war among noble houses fighting for supremacy in the Inner Sphere.
+        </div>
+        
+        <!-- EARLY HISTORY -->
+        <div id="early" class="section">
+            <h2>🚀 Early History: The Age of Expansion (2000s–2570s)</h2>
+            
+            <h3>The Beginning (21st Century)</h3>
+            <p>Humanity achieves <strong>fusion power</strong> and <strong>hyperspace jump technology</strong> in the early 2000s, enabling interstellar colonization. The <strong>Terran Alliance</strong> forms in 2086 as Earth's government begins sending slowboat colony ships to nearby stars.</p>
+            
+            <div class="timeline-item">
+                <div class="year">2439</div>
+                <div class="event"><strong>The First BattleMech</strong> — The Terran Hegemony invents the <em>Mackie</em>, the first true BattleMech. This 100-ton bipedal war machine revolutionizes warfare, shifting focus from space navies to ground-based combined arms combat.</div>
+            </div>
+            
+            <h3>Rise of the Great Houses</h3>
+            <p>As humanity spreads across hundreds of star systems, regional powers emerge:</p>
+            
+            <div class="timeline-item">
+                <div class="year">2319</div>
+                <div class="event"><strong>Draconis Combine founded</strong> — First of the Great Houses to establish formal statehood</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">2340s-2500s</div>
+                <div class="event"><strong>The Great Houses emerge</strong> — Federated Suns, Lyran Commonwealth, Free Worlds League, and Capellan Confederation join the Draconis Combine as major interstellar powers. The Terran Hegemony remains the most technologically advanced.</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">2577–2821</div>
+                <div class="event"><strong>Reunification War</strong> — The newborn Star League brutally conquers the Periphery states (Taurian Concordat, Magistracy of Canopus, Rim Worlds Republic) in a centuries-long conflict</div>
+            </div>
+        </div>
+        
+        <!-- STAR LEAGUE -->
+        <div id="star-league" class="section">
+            <h2>⭐ The Star League Era (2571–2780)</h2>
+            
+            <div class="highlight-box">
+                <h3>What was the Star League?</h3>
+                <p>The pinnacle of human civilization — a unified government uniting the <strong>Terran Hegemony</strong> and the five <strong>Great Houses</strong> under one banner. For nearly 200 years, humanity experienced unprecedented peace, prosperity, and technological advancement.</p>
+            </div>
+            
+            <h3>The Golden Age</h3>
+            <p>Under Star League rule:</p>
+            <ul style="margin-left: 25px; line-height: 2;">
+                <li>Technology reaches its height (LosTech later lost in Succession Wars)</li>
+                <li>Standard of living peaks across known space</li>
+                <li>Star League Defense Force (SLDF) keeps the peace</li>
+                <li>Massive infrastructure projects connect hundreds of worlds</li>
+            </ul>
+            
+            <div class="timeline-item">
+                <div class="year">2766</div>
+                <div class="event"><strong>The Coup</strong> — Stefan Amaris of the Rim Worlds Republic assassinates the Cameron family (Star League's ruling dynasty) and seizes Terra. General Aleksandr Kerensky leads the SLDF in a 13-year campaign to liberate Earth.</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">2780</div>
+                <div class="event"><strong>The Exodus</strong> — Unable to restore order, General Kerensky leads 80% of the SLDF (2.8 million personnel + families) on a mass exodus beyond known space. They become the foundation for the Clans.</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">2781</div>
+                <div class="event"><strong>Star League Dissolves</strong> — Without the SLDF or Cameron dynasty, the Star League collapses. The Great Houses immediately turn on each other, beginning the Succession Wars.</div>
+            </div>
+        </div>
+        
+        <!-- SUCCESSION WARS -->
+        <div id="succession" class="section">
+            <h2>💥 The Succession Wars (2781–3049)</h2>
+            
+            <div class="highlight-box">
+                <h3>The Dark Ages</h3>
+                <p>Nearly 300 years of brutal warfare among the Great Houses. Entire planets are depopulated. Advanced technology is lost as factories are destroyed and knowledge fades. Civilization regresses. This is the "<strong>LosTech</strong>" era — where finding a functional Star League-era weapon is priceless.</p>
+            </div>
+            
+            <h3>The Four Succession Wars</h3>
+            
+            <div class="timeline-item">
+                <div class="year">2786–2821</div>
+                <div class="event"><strong>First Succession War</strong> — The bloodiest. Entire worlds glassed. Interstellar economy collapses. Hundreds of millions die.</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">2830–2864</div>
+                <div class="event"><strong>Second Succession War</strong> — Slightly less destructive, but technological decline accelerates as manufacturing capabilities are targeted.</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">2866–3025</div>
+                <div class="event"><strong>Third Succession War</strong> — A grinding stalemate. Limited gains, massive casualties. The Great Houses exhaust themselves.</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">3028–3030</div>
+                <div class="event"><strong>Fourth Succession War</strong> — House Davion and House Steiner ally (forming the Federated Commonwealth). They crush House Kurita and cripple House Liao in a lightning campaign.</div>
+            </div>
+            
+            <h3>Key Developments</h3>
+            <ul style="margin-left: 25px; line-height: 2;">
+                <li><strong>ComStar</strong> — A quasi-religious organization controlling all interstellar communication (HPG network). They preserve some Star League technology in secret.</li>
+                <li><strong>LosTech</strong> — Advanced Star League equipment becomes legendary. Mechwarriors risk everything for a functional ER Large Laser or Double Heat Sink.</li>
+                <li><strong>Mercenaries</strong> — With regular armies depleted, mercenary units become crucial. Wolf's Dragoons, the Kell Hounds, and Gray Death Legion rise to prominence.</li>
+            </ul>
+        </div>
+        
+        <!-- CLAN INVASION -->
+        <div id="clans" class="section">
+            <h2>🐺 The Clan Invasion (3049–3061)</h2>
+            
+            <div class="highlight-box">
+                <h3>They're Back</h3>
+                <p>In 3049, mysterious forces attack the Inner Sphere's rimward borders with <strong>superior technology</strong> and <strong>genetically engineered warriors</strong>. These are the <strong>Clans</strong> — descendants of Kerensky's SLDF who left 250 years ago. They've come to conquer their birthright.</p>
+            </div>
+            
+            <h3>Who Are the Clans?</h3>
+            <p>After the Exodus, General Kerensky's followers settled beyond known space. His son Nicholas Kerensky reformed them into <strong>20 Clans</strong> — warrior societies based on:</p>
+            
+            <ul style="margin-left: 25px; line-height: 2;">
+                <li><strong>Genetic breeding programs</strong> (warriors are bred for combat)</li>
+                <li><strong>Trial by combat</strong> (disputes settled through formalized duels)</li>
+                <li><strong>Caste system</strong> (Warriors, Scientists, Merchants, Laborers, Bandits)</li>
+                <li><strong>Bidding system</strong> (honor comes from winning with minimal forces)</li>
+                <li><strong>Technological superiority</strong> (they never lost Star League tech)</li>
+            </ul>
+            
+            <h3>Major Invading Clans</h3>
+            
+            <div class="faction-grid">
+                <div class="faction-card">
+                    <h4>Clan Wolf</h4>
+                    <p><strong>Totem:</strong> Wolf<br>
+                    <strong>Style:</strong> Tactical, pragmatic, willing to work with Inner Sphere<br>
+                    <strong>Notable:</strong> Wolf's Dragoons (secret Clan scouts) revealed to be from Clan Wolf</p>
+                </div>
+                
+                <div class="faction-card">
+                    <h4>Clan Jade Falcon</h4>
+                    <p><strong>Totem:</strong> Jade Falcon<br>
+                    <strong>Style:</strong> Aggressive, traditional, crusader mindset<br>
+                    <strong>Rival:</strong> Bitter enemies with Clan Wolf</p>
+                </div>
+                
+                <div class="faction-card">
+                    <h4>Clan Smoke Jaguar</h4>
+                    <p><strong>Totem:</strong> Jaguar<br>
+                    <strong>Style:</strong> Brutal, least honor-bound, war crimes common<br>
+                    <strong>Fate:</strong> Eventually destroyed by Inner Sphere counter-invasion</p>
+                </div>
+                
+                <div class="faction-card">
+                    <h4>Clan Ghost Bear</h4>
+                    <p><strong>Totem:</strong> Ghost Bear<br>
+                    <strong>Style:</strong> Methodical, family-oriented (for Clans)<br>
+                    <strong>Notable:</strong> Eventually settles in Inner Sphere peacefully</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">3050–3052</div>
+                <div class="event"><strong>Initial Invasion</strong> — Clans smash through Free Rasalhague Republic and invade Draconis Combine and Lyran Commonwealth. Inner Sphere forces suffer catastrophic losses against superior Clan OmniMechs.</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">3052</div>
+                <div class="event"><strong>Battle of Tukayyid</strong> — ComStar lures the Clans into a decisive battle. Through brilliant tactics and willingness to take massive casualties, ComStar forces a 15-year truce. The Clan invasion stalls.</div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="year">3059–3061</div>
+                <div class="event"><strong>Operation BULLDOG & SERPENT</strong> — Inner Sphere launches counter-invasion. Clan Smoke Jaguar is annihilated. The Clan threat is permanently broken.</div>
+            </div>
+        </div>
+        
+        <!-- GREAT HOUSES -->
+        <div id="houses" class="section">
+            <h2>🏰 The Great Houses of the Inner Sphere</h2>
+            
+            <p>Five noble families rule the Successor States, locked in perpetual conflict over who will restore the Star League (with themselves as First Lord, naturally).</p>
+            
+            <div class="faction-grid">
+                <div class="faction-card">
+                    <h4>House Davion</h4>
+                    <div class="state-name">Federated Suns</div>
+                    <p><strong>Capital:</strong> New Avalon<br>
+                    <strong>Culture:</strong> Feudal-democratic, stratified warrior elite, preach equality but maintain hierarchies<br>
+                    <strong>Reputation:</strong> The "good guys" of the Inner Sphere<br>
+                    <strong>Military:</strong> Aggressive firepower doctrine, favor autocannons and heavy armor<br>
+                    <strong>Color:</strong> Blue and gold</p>
+                </div>
+                
+                <div class="faction-card">
+                    <h4>House Steiner</h4>
+                    <div class="state-name">Lyran Commonwealth</div>
+                    <p><strong>Capital:</strong> Tharkad<br>
+                    <strong>Culture:</strong> Merchant origins, wealthiest state, German-inspired<br>
+                    <strong>Reputation:</strong> Rich but militarily incompetent officers<br>
+                    <strong>Military:</strong> "Throw money at problems" — highest proportion of Assault 'Mechs, massive firepower<br>
+                    <strong>Color:</strong> Blue and white</p>
+                </div>
+                
+                <div class="faction-card">
+                    <h4>House Kurita</h4>
+                    <div class="state-name">Draconis Combine</div>
+                    <p><strong>Capital:</strong> Luthien<br>
+                    <strong>Culture:</strong> Highly authoritarian Japanese-inspired feudalism, no pretense of democracy<br>
+                    <strong>Reputation:</strong> Honorable warriors, brutal oppressors<br>
+                    <strong>Military:</strong> Bushido warrior code, emphasize close combat<br>
+                    <strong>Color:</strong> Red and black</p>
+                </div>
+                
+                <div class="faction-card">
+                    <h4>House Marik</h4>
+                    <div class="state-name">Free Worlds League</div>
+                    <p><strong>Capital:</strong> Atreus<br>
+                    <strong>Culture:</strong> Parliamentary democracy, most fragmented internally<br>
+                    <strong>Reputation:</strong> Politically unstable but economically diverse<br>
+                    <strong>Military:</strong> Well-rounded combined arms<br>
+                    <strong>Color:</strong> Purple and white</p>
+                </div>
+                
+                <div class="faction-card">
+                    <h4>House Liao</h4>
+                    <div class="state-name">Capellan Confederation</div>
+                    <p><strong>Capital:</strong> Sian<br>
+                    <strong>Culture:</strong> Authoritarian Chinese-inspired, most repressive of Great Houses<br>
+                    <strong>Reputation:</strong> Smallest but scrappiest, masters of espionage<br>
+                    <strong>Military:</strong> Rely on special forces, Death Commandos, and dirty tricks<br>
+                    <strong>Color:</strong> Green and red</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ICONIC MECHS -->
+        <div id="mechs" class="section">
+            <h2>🤖 Iconic BattleMechs</h2>
+            
+            <p>BattleMechs are 20-100 ton bipedal war machines, the kings of the battlefield. Here are the most legendary:</p>
+            
+            <h3>Inner Sphere Classics</h3>
+            
+            <div class="mech-grid">
+                <div class="mech-card">
+                    <h4>Atlas AS7-D</h4>
+                    <div class="tonnage">100 tons — Assault Class</div>
+                    <div class="role">Command 'Mech</div>
+                    <p>The ultimate terror weapon. Skull-shaped head designed to break enemy morale. Heavily armed and armored. If you see an Atlas, you're in trouble.</p>
+                    <p><strong>Weapons:</strong> AC/20, LRM-20, SRM-6, Medium Lasers</p>
+                </div>
+                
+                <div class="mech-card">
+                    <h4>Warhammer WHM-6R</h4>
+                    <div class="tonnage">70 tons — Heavy Class</div>
+                    <div class="role">Fire Support</div>
+                    <p>Energy weapons powerhouse. Twin PPCs make it feared at range. Classic design from the Star League era.</p>
+                    <p><strong>Weapons:</strong> 2x PPC, 2x Medium Lasers, SRM-6</p>
+                </div>
+                
+                <div class="mech-card">
+                    <h4>Marauder MAD-3R</h4>
+                    <div class="tonnage">75 tons — Heavy Class</div>
+                    <div class="role">Sniper</div>
+                    <p>Distinctive "chicken walker" design. Twin PPCs and autocannon make it a long-range nightmare.</p>
+                    <p><strong>Weapons:</strong> 2x PPC, AC/5, 2x Medium Lasers</p>
+                </div>
+                
+                <div class="mech-card">
+                    <h4>Locust LCT-1V</h4>
+                    <div class="tonnage">20 tons — Light Class</div>
+                    <div class="role">Scout/Harasser</div>
+                    <p>Fastest 'Mech in common use. Lightly armed and armored, but incredibly fast. "Shoot and scoot."</p>
+                    <p><strong>Weapons:</strong> 2x Medium Lasers, Machine Guns</p>
+                </div>
+                
+                <div class="mech-card">
+                    <h4>Catapult CPLT-C1</h4>
+                    <div class="tonnage">65 tons — Heavy Class</div>
+                    <div class="role">Missile Support</div>
+                    <p>The "floppy-eared" missile boat. LRM batteries mounted on distinctive shoulder pods. Succession Wars favorite.</p>
+                    <p><strong>Weapons:</strong> 2x LRM-15, 4x Medium Lasers</p>
+                </div>
+                
+                <div class="mech-card">
+                    <h4>Thunderbolt TDR-5S</h4>
+                    <div class="tonnage">65 tons — Heavy Class</div>
+                    <div class="role">Main Battle 'Mech</div>
+                    <p>Versatile workhorse. Good armor, balanced weapons. Reliable and mass-produced. The "AK-47 of 'Mechs."</p>
+                    <p><strong>Weapons:</strong> Large Laser, LRM-15, SRM-2, 3x Medium Lasers</p>
+                </div>
+            </div>
+            
+            <h3>Clan OmniMechs</h3>
+            
+            <div class="mech-grid">
+                <div class="mech-card">
+                    <h4>Timber Wolf (Mad Cat)</h4>
+                    <div class="tonnage">75 tons — Heavy Class</div>
+                    <div class="role">OmniMech Supremacy</div>
+                    <p><strong>THE iconic Clan 'Mech.</strong> Featured on box covers. Inner Sphere forces nicknamed it "Mad Cat" for its confusing sensor signature. Modular weapon pods allow rapid reconfiguration. Superior Clan tech makes it devastating.</p>
+                    <p><strong>Primary Config:</strong> 2x ER Large Lasers, 2x LRM-20, Machine Guns</p>
+                </div>
+                
+                <div class="mech-card">
+                    <h4>Dire Wolf (Daishi)</h4>
+                    <div class="tonnage">100 tons — Assault Class</div>
+                    <div class="role">Assault OmniMech</div>
+                    <p>The Clan Atlas. Massive firepower in an OmniMech chassis. "Daishi" means "Great Death" in Japanese. Lives up to the name.</p>
+                    <p><strong>Primary Config:</strong> 4x ER PPCs, 4x ER Large Lasers, more...</p>
+                </div>
+                
+                <div class="mech-card">
+                    <h4>Stormcrow (Ryoken)</h4>
+                    <div class="tonnage">55 tons — Medium Class</div>
+                    <div class="role">Medium OmniMech</div>
+                    <p>Fast, flexible, and deadly. Favorite of Clan Jade Falcon. Excellent all-around performer.</p>
+                    <p><strong>Primary Config:</strong> 2x ER Large Lasers, 2x LRM-20</p>
+                </div>
+                
+                <div class="mech-card">
+                    <h4>Kit Fox (Uller)</h4>
+                    <div class="tonnage">30 tons — Light Class</div>
+                    <div class="role">Light OmniMech</div>
+                    <p>Light 'Mech with Clan tech punch. Common in second-line units but still dangerous by Inner Sphere standards.</p>
+                    <p><strong>Primary Config:</strong> ER Large Laser, LRM-10, Machine Guns</p>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>What Makes Clan 'Mechs Superior?</h3>
+                <ul style="margin-left: 25px; line-height: 2;">
+                    <li><strong>Extended Range (ER)</strong> weapons shoot farther</li>
+                    <li><strong>Double Heat Sinks</strong> dissipate heat twice as fast</li>
+                    <li><strong>Ferro-Fibrous Armor</strong> provides more protection for less weight</li>
+                    <li><strong>Endo-Steel Structure</strong> lighter internal skeleton</li>
+                    <li><strong>OmniMech Technology</strong> — modular weapon pods allow field reconfiguration</li>
+                </ul>
+                <p style="margin-top: 15px;">A Clan Medium 'Mech can often defeat an Inner Sphere Heavy through superior technology alone.</p>
+            </div>
+        </div>
+        
+        <!-- QUICK REFERENCE -->
+        <div class="section">
+            <h2>📚 Quick Reference Timeline</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Event</th>
+                        <th>Significance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2439</td>
+                        <td>First BattleMech (Mackie)</td>
+                        <td>Warfare revolutionized</td>
+                    </tr>
+                    <tr>
+                        <td>2571</td>
+                        <td>Star League Founded</td>
+                        <td>Golden Age begins</td>
+                    </tr>
+                    <tr>
+                        <td>2780</td>
+                        <td>Kerensky's Exodus</td>
+                        <td>SLDF leaves known space</td>
+                    </tr>
+                    <tr>
+                        <td>2781</td>
+                        <td>First Succession War</td>
+                        <td>Civilization collapses</td>
+                    </tr>
+                    <tr>
+                        <td>3025</td>
+                        <td>Third Succession War ends</td>
+                        <td>Classic BattleTech era</td>
+                    </tr>
+                    <tr>
+                        <td>3028-3030</td>
+                        <td>Fourth Succession War</td>
+                        <td>Federated Commonwealth formed</td>
+                    </tr>
+                    <tr>
+                        <td>3049</td>
+                        <td>Clan Invasion Begins</td>
+                        <td>Everything changes</td>
+                    </tr>
+                    <tr>
+                        <td>3052</td>
+                        <td>Battle of Tukayyid</td>
+                        <td>15-year truce won</td>
+                    </tr>
+                    <tr>
+                        <td>3060</td>
+                        <td>Clan Smoke Jaguar destroyed</td>
+                        <td>Clan threat broken</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- KEY CONCEPTS -->
+        <div class="section">
+            <h2>🔑 Key Concepts to Know</h2>
+            
+            <h3>LosTech (Lost Technology)</h3>
+            <p>Advanced Star League-era equipment lost during the Succession Wars. Includes:</p>
+            <ul style="margin-left: 25px; line-height: 2;">
+                <li>Double Heat Sinks</li>
+                <li>Extended Range weapons</li>
+                <li>Ferro-Fibrous Armor</li>
+                <li>XL Engines</li>
+                <li>Pulse Lasers</li>
+            </ul>
+            <p>Finding functional LosTech is like finding a cache of medieval weapons in a post-apocalypse.</p>
+            
+            <h3>ComStar</h3>
+            <p>Quasi-religious organization controlling all interstellar communication via HPG (Hyperpulse Generator) network. They:</p>
+            <ul style="margin-left: 25px; line-height: 2;">
+                <li>Maintain neutrality among Great Houses (officially)</li>
+                <li>Preserve Star League knowledge in secret</li>
+                <li>Worship the memory of technology</li>
+                <li>Eventually reveal they've been secretly building a military force</li>
+            </ul>
+            
+            <h3>Mercenaries</h3>
+            <p>With regular armies depleted, mercenary units are crucial:</p>
+            <ul style="margin-left: 25px; line-height: 2;">
+                <li><strong>Wolf's Dragoons</strong> — Secret Clan scouts, become legendary</li>
+                <li><strong>Kell Hounds</strong> — Elite unit led by Morgan Kell</li>
+                <li><strong>Gray Death Legion</strong> — Discovered the Helm Memory Core (Star League library)</li>
+                <li><strong>Northwind Highlanders</strong> — Scottish-themed unit with Clan connections</li>
+            </ul>
+            
+            <h3>The Periphery</h3>
+            <p>Smaller nations outside the Inner Sphere:</p>
+            <ul style="margin-left: 25px; line-height: 2;">
+                <li><strong>Taurian Concordat</strong> — Fiercely independent, hate Davion</li>
+                <li><strong>Magistracy of Canopus</strong> — Matriarchal pleasure-world society</li>
+                <li><strong>Outworlds Alliance</strong> — Pacifist scientists</li>
+                <li><strong>Free Rasalhague Republic</strong> — Formed 3034, destroyed by Clans 3050</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p><strong>This comprehensive lore guide created by Snippy 🦀</strong></p>
+        <p>BattleTech © FASA Corporation / Catalyst Game Labs</p>
+        <p style="margin-top: 15px; font-size: 0.9em;">Generated: February 6, 2026 @ 4:02 PM CST</p>
+        <p style="font-size: 0.85em; margin-top: 10px;">For official lore, visit <a href="https://www.sarna.net" style="color: #ffd700;">Sarna.net</a></p>
+    </div>
+</body>
+</html>
