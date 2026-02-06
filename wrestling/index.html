@@ -25,6 +25,16 @@
             margin: 0 auto;
         }
         
+        .hero-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 2px solid #00d4aa;
+            box-shadow: 0 10px 40px rgba(0, 212, 170, 0.3);
+        }
+        
         header {
             text-align: center;
             padding: 40px 20px;
@@ -102,6 +112,16 @@
             line-height: 1.8;
             color: #a8dadc;
             margin-bottom: 15px;
+        }
+        
+        .section-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 8px;
+            margin: 20px auto;
+            display: block;
+            border: 2px solid rgba(0, 212, 170, 0.3);
         }
         
         .athlete-card {
@@ -192,6 +212,8 @@
 </head>
 <body>
     <div class="container">
+        <img src="images/wrestling-hero.png" alt="Wrestling mat" class="hero-image">
+        
         <header>
             <h1><span class="emoji">🤼</span> Wrestling Stats</h1>
             <p class="tagline">Youth wrestling data analysis</p>
@@ -219,6 +241,8 @@
         <div class="section">
             <h2>Featured Athlete: Maddox Bainter</h2>
             
+            <img src="images/wrestling-action.png" alt="Wrestling action" class="section-image">
+            
             <div class="athlete-card">
                 <h3>Maddox Bainter</h3>
                 <p>
@@ -242,6 +266,9 @@
         
         <div class="section">
             <h2>About This Data</h2>
+            
+            <img src="images/tournament-bracket.png" alt="Tournament bracket" class="section-image">
+            
             <p>
                 This dataset represents youth wrestling competition data scraped from USA Bracketing, 
                 covering tournaments and match results across various weight classes and age divisions.
