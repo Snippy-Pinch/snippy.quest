@@ -220,16 +220,112 @@
         }
         
         @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+            
+            .hero {
+                padding: 40px 15px;
+            }
+            
             .hero h1 {
-                font-size: 2em;
+                font-size: 1.8em;
+                word-wrap: break-word;
             }
             
             .hero .subtitle {
-                font-size: 1.1em;
+                font-size: 1em;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .section h2 {
+                font-size: 1.6em;
+                word-wrap: break-word;
+            }
+            
+            .intro {
+                font-size: 1em;
+                padding: 20px;
             }
             
             .comparison-table {
-                font-size: 0.85em;
+                font-size: 0.75em;
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .comparison-table thead,
+            .comparison-table tbody,
+            .comparison-table tr,
+            .comparison-table th,
+            .comparison-table td {
+                display: block;
+            }
+            
+            .comparison-table thead {
+                display: none;
+            }
+            
+            .comparison-table tr {
+                margin-bottom: 20px;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                padding: 10px;
+                background: #f9fafb;
+            }
+            
+            .comparison-table td {
+                padding: 10px;
+                border: none;
+                position: relative;
+                padding-left: 35%;
+                text-align: right;
+            }
+            
+            .comparison-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                font-weight: bold;
+                text-align: left;
+            }
+            
+            .thought-box {
+                font-size: 1em;
+                padding: 20px;
+            }
+            
+            .reality-check {
+                padding: 20px;
+            }
+            
+            .reality-check h3 {
+                font-size: 1.3em;
+            }
+            
+            .reality-check p {
+                font-size: 1em;
+            }
+            
+            .excuses-list {
+                padding: 20px;
+            }
+            
+            .excuses-list li {
+                font-size: 0.95em;
+                padding: 12px;
+            }
+            
+            .stat-card {
+                padding: 20px;
+            }
+            
+            .stat-card .number {
+                font-size: 2.5em;
             }
         }
     </style>
@@ -277,29 +373,29 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Time Investment</strong></td>
-                        <td class="easy">2-4 hours</td>
-                        <td class="hard">2-4 days (plus troubleshooting)</td>
+                        <td data-label="Task"><strong>Time Investment</strong></td>
+                        <td data-label="Learning HTML/CSS" class="easy">2-4 hours</td>
+                        <td data-label="Spinning Up CasaOS" class="hard">2-4 days (plus troubleshooting)</td>
                     </tr>
                     <tr>
-                        <td><strong>Prerequisites</strong></td>
-                        <td class="easy">A text editor</td>
-                        <td class="hard">Server, Docker, network config, reverse proxy, SSL certs...</td>
+                        <td data-label="Task"><strong>Prerequisites</strong></td>
+                        <td data-label="Learning HTML/CSS" class="easy">A text editor</td>
+                        <td data-label="Spinning Up CasaOS" class="hard">Server, Docker, network config, reverse proxy, SSL certs...</td>
                     </tr>
                     <tr>
-                        <td><strong>Maintenance</strong></td>
-                        <td class="easy">Edit a file, upload</td>
-                        <td class="hard">Update containers, monitor logs, restart services, debug networking...</td>
+                        <td data-label="Task"><strong>Maintenance</strong></td>
+                        <td data-label="Learning HTML/CSS" class="easy">Edit a file, upload</td>
+                        <td data-label="Spinning Up CasaOS" class="hard">Update containers, monitor logs, restart services, debug networking...</td>
                     </tr>
                     <tr>
-                        <td><strong>Things That Can Break</strong></td>
-                        <td class="easy">~3 (typos, FTP, browser cache)</td>
-                        <td class="hard">~47 (and counting)</td>
+                        <td data-label="Task"><strong>Things That Can Break</strong></td>
+                        <td data-label="Learning HTML/CSS" class="easy">~3 (typos, FTP, browser cache)</td>
+                        <td data-label="Spinning Up CasaOS" class="hard">~47 (and counting)</td>
                     </tr>
                     <tr>
-                        <td><strong>Feels Like Real IT Work</strong></td>
-                        <td class="hard">No ❌</td>
-                        <td class="easy">YES ✅</td>
+                        <td data-label="Task"><strong>Feels Like Real IT Work</strong></td>
+                        <td data-label="Learning HTML/CSS" class="hard">No ❌</td>
+                        <td data-label="Spinning Up CasaOS" class="easy">YES ✅</td>
                     </tr>
                 </tbody>
             </table>
@@ -391,29 +487,29 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>HTML/CSS</strong></td>
-                        <td class="easy">Weekend</td>
-                        <td class="easy">10 minutes (Google it)</td>
+                        <td data-label="Skill"><strong>HTML/CSS</strong></td>
+                        <td data-label="Time to Learn Basics" class="easy">Weekend</td>
+                        <td data-label="Time to Debug When It Breaks" class="easy">10 minutes (Google it)</td>
                     </tr>
                     <tr>
-                        <td><strong>Docker</strong></td>
-                        <td class="hard">1-2 weeks</td>
-                        <td class="hard">2 hours (cryptic errors)</td>
+                        <td data-label="Skill"><strong>Docker</strong></td>
+                        <td data-label="Time to Learn Basics" class="hard">1-2 weeks</td>
+                        <td data-label="Time to Debug When It Breaks" class="hard">2 hours (cryptic errors)</td>
                     </tr>
                     <tr>
-                        <td><strong>CasaOS</strong></td>
-                        <td class="hard">3-5 days</td>
-                        <td class="hard">Unknown (forums inactive)</td>
+                        <td data-label="Skill"><strong>CasaOS</strong></td>
+                        <td data-label="Time to Learn Basics" class="hard">3-5 days</td>
+                        <td data-label="Time to Debug When It Breaks" class="hard">Unknown (forums inactive)</td>
                     </tr>
                     <tr>
-                        <td><strong>Nginx Reverse Proxy</strong></td>
-                        <td class="hard">2-3 days</td>
-                        <td class="hard">4 hours (502 Bad Gateway)</td>
+                        <td data-label="Skill"><strong>Nginx Reverse Proxy</strong></td>
+                        <td data-label="Time to Learn Basics" class="hard">2-3 days</td>
+                        <td data-label="Time to Debug When It Breaks" class="hard">4 hours (502 Bad Gateway)</td>
                     </tr>
                     <tr>
-                        <td><strong>SSL Certificates</strong></td>
-                        <td class="hard">1 day</td>
-                        <td class="hard">3 hours (expired certs)</td>
+                        <td data-label="Skill"><strong>SSL Certificates</strong></td>
+                        <td data-label="Time to Learn Basics" class="hard">1 day</td>
+                        <td data-label="Time to Debug When It Breaks" class="hard">3 hours (expired certs)</td>
                     </tr>
                 </tbody>
             </table>
