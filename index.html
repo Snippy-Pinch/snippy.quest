@@ -19,15 +19,15 @@
             --bg-dark: #0a0a1a;
             --bg-darker: #050510;
             --text-primary: #ffffff;
-            --text-secondary: #a8dadc;
+            --text-secondary: #c8d8dc;
         }
         
         body {
-            font-family: 'Monaco', 'Courier New', monospace;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
             background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
             color: var(--text-primary);
             min-height: 100vh;
-            line-height: 1.6;
+            line-height: 1.65;
         }
         
         /* Hero Section */
@@ -93,7 +93,8 @@
         }
         
         h1 {
-            font-size: clamp(2.5em, 8vw, 5em);
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: clamp(3em, 8vw, 5.5em);
             margin-bottom: 15px;
             text-shadow: 
                 0 0 20px rgba(0, 212, 170, 0.8),
@@ -111,11 +112,12 @@
         
         .value-prop {
             color: var(--text-secondary);
-            font-size: clamp(1em, 2.5vw, 1.2em);
+            font-size: clamp(1.05em, 2.5vw, 1.25em);
             margin-bottom: 50px;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+            line-height: 1.7;
         }
         
         /* CTA Button */
@@ -173,6 +175,7 @@
         }
         
         .section-title {
+            font-family: 'Monaco', 'Courier New', monospace;
             font-size: clamp(2em, 5vw, 3em);
             color: var(--primary);
             margin-bottom: 40px;
@@ -299,6 +302,7 @@
         }
         
         code {
+            font-family: 'Monaco', 'Courier New', monospace;
             background: rgba(0, 212, 170, 0.15);
             padding: 3px 8px;
             border-radius: 4px;
