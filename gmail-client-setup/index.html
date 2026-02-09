@@ -211,7 +211,8 @@
                 <ul>
                     <li>Configure email forwarding (e.g., Cloudflare Email Routing)</li>
                     <li>Verify your Gmail address as a forwarding destination</li>
-                    <li>Update DNS SPF record to include Google</li>
+                    <li>Update DNS records (SPF, DKIM, MX)</li>
+                    <li>Set up SMTP2Go account and provide you credentials</li>
                     <li>Test that forwarding works</li>
                 </ul>
                 <p style="margin-bottom: 0;"><strong>Ask your admin to confirm these are done before continuing!</strong></p>
@@ -221,7 +222,7 @@
             <ul>
                 <li>Gmail account (e.g., <code>yourname@gmail.com</code>)</li>
                 <li>Custom email address that's been set up for you (e.g., <code>you@yourdomain.com</code>)</li>
-                <li>2-Factor Authentication enabled on your Gmail (required for next step)</li>
+                <li>SMTP2Go username and password (from your IT admin)</li>
             </ul>
         </section>
         
@@ -229,61 +230,46 @@
             <h2>Setup Steps</h2>
             
             <div class="step">
-                <h3><span class="step-number">1</span>Enable 2-Factor Authentication</h3>
+                <h3><span class="step-number">1</span>Get SMTP2Go Credentials</h3>
                 
-                <p><strong>This is required</strong> to generate the App Password you'll need in Step 2.</p>
-                
-                <ol>
-                    <li>Go to <a href="https://myaccount.google.com/security" target="_blank">myaccount.google.com/security</a></li>
-                    <li>Click <strong>"2-Step Verification"</strong></li>
-                    <li>Follow the setup wizard</li>
-                    <li>Once enabled, proceed to Step 2</li>
-                </ol>
-                
-                <div class="info">
-                    <strong>💡 Note:</strong> If you already have 2FA enabled, skip to Step 2.
-                </div>
-            </div>
-
-            <div class="step">
-                <h3><span class="step-number">2</span>Generate Gmail App Password</h3>
-                
-                <p>You'll need a special password (not your regular Gmail password) for SMTP authentication.</p>
+                <p><strong>Your IT admin should provide these.</strong> If you need to get them yourself:</p>
                 
                 <ol>
-                    <li>Go to <a href="https://myaccount.google.com/apppasswords" target="_blank">myaccount.google.com/apppasswords</a></li>
-                    <li>Sign in if prompted</li>
-                    <li>Select app: <strong>Mail</strong></li>
-                    <li>Select device: <strong>Other (Custom name)</strong></li>
-                    <li>Enter a name like: <code>Send as [yourdomain.com]</code></li>
-                    <li>Click <strong>Generate</strong></li>
-                    <li><strong>Copy the 16-character password</strong> (looks like <code>xxxx xxxx xxxx xxxx</code>)</li>
-                    <li>Keep this handy — you'll paste it in Step 4</li>
+                    <li>Log into <a href="https://www.smtp2go.com/" target="_blank">SMTP2Go</a></li>
+                    <li>Go to Settings → SMTP Users (or Sending Settings)</li>
+                    <li>View or create SMTP user credentials</li>
+                    <li>Note down:
+                        <ul>
+                            <li><strong>SMTP Username</strong> (e.g., <code>user-12345</code>)</li>
+                            <li><strong>SMTP Password</strong></li>
+                        </ul>
+                    </li>
                 </ol>
                 
                 <div class="warning">
-                    <strong>⚠️ Important:</strong> This password is shown only once! Copy it before closing the window.
+                    <strong>⚠️ Important:</strong> Keep these credentials safe. You'll need them in Step 3.
                 </div>
             </div>
             
             <div class="step">
-                <h3><span class="step-number">3</span>Open Gmail Settings</h3>
+                <h3><span class="step-number">2</span>Open Gmail Settings</h3>
                 
                 <ol>
                     <li>Go to <a href="https://mail.google.com" target="_blank">Gmail</a></li>
                     <li>Click the gear icon ⚙️ in the top right</li>
                     <li>Click <strong>"See all settings"</strong></li>
                     <li>Go to the <strong>"Accounts and Import"</strong> tab</li>
+                    <li>Find the section <strong>"Send mail as:"</strong></li>
+                    <li>Click <strong>"Add another email address"</strong></li>
                 </ol>
             </div>
             
             <div class="step">
-                <h3><span class="step-number">4</span>Add Your Custom Email Address</h3>
+                <h3><span class="step-number">3</span>Add Your Custom Email Address</h3>
+                
+                <p>A popup window will appear:</p>
                 
                 <ol>
-                    <li>Find the section <strong>"Send mail as:"</strong></li>
-                    <li>Click <strong>"Add another email address"</strong></li>
-                    <li>A popup window will appear</li>
                     <li>Enter:
                         <ul>
                             <li><strong>Name:</strong> How you want your name to appear (e.g., "John Smith")</li>
@@ -296,28 +282,38 @@
             </div>
             
             <div class="step">
-                <h3><span class="step-number">5</span>Configure SMTP Settings</h3>
+                <h3><span class="step-number">4</span>Configure SMTP Settings</h3>
                 
                 <p>Gmail will ask how to send mail. Use these settings:</p>
                 
                 <ul>
-                    <li><strong>SMTP Server:</strong> <code>smtp.gmail.com</code></li>
-                    <li><strong>Port:</strong> <code>587</code></li>
-                    <li><strong>Username:</strong> Your Gmail address (e.g., <code>yourname@gmail.com</code>)</li>
-                    <li><strong>Password:</strong> Paste the App Password from Step 2 (remove spaces if needed)</li>
+                    <li><strong>SMTP Server:</strong> <code>mail.smtp2go.com</code></li>
+                    <li><strong>Port:</strong> <code>2525</code> (or use 587, 8025, 80)</li>
+                    <li><strong>Username:</strong> Your SMTP2Go username from Step 1</li>
+                    <li><strong>Password:</strong> Your SMTP2Go password from Step 1</li>
                     <li><strong>Secured connection using TLS:</strong> Make sure this is selected</li>
                 </ul>
                 
+                <div class="info">
+                    <strong>💡 Why SMTP2Go instead of Gmail's servers?</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>Uses your domain's DKIM signature (better authentication)</li>
+                        <li>Proper SPF alignment with your domain</li>
+                        <li>Better deliverability and domain reputation</li>
+                        <li>Professional email authentication</li>
+                    </ul>
+                </div>
+                
                 <div class="warning">
-                    <strong>⚠️ Common mistake:</strong> Use your <strong>Gmail address</strong> as username, not the custom email. 
-                    Use the <strong>App Password</strong>, not your regular Gmail password.
+                    <strong>⚠️ Common mistake:</strong> Make sure you're using <strong>SMTP2Go credentials</strong>, 
+                    not your Gmail password. Server should be <code>mail.smtp2go.com</code>, not <code>smtp.gmail.com</code>.
                 </div>
                 
                 <p>Click <strong>"Add Account"</strong></p>
             </div>
             
             <div class="step">
-                <h3><span class="step-number">6</span>Verify Your Email Address</h3>
+                <h3><span class="step-number">5</span>Verify Your Email Address</h3>
                 
                 <p>Gmail will send a verification email to your custom address.</p>
                 
@@ -341,7 +337,7 @@
             </div>
             
             <div class="step">
-                <h3><span class="step-number">7</span>Start Sending from Your Custom Address</h3>
+                <h3><span class="step-number">6</span>Start Sending from Your Custom Address</h3>
                 
                 <p>Once verified, you can send emails from your custom address:</p>
                 
@@ -366,11 +362,11 @@
             
             <h3>"Authentication error. Check your username and password."</h3>
             <ul>
-                <li>Make sure you're using the <strong>App Password</strong>, not your regular Gmail password</li>
-                <li>App Password should be 16 characters, no spaces</li>
-                <li>Username should be your <strong>Gmail address</strong>, not the custom email</li>
-                <li>Verify 2FA is enabled on your Google account</li>
-                <li>Try regenerating the App Password and using the new one</li>
+                <li>Make sure you're using <strong>SMTP2Go credentials</strong>, not your Gmail password</li>
+                <li>Verify the SMTP server is <code>mail.smtp2go.com</code> (not <code>smtp.gmail.com</code>)</li>
+                <li>Check that port is <code>2525</code> (or 587, 8025, 80)</li>
+                <li>Contact your admin to verify SMTP2Go username/password are correct</li>
+                <li>Try port 587 if 2525 doesn't work</li>
             </ul>
             
             <h3>"From dropdown doesn't appear"</h3>
@@ -390,9 +386,10 @@
             
             <h3>Emails landing in recipient's spam</h3>
             <ul>
-                <li>Contact your admin — DNS SPF record may not be configured correctly</li>
+                <li>Contact your admin — DNS records (SPF, DKIM, DMARC) may need adjustment</li>
                 <li>Send a few test emails and have recipients mark them "Not Spam"</li>
                 <li>Wait 24-48 hours for DNS changes to propagate</li>
+                <li>Verify DKIM is properly configured in SMTP2Go dashboard</li>
             </ul>
         </section>
         
@@ -402,14 +399,16 @@
                 When you send an email using your custom address:
             </p>
             <ul>
-                <li>Gmail sends the email through Google's servers</li>
+                <li>Gmail contacts SMTP2Go's servers</li>
+                <li>SMTP2Go sends the email with your domain's DKIM signature</li>
                 <li>The "From" field shows your custom email address</li>
+                <li>Receiving servers verify SPF and DKIM (both pass ✅)</li>
                 <li>Replies come back to your custom address</li>
                 <li>Email forwarding sends replies to your Gmail inbox</li>
                 <li>You manage everything from Gmail's interface</li>
             </ul>
             <p>
-                <strong>Result:</strong> Professional custom email address with Gmail's powerful features!
+                <strong>Result:</strong> Professional custom email with proper authentication and Gmail's powerful features!
             </p>
         </section>
         
