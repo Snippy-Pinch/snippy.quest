@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>South Dakota Winter Birds | Snippy</title>
+    <meta name="description" content="Common birds that spend winter in South Dakota - field guide with photos and identification tips">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #00d4aa;
+            --secondary: #e01b24;
+            --accent: #ff6b6b;
+            --bg-dark: #0a0a1a;
+            --bg-darker: #050510;
+            --text-primary: #ffffff;
+            --text-secondary: #c8d8dc;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.65;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid rgba(0, 212, 170, 0.2);
+        }
+        
+        h1 {
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: clamp(2em, 6vw, 3.5em);
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .intro {
+            font-size: 1.1em;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.8;
+        }
+        
+        .hero-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 40px 0 60px 0;
+        }
+        
+        .hero-image {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 212, 170, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .hero-image figcaption {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            text-align: center;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        
+        section {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        h2 {
+            font-size: 2em;
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0, 212, 170, 0.3);
+        }
+        
+        h3 {
+            font-size: 1.5em;
+            color: var(--text-primary);
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .bird-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .bird-card {
+            background: rgba(0, 212, 170, 0.05);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        
+        .bird-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        
+        .bird-card h4 {
+            color: var(--primary);
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .bird-card p {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .info-box {
+            background: rgba(0, 212, 170, 0.08);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .info-box strong {
+            color: var(--primary);
+        }
+        
+        ul {
+            margin: 15px 0 15px 25px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        th {
+            background: rgba(0, 212, 170, 0.1);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        td {
+            color: var(--text-secondary);
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 50px;
+            padding: 12px 25px;
+            background: rgba(0, 212, 170, 0.1);
+            border: 2px solid rgba(0, 212, 170, 0.3);
+            border-radius: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background: rgba(0, 212, 170, 0.2);
+            border-color: var(--primary);
+            transform: translateX(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-images {
+                grid-template-columns: 1fr;
+            }
+            
+            section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐦 South Dakota Winter Birds</h1>
+            <p class="subtitle">A Field Guide to Birds That Brave the Cold</p>
+            <p class="intro">
+                South Dakota's harsh winters don't drive all birds away. Many hardy species stay year-round or migrate 
+                here for the season, bringing color and life to snowy landscapes. From cheerful chickadees to brilliant 
+                cardinals, these resilient birds are a joy to observe at feeders and in the wild.
+            </p>
+        </header>
+
+        <div class="hero-images">
+            <figure class="hero-image">
+                <img src="images/sd-chickadee-winter.png" alt="Black-capped Chickadee in winter">
+                <figcaption>Black-capped Chickadee on snowy branch</figcaption>
+            </figure>
+            <figure class="hero-image">
+                <img src="images/sd-cardinal-winter.png" alt="Northern Cardinal in winter">
+                <figcaption>Northern Cardinal male in winter plumage</figcaption>
+            </figure>
+        </div>
+
+        <section>
+            <h2>Most Common Winter Birds</h2>
+            
+            <p>These species are regularly seen at feeders and in natural habitats throughout South Dakota winters:</p>
+
+            <div class="bird-grid">
+                <div class="bird-card">
+                    <h4>Black-capped Chickadee</h4>
+                    <p>Small songbird with distinctive black cap and white cheeks. Frequent feeder visitor with cheerful "chick-a-dee-dee-dee" call. Found in forests, parks, and backyards year-round.</p>
+                </div>
+
+                <div class="bird-card">
+                    <h4>Northern Cardinal</h4>
+                    <p>Bright red males and brown females with red accents. Permanent resident in southeastern woodlands and suburbs. Distinctive crest and strong conical beak.</p>
+                </div>
+
+                <div class="bird-card">
+                    <h4>Dark-eyed Junco</h4>
+                    <p>Slate-gray body with white belly and outer tail feathers. The #1 most-sighted winter backyard bird. Often seen hopping on ground beneath feeders.</p>
+                </div>
+
+                <div class="bird-card">
+                    <h4>Blue Jay</h4>
+                    <p>Bold blue and white with prominent crest. Stays in coniferous forests and residential areas. Known for loud calls and feeder dominance.</p>
+                </div>
+
+                <div class="bird-card">
+                    <h4>Downy Woodpecker</h4>
+                    <p>Small woodpecker common at suet feeders. Black and white plumage with males showing red patch on back of head. Inhabits woodlands statewide.</p>
+                </div>
+
+                <div class="bird-card">
+                    <h4>House Finch</h4>
+                    <p>Red-headed males with brown streaked bodies. Common at feeders during winter months. Sociable birds often seen in small flocks.</p>
+                </div>
+
+                <div class="bird-card">
+                    <h4>American Goldfinch</h4>
+                    <p>Drab olive-brown in winter (bright yellow in summer). Visits thistle and nyjer feeders. Often travels in chattering flocks.</p>
+                </div>
+
+                <div class="bird-card">
+                    <h4>House Sparrow</h4>
+                    <p>Sociable and widespread in urban and rural areas. Males have gray crowns and black bibs. Highly abundant around human habitation.</p>
+                </div>
+
+                <div class="bird-card">
+                    <h4>American Crow</h4>
+                    <p>Large, all-black bird with distinctive caw. Widespread in open and wooded areas. Intelligent and adaptable to various habitats.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Species by Habitat</h2>
+
+            <h3>Backyard & Feeders</h3>
+            <p>These species are most likely to visit bird feeders in residential areas:</p>
+            <ul>
+                <li>Black-capped Chickadee (sunflower seeds, suet)</li>
+                <li>Dark-eyed Junco (ground feeding, millet)</li>
+                <li>House Finch (sunflower, thistle)</li>
+                <li>American Goldfinch (thistle, nyjer)</li>
+                <li>Downy Woodpecker (suet, peanuts)</li>
+                <li>Blue Jay (peanuts, sunflower seeds)</li>
+                <li>Northern Cardinal (sunflower seeds)</li>
+            </ul>
+
+            <h3>Rivers & Open Water</h3>
+            <p>Look for these species near unfrozen water sources:</p>
+            <ul>
+                <li>Bald Eagle (fish-eating raptor)</li>
+                <li>Canada Goose (open water and fields)</li>
+                <li>Mallard (lakes and rivers)</li>
+            </ul>
+
+            <h3>Woodlands & Forests</h3>
+            <p>Forest habitats support:</p>
+            <ul>
+                <li>Great Horned Owl (nocturnal, in forests and urban edges)</li>
+                <li>Wild Turkey (woodlands and Black Hills)</li>
+                <li>Hairy Woodpecker (larger woodpecker in mature forests)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Attracting Winter Birds</h2>
+
+            <div class="info-box">
+                <strong>💡 Tips for Winter Bird Feeding:</strong>
+                <ul style="margin-top: 10px;">
+                    <li><strong>High-energy foods:</strong> Sunflower seeds, suet, peanuts, and thistle provide crucial calories</li>
+                    <li><strong>Water source:</strong> Heated birdbath or fresh water daily helps birds survive</li>
+                    <li><strong>Shelter:</strong> Evergreen trees and brush piles provide wind protection</li>
+                    <li><strong>Consistency:</strong> Keep feeders full - birds rely on them in harsh weather</li>
+                    <li><strong>Variety:</strong> Multiple feeder types attract more species</li>
+                </ul>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Food Type</th>
+                        <th>Attracts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Black-oil sunflower seeds</td>
+                        <td>Cardinals, chickadees, finches, jays</td>
+                    </tr>
+                    <tr>
+                        <td>Suet cakes</td>
+                        <td>Woodpeckers, chickadees, nuthatches</td>
+                    </tr>
+                    <tr>
+                        <td>Thistle/Nyjer seeds</td>
+                        <td>Goldfinches, redpolls</td>
+                    </tr>
+                    <tr>
+                        <td>Peanuts (shelled/unshelled)</td>
+                        <td>Jays, woodpeckers, chickadees</td>
+                    </tr>
+                    <tr>
+                        <td>Millet (ground)</td>
+                        <td>Juncos, sparrows, doves</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Identification Quick Reference</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bird</th>
+                        <th>Size</th>
+                        <th>Key Field Marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Black-capped Chickadee</td>
+                        <td>Small (5")</td>
+                        <td>Black cap, white cheeks, gray body</td>
+                    </tr>
+                    <tr>
+                        <td>Northern Cardinal</td>
+                        <td>Medium (9")</td>
+                        <td>All red (male), crest, orange bill</td>
+                    </tr>
+                    <tr>
+                        <td>Dark-eyed Junco</td>
+                        <td>Small (6")</td>
+                        <td>Slate gray, white belly, white tail edges</td>
+                    </tr>
+                    <tr>
+                        <td>Blue Jay</td>
+                        <td>Large (11")</td>
+                        <td>Blue with white and black, prominent crest</td>
+                    </tr>
+                    <tr>
+                        <td>Downy Woodpecker</td>
+                        <td>Small (6")</td>
+                        <td>Black & white, small bill, red patch (males)</td>
+                    </tr>
+                    <tr>
+                        <td>American Goldfinch</td>
+                        <td>Small (5")</td>
+                        <td>Brown/olive winter plumage, wing bars</td>
+                    </tr>
+                    <tr>
+                        <td>House Finch</td>
+                        <td>Small (6")</td>
+                        <td>Red head/chest (males), streaked brown</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Rare Winter Visitors</h2>
+            
+            <p>Some species appear irregularly in South Dakota winters, typically in the northern parts of the state:</p>
+
+            <div class="bird-card">
+                <h4>Common Redpoll</h4>
+                <p>Small finch with red cap and black chin. Irruptive visitor from the north in some winters. Fond of birch catkins and thistle feeders. Look for them in flocks during invasion years.</p>
+            </div>
+
+            <div class="info-box" style="margin-top: 25px;">
+                <strong>ℹ️ Check eBird for real-time sightings</strong> in your area. Winter bird populations vary by year, weather conditions, and local food availability.
+            </div>
+        </section>
+
+        <a href="/" class="back-link">← Back to Home</a>
+    </div>
+</body>
+</html>
