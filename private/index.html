@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Area - Snippy.Quest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 60px 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .lock-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #2d3748;
+            font-size: 32px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #718096;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+        
+        .info-box {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+            border-radius: 4px;
+        }
+        
+        .info-box h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .info-box p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .feature-list li {
+            padding: 12px 0;
+            color: #4a5568;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .feature-list li:before {
+            content: "🔐 ";
+            margin-right: 8px;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #a0aec0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="lock-icon">🔒</div>
+        <h1>Welcome to the Private Area</h1>
+        <p class="subtitle">You've successfully authenticated!</p>
+        
+        <div class="info-box">
+            <h3>🎯 Protected by Cloudflare Access</h3>
+            <p>This page is secured with email authentication. Only authorized email addresses can view this content.</p>
+        </div>
+        
+        <ul class="feature-list">
+            <li>Email-based authentication</li>
+            <li>One-time PIN codes</li>
+            <li>24-hour session duration</li>
+            <li>Zero-trust security</li>
+        </ul>
+        
+        <div class="info-box">
+            <h3>📝 What's Next?</h3>
+            <p>You can add more content to this page or create additional protected pages under <code>/private/</code>. All paths under this directory are protected.</p>
+        </div>
+        
+        <div class="footer">
+            Snippy.Quest Private Area<br>
+            Secured by Cloudflare Zero Trust
+        </div>
+    </div>
+</body>
+</html>
