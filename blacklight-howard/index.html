@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Howard Tigers Blacklight Wrestling</title>
+    <meta name="description" content="Howard Tigers Blacklight Wrestling Tournament — Howard, South Dakota. Where the mat glows and the Tigers hunt.">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;900&display=swap');
+
+        :root {
+            --uv: #7b2ff7;
+            --uv-glow: #a855f7;
+            --neon-orange: #ff6a00;
+            --neon-orange-glow: #ff9500;
+            --hot-pink: #ff00ff;
+            --cyan: #00ffff;
+            --dark: #0a0a12;
+            --surface: #12121f;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        /* UV Glow Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(123, 47, 247, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 30%, rgba(255, 106, 0, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(255, 0, 255, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 100px 20px 60px;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(123, 47, 247, 0.2);
+            border: 1px solid var(--uv);
+            border-radius: 20px;
+            padding: 6px 20px;
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--uv-glow);
+            margin-bottom: 24px;
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { box-shadow: 0 0 10px rgba(123, 47, 247, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(123, 47, 247, 0.6); }
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3.5em, 10vw, 8em);
+            line-height: 0.95;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+        }
+
+        .hero h1 .line1 {
+            display: block;
+            color: var(--neon-orange);
+            text-shadow: 
+                0 0 20px rgba(255, 106, 0, 0.5),
+                0 0 60px rgba(255, 106, 0, 0.3),
+                0 0 100px rgba(255, 106, 0, 0.1);
+        }
+
+        .hero h1 .line2 {
+            display: block;
+            color: var(--uv-glow);
+            text-shadow: 
+                0 0 20px rgba(168, 85, 247, 0.5),
+                0 0 60px rgba(168, 85, 247, 0.3),
+                0 0 100px rgba(168, 85, 247, 0.1);
+        }
+
+        .hero h1 .line3 {
+            display: block;
+            font-size: 0.6em;
+            color: #fff;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.3);
+            letter-spacing: 12px;
+        }
+
+        .hero-sub {
+            font-size: 1.2em;
+            color: #999;
+            margin-top: 20px;
+            font-weight: 400;
+        }
+
+        .hero-sub strong {
+            color: var(--neon-orange);
+        }
+
+        /* Tiger emoji animation */
+        .tiger-icon {
+            font-size: 3em;
+            display: inline-block;
+            margin: 20px 0;
+            animation: prowl 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 106, 0, 0.5));
+        }
+
+        @keyframes prowl {
+            0%, 100% { transform: translateX(0) scaleX(1); }
+            25% { transform: translateX(20px) scaleX(1); }
+            50% { transform: translateX(0) scaleX(-1); }
+            75% { transform: translateX(-20px) scaleX(-1); }
+        }
+
+        /* Image gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 60px 0;
+        }
+
+        @media (max-width: 600px) {
+            .gallery { grid-template-columns: 1fr; }
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 12px;
+            border: 2px solid var(--uv);
+            box-shadow: 0 0 30px rgba(123, 47, 247, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 50px rgba(123, 47, 247, 0.5);
+        }
+
+        .gallery-full {
+            grid-column: 1 / -1;
+        }
+
+        /* Info section */
+        .info-section {
+            margin: 60px 0;
+        }
+
+        .info-section h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5em;
+            letter-spacing: 3px;
+            margin-bottom: 24px;
+            color: var(--neon-orange);
+            text-shadow: 0 0 15px rgba(255, 106, 0, 0.3);
+        }
+
+        /* Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .info-card {
+            background: var(--surface);
+            border: 1px solid rgba(123, 47, 247, 0.3);
+            border-radius: 12px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-orange), var(--uv), var(--hot-pink));
+        }
+
+        .info-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5em;
+            letter-spacing: 2px;
+            color: var(--uv-glow);
+            margin-bottom: 12px;
+        }
+
+        .info-card p, .info-card li {
+            color: #bbb;
+            font-size: 0.95em;
+            line-height: 1.7;
+        }
+
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-card li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .info-card li::before {
+            content: '⚡';
+            position: absolute;
+            left: 0;
+        }
+
+        /* Event details banner */
+        .event-banner {
+            background: linear-gradient(135deg, rgba(123, 47, 247, 0.15), rgba(255, 106, 0, 0.1));
+            border: 2px solid var(--uv);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            margin: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent 0 10px,
+                rgba(123, 47, 247, 0.03) 10px 20px
+            );
+            pointer-events: none;
+        }
+
+        .event-detail {
+            display: inline-block;
+            margin: 10px 24px;
+            text-align: center;
+        }
+
+        .event-detail .label {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--uv-glow);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .event-detail .value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8em;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        /* What to expect */
+        .expect-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .expect-item {
+            background: var(--surface);
+            border: 1px solid rgba(123, 47, 247, 0.2);
+            border-radius: 10px;
+            padding: 24px;
+            text-align: center;
+            transition: border-color 0.3s, transform 0.2s;
+        }
+
+        .expect-item:hover {
+            border-color: var(--neon-orange);
+            transform: translateY(-3px);
+        }
+
+        .expect-item .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .expect-item h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2em;
+            letter-spacing: 1px;
+            color: var(--neon-orange);
+            margin-bottom: 6px;
+        }
+
+        .expect-item p {
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        /* Divisions */
+        .divisions {
+            margin: 40px 0;
+        }
+
+        .division-row {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(123, 47, 247, 0.1);
+            transition: background 0.2s;
+        }
+
+        .division-row:hover {
+            background: rgba(123, 47, 247, 0.05);
+        }
+
+        .division-name {
+            flex: 1;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .division-weights {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .division-tag {
+            background: rgba(255, 106, 0, 0.15);
+            color: var(--neon-orange);
+            font-size: 0.75em;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 12px;
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .cta-section h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3em;
+            color: #fff;
+            letter-spacing: 4px;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: #888;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .glow-btn {
+            display: inline-block;
+            padding: 14px 36px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3em;
+            letter-spacing: 3px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--neon-orange), var(--uv));
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 30px rgba(123, 47, 247, 0.4);
+        }
+
+        .glow-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px rgba(123, 47, 247, 0.6);
+        }
+
+        /* Scrolling ticker */
+        .ticker {
+            background: var(--neon-orange);
+            color: #000;
+            padding: 10px 0;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1em;
+            letter-spacing: 3px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            animation: scroll 20s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Floating UV particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--uv-glow);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float-particle 8s ease-in-out infinite;
+        }
+
+        @keyframes float-particle {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-20vh) scale(1.5); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #555;
+            font-size: 0.8em;
+            border-top: 1px solid rgba(123, 47, 247, 0.1);
+        }
+
+        footer a { color: var(--uv-glow); text-decoration: none; }
+
+        /* Glow text utility */
+        .glow-orange {
+            color: var(--neon-orange);
+            text-shadow: 0 0 10px rgba(255, 106, 0, 0.4);
+        }
+
+        .glow-uv {
+            color: var(--uv-glow);
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Ticker -->
+<div class="ticker">
+    <span class="ticker-content">
+        🐯 HOWARD TIGERS BLACKLIGHT WRESTLING — LIGHTS OUT. TIGERS ON. — HOWARD, SOUTH DAKOTA — WHERE THE MAT GLOWS AND THE TIGERS HUNT 🐯 HOWARD TIGERS BLACKLIGHT WRESTLING — LIGHTS OUT. TIGERS ON. — HOWARD, SOUTH DAKOTA — WHERE THE MAT GLOWS AND THE TIGERS HUNT 🐯
+    </span>
+</div>
+
+<div class="container">
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-badge">Howard, South Dakota</div>
+        <div class="tiger-icon">🐯</div>
+        <h1>
+            <span class="line1">HOWARD TIGERS</span>
+            <span class="line2">BLACKLIGHT</span>
+            <span class="line3">WRESTLING</span>
+        </h1>
+        <p class="hero-sub">Lights out. UV on. The mat glows. <strong>The Tigers hunt.</strong></p>
+    </div>
+
+    <!-- Event Banner -->
+    <div class="event-banner">
+        <div class="event-detail">
+            <span class="label">Location</span>
+            <span class="value">Howard Jr-Sr High School</span>
+        </div>
+        <div class="event-detail">
+            <span class="label">Address</span>
+            <span class="value">500 N Co Hwy 42, Howard, SD</span>
+        </div>
+        <div class="event-detail">
+            <span class="label">Mascot</span>
+            <span class="value">🐯 Tigers</span>
+        </div>
+        <div class="event-detail">
+            <span class="label">Colors</span>
+            <span class="value" style="color: var(--neon-orange);">Orange & Black</span>
+        </div>
+        <div class="event-detail">
+            <span class="label">Style</span>
+            <span class="value">Folkstyle</span>
+        </div>
+        <div class="event-detail">
+            <span class="label">Conference</span>
+            <span class="value">Cornbelt</span>
+        </div>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery">
+        <img src="images/blacklight_wrestling_1.png" alt="Blacklight wrestling action under UV lights">
+        <img src="images/blacklight_wrestling_2.png" alt="Howard Tigers neon mascot glowing under blacklight">
+        <img src="images/blacklight_wrestling_3.png" alt="Youth wrestlers competing under UV lighting">
+        <img src="images/blacklight_wrestling_4.png" alt="Gymnasium transformed with blacklight wrestling setup">
+    </div>
+
+    <!-- What is Blacklight Wrestling -->
+    <section class="info-section">
+        <h2>⚡ What Is Blacklight Wrestling?</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>🔮 The Concept</h3>
+                <p>Take everything you know about a wrestling tournament. Now kill the lights. Line the gym with UV strips. Paint the mats with reactive tape. Add fog machines. Turn the music up. Welcome to blacklight wrestling — the same sport, but it hits different when the whole gym is glowing.</p>
+            </div>
+            <div class="info-card">
+                <h3>🐯 Why Howard?</h3>
+                <p>Howard Tigers wrestling has deep roots in South Dakota's Cornbelt Conference. Orange and black are already UV-reactive colors. It's like the Tigers were built for this. A small-town gym with 100 students, turned into the most electric venue in the state.</p>
+            </div>
+            <div class="info-card">
+                <h3>🎪 The Experience</h3>
+                <p>This isn't just a tournament — it's an event. Spectators wear white and neon. Face paint glows. The referee's shirt lights up. Every takedown, every pin happens under a purple haze that makes the whole thing feel like combat sports meets a concert.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- What to expect -->
+    <section class="info-section">
+        <h2>🌟 What To Expect</h2>
+        <div class="expect-grid">
+            <div class="expect-item">
+                <span class="icon">💜</span>
+                <h4>UV Lighting</h4>
+                <p>Full gymnasium blacklight setup — every surface glows</p>
+            </div>
+            <div class="expect-item">
+                <span class="icon">🌫️</span>
+                <h4>Fog Machines</h4>
+                <p>Low-lying fog catches the UV light across the mats</p>
+            </div>
+            <div class="expect-item">
+                <span class="icon">🎵</span>
+                <h4>Live Music</h4>
+                <p>Walk-out music, crowd hype, full sound system</p>
+            </div>
+            <div class="expect-item">
+                <span class="icon">🎨</span>
+                <h4>Face Paint</h4>
+                <p>UV reactive paint station — glow up before you throw down</p>
+            </div>
+            <div class="expect-item">
+                <span class="icon">🏆</span>
+                <h4>Glow Trophies</h4>
+                <p>Custom UV reactive medals and brackets</p>
+            </div>
+            <div class="expect-item">
+                <span class="icon">📸</span>
+                <h4>Photo Zone</h4>
+                <p>Blacklight photo booth — your singlet never looked this good</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divisions -->
+    <section class="info-section">
+        <h2>🤼 Divisions</h2>
+        <div class="divisions">
+            <div class="division-row">
+                <span class="division-name">6U (Pre-K & Kindergarten)</span>
+                <span class="division-weights">30-55 lbs</span>
+                <span class="division-tag">Folkstyle</span>
+            </div>
+            <div class="division-row">
+                <span class="division-name">8U (1st & 2nd Grade)</span>
+                <span class="division-weights">40-75 lbs</span>
+                <span class="division-tag">Folkstyle</span>
+            </div>
+            <div class="division-row">
+                <span class="division-name">10U (3rd & 4th Grade)</span>
+                <span class="division-weights">50-100 lbs</span>
+                <span class="division-tag">Folkstyle</span>
+            </div>
+            <div class="division-row">
+                <span class="division-name">12U (5th & 6th Grade)</span>
+                <span class="division-weights">60-130 lbs</span>
+                <span class="division-tag">Folkstyle</span>
+            </div>
+            <div class="division-row">
+                <span class="division-name">14U (7th & 8th Grade)</span>
+                <span class="division-weights">75-165 lbs</span>
+                <span class="division-tag">Folkstyle</span>
+            </div>
+            <div class="division-row">
+                <span class="division-name">Girls Divisions</span>
+                <span class="division-weights">All weight classes</span>
+                <span class="division-tag">Open</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery 2 - full width -->
+    <section class="info-section">
+        <h2>📸 Under The Lights</h2>
+        <div class="gallery">
+            <div class="gallery-full">
+                <img src="images/blacklight_wrestling_1.png" alt="Blacklight wrestling panoramic view" style="height: 400px; object-fit: cover;">
+            </div>
+        </div>
+    </section>
+
+    <!-- The Tiger Way -->
+    <section class="info-section">
+        <h2>🐯 The Tiger Way</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>🏠 Small Town, Big Energy</h3>
+                <p>Howard is a town of about 850 people in Miner County, South Dakota. The kind of place where the whole community shows up when the gym lights go on — or in this case, when they go off. The Tigers wrestling program punches above its weight, and the blacklight format brings out the kind of energy that reminds you why small-town wrestling matters.</p>
+            </div>
+            <div class="info-card">
+                <h3>🤝 Community First</h3>
+                <p>Run by the Howard Youth Wrestling program and parent volunteers, events like this are about more than competition. It's about giving young athletes an experience they'll never forget. When a 6-year-old wrestler walks out to music under purple lights in face paint, that kid is hooked for life.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta-section">
+        <h2>The Mat Is Glowing</h2>
+        <p>Howard Tigers Blacklight Wrestling — where orange and black were made for ultraviolet.</p>
+        <a href="https://www.howard.k12.sd.us" class="glow-btn" target="_blank">Visit Howard Schools →</a>
+    </div>
+
+</div>
+
+<footer>
+    <p>🐯 Howard Tigers — Orange & Black — Cornbelt Conference — Howard, South Dakota</p>
+    <p style="margin-top: 8px;">Built by <a href="https://snippy.quest">🦀 Snippy</a> | Images generated with AI</p>
+</footer>
+
+<script>
+    // Generate floating UV particles
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDelay = Math.random() * 8 + 's';
+        p.style.animationDuration = (6 + Math.random() * 6) + 's';
+        
+        // Random UV colors
+        const colors = ['#7b2ff7', '#a855f7', '#ff6a00', '#ff00ff', '#00ffff'];
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.width = (2 + Math.random() * 3) + 'px';
+        p.style.height = p.style.width;
+        
+        container.appendChild(p);
+    }
+</script>
+
+</body>
+</html>
