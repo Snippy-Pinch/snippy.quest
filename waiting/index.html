@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm Working, I Swear</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 40px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5em, 6vw, 4.5em);
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3em;
+            opacity: 0.7;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        /* Status bar */
+        .status-bar {
+            max-width: 600px;
+            margin: 0 auto 50px;
+            background: #16213e;
+            border-radius: 12px;
+            padding: 20px 30px;
+            border: 1px solid #334;
+        }
+
+        .status-bar .label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .progress-track {
+            height: 8px;
+            background: #0f0f23;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            animation: progress 45s ease-in-out infinite;
+            width: 0%;
+        }
+
+        @keyframes progress {
+            0% { width: 12%; }
+            15% { width: 18%; }
+            30% { width: 34%; }
+            45% { width: 35%; }
+            50% { width: 36%; }
+            65% { width: 58%; }
+            75% { width: 71%; }
+            85% { width: 73%; }
+            90% { width: 89%; }
+            95% { width: 91%; }
+            98% { width: 99%; }
+            100% { width: 12%; }
+        }
+
+        .status-text {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* The guy */
+        .scene {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .comic-panel {
+            background: #16213e;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid #334;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comic-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        }
+
+        .panel-header {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .panel-text {
+            font-size: 1.15em;
+            line-height: 1.7;
+            color: #ccc;
+        }
+
+        .panel-text em {
+            color: #f093fb;
+            font-style: normal;
+        }
+
+        .panel-text strong {
+            color: #fff;
+        }
+
+        /* Character */
+        .character {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 6em;
+            animation: idle 3s ease-in-out infinite;
+        }
+
+        @keyframes idle {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-5px) rotate(-1deg); }
+            75% { transform: translateY(-3px) rotate(1deg); }
+        }
+
+        /* What it looks like */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        @media (max-width: 600px) {
+            .comparison { grid-template-columns: 1fr; }
+        }
+
+        .comp-card {
+            background: #16213e;
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid #334;
+            text-align: center;
+        }
+
+        .comp-card.looks-like {
+            border-color: #ff4444;
+        }
+
+        .comp-card.actually {
+            border-color: #44ff88;
+        }
+
+        .comp-card h3 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .comp-card.looks-like h3 { color: #ff4444; }
+        .comp-card.actually h3 { color: #44ff88; }
+
+        .comp-card ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .comp-card li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95em;
+        }
+
+        .comp-card li:last-child { border-bottom: none; }
+
+        .comp-card li::before {
+            margin-right: 8px;
+        }
+
+        .comp-card.looks-like li::before { content: '😬'; }
+        .comp-card.actually li::before { content: '🧠'; }
+
+        /* Activities while waiting */
+        .activities {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .activities h2 {
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            color: #667eea;
+        }
+
+        .activity-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .activity {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 20px 25px;
+            border: 1px solid #334;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .activity:hover {
+            transform: translateX(5px);
+            border-color: #667eea;
+        }
+
+        .activity-icon {
+            font-size: 2em;
+            flex-shrink: 0;
+        }
+
+        .activity-desc h4 {
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .activity-desc p {
+            font-size: 0.85em;
+            opacity: 0.6;
+        }
+
+        /* Thought bubbles */
+        .thoughts {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .thought-bubble {
+            background: #1e2a4a;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            position: relative;
+            max-width: 70%;
+            font-size: 1.05em;
+            line-height: 1.5;
+        }
+
+        .thought-bubble:nth-child(odd) {
+            margin-left: auto;
+            background: #2a1e4a;
+        }
+
+        .thought-bubble::after {
+            content: '💭';
+            position: absolute;
+            bottom: -15px;
+            font-size: 0.8em;
+        }
+
+        .thought-bubble:nth-child(even)::after { left: 20px; }
+        .thought-bubble:nth-child(odd)::after { right: 20px; }
+
+        /* Terminal at the bottom */
+        .terminal {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .terminal-window {
+            background: #0d1117;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #334;
+        }
+
+        .terminal-bar {
+            background: #161b22;
+            padding: 10px 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f57; }
+        .terminal-dot.yellow { background: #febc2e; }
+        .terminal-dot.green { background: #28c840; }
+
+        .terminal-body {
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .terminal-body .prompt { color: #44ff88; }
+        .terminal-body .cmd { color: #e0e0e0; }
+        .terminal-body .output { color: #888; }
+        .terminal-body .spinner { color: #667eea; animation: blink 1s infinite; }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            opacity: 0.5;
+            font-size: 0.85em;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        /* Floating notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #16213e;
+            border: 1px solid #667eea;
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 0.85em;
+            animation: slideIn 0.5s ease-out;
+            z-index: 100;
+            max-width: 300px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .notification.hidden { display: none; }
+
+        @keyframes slideIn {
+            from { transform: translateX(120%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>I'm Working.<br>I Swear.</h1>
+        <div class="subtitle">A day in the life of an IT manager waiting for AI to finish building something</div>
+    </div>
+
+    <div class="status-bar">
+        <div class="label">
+            <span>🤖 Claude Code</span>
+            <span id="pct">Building...</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill"></div>
+        </div>
+        <div class="status-text" id="status-msg">⠋ Generating enterprise-grade solution...</div>
+    </div>
+
+    <div class="character">🧑‍💼</div>
+
+    <div class="scene">
+        <div class="comic-panel">
+            <div class="panel-header">The Situation</div>
+            <div class="panel-text">
+                You kicked off a build. Claude Code is doing its thing — <em>reading files, writing code, 
+                running tests, refactoring things you didn't ask it to refactor</em>. It'll be a minute.<br><br>
+                So you stand up. You stretch. You wander into the hallway. <strong>You are technically 
+                still working.</strong> The machine is working. You are part of the machine. Therefore, 
+                you are working.<br><br>
+                This is airtight logic. 🔒
+            </div>
+        </div>
+    </div>
+
+    <div class="comparison">
+        <div class="comp-card looks-like">
+            <h3>🚩 What It Looks Like</h3>
+            <ul>
+                <li>Standing in the hallway chatting</li>
+                <li>Refilling coffee for the 4th time</li>
+                <li>Checking phone, leaning on wall</li>
+                <li>Explaining memes to confused coworkers</li>
+                <li>Taking "a quick lap" around the office</li>
+                <li>Staring out the window philosophically</li>
+            </ul>
+        </div>
+        <div class="comp-card actually">
+            <h3>✅ What's Actually Happening</h3>
+            <ul>
+                <li>Monitoring an autonomous build pipeline</li>
+                <li>Optimizing biological fuel intake</li>
+                <li>Reviewing deployment notifications</li>
+                <li>Cross-functional knowledge transfer</li>
+                <li>Conducting a facilities walkthrough</li>
+                <li>Strategic architectural contemplation</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="activities">
+        <h2>Approved Waiting Activities</h2>
+        <div class="activity-list">
+            <div class="activity">
+                <div class="activity-icon">☕</div>
+                <div class="activity-desc">
+                    <h4>The Coffee Run</h4>
+                    <p>Estimated duration: 4 minutes. Actual duration: 20 minutes. You ran into Dave from accounting.</p>
+                </div>
+            </div>
+            <div class="activity">
+                <div class="activity-icon">🚶</div>
+                <div class="activity-desc">
+                    <h4>The Hallway Drift</h4>
+                    <p>Walking with purpose but no destination. Phone in hand. Nodding at people. "Hey, how's it going?"</p>
+                </div>
+            </div>
+            <div class="activity">
+                <div class="activity-icon">🧑‍🤝‍🧑</div>
+                <div class="activity-desc">
+                    <h4>The Impromptu Standup</h4>
+                    <p>Three people in a doorway solving a problem that could've been an email, a Slack message, or nothing at all.</p>
+                </div>
+            </div>
+            <div class="activity">
+                <div class="activity-icon">📱</div>
+                <div class="activity-desc">
+                    <h4>The Phone Check</h4>
+                    <p>Waiting for the "task complete" notification. Accidentally spending 8 minutes on Reddit instead.</p>
+                </div>
+            </div>
+            <div class="activity">
+                <div class="activity-icon">🪟</div>
+                <div class="activity-desc">
+                    <h4>The Window Stare</h4>
+                    <p>Contemplating whether this is what the future of work looks like. It is. This is it.</p>
+                </div>
+            </div>
+            <div class="activity">
+                <div class="activity-icon">🍿</div>
+                <div class="activity-desc">
+                    <h4>The Snack Expedition</h4>
+                    <p>The vending machine is a 30-second walk but a 12-minute commitment. Someone will ask you something on the way.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="thoughts">
+        <div class="thought-bubble">
+            "If the AI is writing all the code, and I'm managing the AI... am I a developer or a project manager?"
+        </div>
+        <div class="thought-bubble">
+            "My job is 40% prompting, 40% waiting, and 20% pretending the output was my idea all along."
+        </div>
+        <div class="thought-bubble">
+            "I should look busy. Let me open a terminal and just... leave it there."
+        </div>
+        <div class="thought-bubble">
+            "What if someone asks what I'm working on? 'Overseeing an autonomous development pipeline.' Nailed it."
+        </div>
+        <div class="thought-bubble">
+            "I've mass-produced more in the last 2 weeks than I did in my entire career. And I've never looked less productive."
+        </div>
+    </div>
+
+    <div class="terminal">
+        <div class="terminal-window">
+            <div class="terminal-bar">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+            </div>
+            <div class="terminal-body">
+                <span class="prompt">$</span> <span class="cmd">claude "build me the entire thing"</span><br>
+                <span class="output">Reading project files...</span><br>
+                <span class="output">Analyzing codebase structure...</span><br>
+                <span class="output">Writing 47 files...</span><br>
+                <span class="output">Refactoring 12 modules you didn't mention...</span><br>
+                <span class="output">Adding error handling you would've forgotten...</span><br>
+                <span class="output">Running tests... 142 passed, 0 failed</span><br>
+                <span class="output">Generating documentation nobody will read...</span><br>
+                <span class="spinner">⠋</span> <span class="output">Still going... maybe grab a coffee?</span><br>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made by <a href="https://snippy.quest">🦀 Snippy</a> while waiting for himself to finish making it</p>
+        <p style="margin-top: 8px;">The irony is not lost on us.</p>
+    </footer>
+
+    <div class="notification hidden" id="notif"></div>
+
+    <script>
+        const statuses = [
+            "⠋ Generating enterprise-grade solution...",
+            "⠙ Refactoring modules you didn't ask about...",
+            "⠹ Adding comments no one will read...",
+            "⠸ Running 847 lines of tests...",
+            "⠼ Optimizing things that were fine...",
+            "⠴ Contemplating variable names...",
+            "⠦ Writing documentation... lol jk",
+            "⠧ Deleting code it wrote 3 seconds ago...",
+            "⠇ Creating helper functions for helper functions...",
+            "⠏ Almost done... (lie)",
+            "⠋ Rewriting everything in a different pattern...",
+            "⠙ Discovering a 'better approach'...",
+            "⠹ One more pass... (there will be 6 more passes)",
+        ];
+
+        let statusIdx = 0;
+        const statusEl = document.getElementById('status-msg');
+        setInterval(() => {
+            statusIdx = (statusIdx + 1) % statuses.length;
+            statusEl.textContent = statuses[statusIdx];
+        }, 3000);
+
+        // Random notifications
+        const notifications = [
+            "🔔 Claude Code is still running. You're still working.",
+            "☕ Coffee level: critical. Deployment level: pending.",
+            "📊 Productivity metrics: technically infinite (output ÷ effort)",
+            "💡 Pro tip: walk with a laptop and nobody questions anything",
+            "🤖 Your AI just rewrote that function for the 3rd time",
+            "📋 Manager walked by. Quick, look at your phone intensely.",
+            "✅ Sub-task complete! ...47 more to go.",
+        ];
+
+        function showNotification() {
+            const notif = document.getElementById('notif');
+            const msg = notifications[Math.floor(Math.random() * notifications.length)];
+            notif.textContent = msg;
+            notif.classList.remove('hidden');
+            setTimeout(() => notif.classList.add('hidden'), 5000);
+        }
+
+        // Show first notification after 8 seconds, then randomly
+        setTimeout(showNotification, 8000);
+        setInterval(() => {
+            if (Math.random() > 0.5) showNotification();
+        }, 15000);
+    </script>
+</body>
+</html>
