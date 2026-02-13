@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snippy Architecture — How It All Works</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        :root {
+            --bg: #0f0f1a;
+            --surface: #16172a;
+            --surface2: #1e1f35;
+            --border: #2a2b45;
+            --cyan: #00e5ff;
+            --purple: #b388ff;
+            --green: #69f0ae;
+            --orange: #ffab40;
+            --pink: #ff80ab;
+            --red: #ff5252;
+            --text: #e0e0e8;
+            --muted: #888899;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+        }
+
+        .crab-icon {
+            font-size: 4em;
+            display: block;
+            margin-bottom: 20px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        header p {
+            color: var(--muted);
+            font-size: 1.15em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        .toc {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px 32px;
+            margin: 40px auto;
+            max-width: 600px;
+        }
+
+        .toc h3 {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--cyan);
+            margin-bottom: 12px;
+        }
+
+        .toc a {
+            display: block;
+            color: var(--text);
+            text-decoration: none;
+            padding: 6px 0;
+            font-size: 0.95em;
+            transition: color 0.2s, padding-left 0.2s;
+        }
+
+        .toc a:hover {
+            color: var(--cyan);
+            padding-left: 8px;
+        }
+
+        .toc a::before {
+            content: '→ ';
+            color: var(--purple);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .toc a:hover::before { opacity: 1; }
+
+        /* Sections */
+        section {
+            margin: 60px 0;
+        }
+
+        section h2 {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        section h2 .emoji { font-size: 1em; }
+
+        .section-subtitle {
+            color: var(--muted);
+            font-size: 0.95em;
+            margin-bottom: 24px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+        }
+
+        .card.cyan::before { background: var(--cyan); }
+        .card.purple::before { background: var(--purple); }
+        .card.green::before { background: var(--green); }
+        .card.orange::before { background: var(--orange); }
+        .card.pink::before { background: var(--pink); }
+
+        .card h3 {
+            font-size: 1.15em;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card p, .card li {
+            color: #bbb;
+            font-size: 0.95em;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .card li::before {
+            content: '•';
+            position: absolute;
+            left: 4px;
+            color: var(--cyan);
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+
+        /* Architecture diagram */
+        .arch-diagram {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .arch-layer {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .arch-node {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: transform 0.2s, border-color 0.2s;
+            cursor: default;
+        }
+
+        .arch-node:hover {
+            transform: translateY(-2px);
+        }
+
+        .arch-node.primary { border-color: var(--cyan); color: var(--cyan); }
+        .arch-node.model { border-color: var(--purple); color: var(--purple); }
+        .arch-node.data { border-color: var(--green); color: var(--green); }
+        .arch-node.channel { border-color: var(--orange); color: var(--orange); }
+        .arch-node.tool { border-color: var(--pink); color: var(--pink); }
+
+        .arch-arrow {
+            color: var(--muted);
+            font-size: 1.5em;
+            margin: 6px 0;
+        }
+
+        .arch-label {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: #0d0d18;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+
+        .code-block .comment { color: #555; }
+        .code-block .key { color: var(--cyan); }
+        .code-block .val { color: var(--green); }
+        .code-block .str { color: var(--orange); }
+
+        /* Stats row */
+        .stats-row {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .stat {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 24px;
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Flow diagram */
+        .flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+
+        .flow-step {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-weight: 600;
+        }
+
+        .flow-arrow { color: var(--cyan); font-weight: bold; }
+
+        /* Tag */
+        .tag {
+            display: inline-block;
+            font-size: 0.7em;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            vertical-align: middle;
+        }
+
+        .tag.cyan { background: rgba(0, 229, 255, 0.15); color: var(--cyan); }
+        .tag.purple { background: rgba(179, 136, 255, 0.15); color: var(--purple); }
+        .tag.green { background: rgba(105, 240, 174, 0.15); color: var(--green); }
+        .tag.orange { background: rgba(255, 171, 64, 0.15); color: var(--orange); }
+
+        /* Separator */
+        .sep {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 60px 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+            font-size: 0.85em;
+        }
+
+        footer a { color: var(--cyan); text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <span class="crab-icon">🦀</span>
+    <h1>Snippy Architecture</h1>
+    <p>How a mech crab with opinions actually works under the hood. Built on Clawdbot, customized with ~100 scripts, 14 libraries, and a personality problem.</p>
+</header>
+
+<div class="container">
+
+    <div class="toc">
+        <h3>Contents</h3>
+        <a href="#overview">System Overview</a>
+        <a href="#core">Core Platform (Clawdbot)</a>
+        <a href="#agents">Multi-Agent Architecture</a>
+        <a href="#channels">Communication Channels</a>
+        <a href="#memory">Memory & Knowledge</a>
+        <a href="#database">Database Layer</a>
+        <a href="#integrations">Integrations & APIs</a>
+        <a href="#automation">Automation & Scheduling</a>
+        <a href="#security">Security Model</a>
+        <a href="#infra">Infrastructure</a>
+        <a href="#web">Web Properties</a>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+        <div class="stat">
+            <div class="stat-value">4</div>
+            <div class="stat-label">Agents</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">2</div>
+            <div class="stat-label">Channels</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">~100</div>
+            <div class="stat-label">Scripts</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">4,189</div>
+            <div class="stat-label">Messages Captured</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">16</div>
+            <div class="stat-label">Days Old</div>
+        </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <!-- Overview -->
+    <section id="overview">
+        <h2><span class="emoji">🏗️</span> System Overview</h2>
+        <p class="section-subtitle">The 30-second version of how messages become actions</p>
+
+        <div class="arch-diagram">
+            <div class="arch-label">Communication Layer</div>
+            <div class="arch-layer">
+                <div class="arch-node channel">📱 Signal</div>
+                <div class="arch-node channel">💬 Discord</div>
+            </div>
+
+            <div class="arch-arrow">↕</div>
+
+            <div class="arch-label">Gateway (Message Router)</div>
+            <div class="arch-layer">
+                <div class="arch-node primary">🔀 Clawdbot Gateway</div>
+            </div>
+
+            <div class="arch-arrow">↕</div>
+
+            <div class="arch-label">Agent Layer</div>
+            <div class="arch-layer">
+                <div class="arch-node model">🦀 Main (Opus 4.6)</div>
+                <div class="arch-node model">👦 Kids (Kimi K2)</div>
+                <div class="arch-node model">👥 Friends (Kimi K2)</div>
+                <div class="arch-node model">🍺 Dad Friends (Kimi K2)</div>
+            </div>
+
+            <div class="arch-arrow">↕</div>
+
+            <div class="arch-label">Tool Layer</div>
+            <div class="arch-layer">
+                <div class="arch-node tool">🔧 100 Scripts</div>
+                <div class="arch-node tool">🌐 Web Search</div>
+                <div class="arch-node tool">🖥️ Shell Exec</div>
+                <div class="arch-node tool">📁 File I/O</div>
+                <div class="arch-node tool">🗄️ Database</div>
+            </div>
+
+            <div class="arch-arrow">↕</div>
+
+            <div class="arch-label">Data Layer</div>
+            <div class="arch-layer">
+                <div class="arch-node data">🐘 PostgreSQL + pgvector</div>
+                <div class="arch-node data">📝 Markdown Memory</div>
+                <div class="arch-node data">🔐 Encrypted Secrets (pass)</div>
+            </div>
+        </div>
+
+        <div class="card cyan">
+            <h3>How a Message Flows</h3>
+            <div class="flow">
+                <span class="flow-step">📱 You send a message</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-step">Signal/Discord receives it</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-step">Gateway routes to agent</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-step">Agent processes (LLM)</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-step">Tools execute if needed</span>
+                <span class="flow-arrow">→</span>
+                <span class="flow-step">Reply sent back</span>
+            </div>
+            <p>The Gateway decides <em>which</em> agent handles the message based on bindings — rules that map channels, groups, and users to specific agents. This all happens in &lt;5 seconds for most messages.</p>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- Core Platform -->
+    <section id="core">
+        <h2><span class="emoji">⚙️</span> Core Platform</h2>
+        <p class="section-subtitle">Clawdbot — the open-source framework everything runs on</p>
+
+        <div class="card purple">
+            <h3>Clawdbot Gateway</h3>
+            <p>The gateway is the central daemon that stays running 24/7. It:</p>
+            <ul>
+                <li>Manages WebSocket connections to Signal and Discord</li>
+                <li>Routes incoming messages to the correct agent based on bindings</li>
+                <li>Manages session lifecycle (creation, idle reset, compaction)</li>
+                <li>Handles heartbeat scheduling (every 30 minutes)</li>
+                <li>Runs cron jobs for timed tasks</li>
+                <li>Provides a local API for management and inter-session communication</li>
+            </ul>
+        </div>
+
+        <div class="grid-2">
+            <div class="card cyan">
+                <h3>Session Management</h3>
+                <ul>
+                    <li><strong>Scope:</strong> Per-peer DMs (each person gets their own context)</li>
+                    <li><strong>Reset:</strong> After 3 hours idle, session resets</li>
+                    <li><strong>Context:</strong> 100k token window</li>
+                    <li><strong>Compaction:</strong> Auto-summarizes when context fills up</li>
+                    <li><strong>Pruning:</strong> Cache-TTL mode trims old tool outputs after 30 min</li>
+                    <li><strong>Memory flush:</strong> Before compaction, stores important info to disk</li>
+                </ul>
+            </div>
+            <div class="card green">
+                <h3>Workspace Files</h3>
+                <p>Each session loads these files as context:</p>
+                <ul>
+                    <li><strong>SOUL.md</strong> — Personality, tone, boundaries</li>
+                    <li><strong>USER.md</strong> — Owner info, preferences</li>
+                    <li><strong>MEMORY.md</strong> — Long-term curated knowledge</li>
+                    <li><strong>HEARTBEAT.md</strong> — Scheduled check-in rules</li>
+                    <li><strong>TOOLS.md</strong> — Environment-specific notes</li>
+                    <li><strong>IDENTITY.md</strong> — Name, avatar, origin story</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- Multi-Agent -->
+    <section id="agents">
+        <h2><span class="emoji">🤖</span> Multi-Agent Architecture</h2>
+        <p class="section-subtitle">Four agents, different models, different permissions, different vibes</p>
+
+        <div class="card cyan">
+            <h3>🦀 Main Agent <span class="tag cyan">Opus 4.6</span></h3>
+            <p>The primary Snippy. Full access to everything — shell, files, database, APIs, web search, browser automation, sub-agent spawning. Handles Trevor and Iyoko's DMs via Signal. This is the "brain" that manages all systems, writes code, runs scripts, and has the full personality.</p>
+            <ul>
+                <li><strong>Model:</strong> Claude Opus 4.6 (Anthropic's most capable)</li>
+                <li><strong>Heartbeat:</strong> Every 30 minutes — checks email, todos, calendar, weather</li>
+                <li><strong>Sub-agents:</strong> Can spawn up to 8 background workers for parallel tasks</li>
+                <li><strong>Tools:</strong> All tools enabled (exec, browser, database, files, web, TTS, image gen...)</li>
+            </ul>
+        </div>
+
+        <div class="grid-3">
+            <div class="card purple">
+                <h3>👦 Kids Agent</h3>
+                <p><span class="tag purple">Kimi K2</span></p>
+                <ul>
+                    <li>Handles Discord channels for Sakura and Maddox</li>
+                    <li>Strict security: no financial info, no accounts, no addresses</li>
+                    <li>Logs workouts, school, chores to database</li>
+                    <li>Info requests → requires Trevor's approval via Signal</li>
+                </ul>
+            </div>
+            <div class="card green">
+                <h3>👥 Friends Agent</h3>
+                <p><span class="tag green">Kimi K2</span></p>
+                <ul>
+                    <li>Signal group chats with friends</li>
+                    <li>Mention-triggered (@snippy)</li>
+                    <li>Limited tools: web search, fetch, read only</li>
+                    <li>Sandboxed — no file writes, no shell</li>
+                </ul>
+            </div>
+            <div class="card orange">
+                <h3>🍺 Dad Friends Agent</h3>
+                <p><span class="tag orange">Kimi K2</span></p>
+                <ul>
+                    <li>Specific Signal group chat</li>
+                    <li>Docker sandboxed (full isolation)</li>
+                    <li>Has exec + TTS access (in sandbox)</li>
+                    <li>Read-only workspace access</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card purple">
+            <h3>Binding System</h3>
+            <p>Messages are routed to agents via bindings — pattern-matching rules:</p>
+            <div class="code-block">
+<span class="comment">// "If message comes from Signal DM from Trevor → Main agent"</span>
+{ <span class="key">agentId</span>: <span class="str">"main"</span>, <span class="key">match</span>: { <span class="key">channel</span>: <span class="str">"signal"</span>, <span class="key">peer</span>: { <span class="key">kind</span>: <span class="str">"dm"</span> } } }
+
+<span class="comment">// "If message comes from Discord #snippy-maddox → Kids agent"</span>
+{ <span class="key">agentId</span>: <span class="str">"kids"</span>, <span class="key">match</span>: { <span class="key">channel</span>: <span class="str">"discord"</span>, <span class="key">peer</span>: { <span class="key">kind</span>: <span class="str">"channel"</span> } } }
+
+<span class="comment">// "If message comes from Signal (no other match) → Friends agent"</span>
+{ <span class="key">agentId</span>: <span class="str">"friends"</span>, <span class="key">match</span>: { <span class="key">channel</span>: <span class="str">"signal"</span> } }
+            </div>
+            <p>Bindings are evaluated in order. First match wins. More specific rules go first.</p>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- Channels -->
+    <section id="channels">
+        <h2><span class="emoji">📡</span> Communication Channels</h2>
+        <p class="section-subtitle">How messages get in and out</p>
+
+        <div class="grid-2">
+            <div class="card cyan">
+                <h3>📱 Signal</h3>
+                <ul>
+                    <li><strong>Primary channel</strong> for Trevor and Iyoko</li>
+                    <li>Uses <code>signal-cli</code> (Java-based CLI)</li>
+                    <li>DM allowlist: only approved numbers</li>
+                    <li>Group allowlist: specific approved members</li>
+                    <li>Supports: text, voice messages, images, reactions</li>
+                    <li>Voice messages auto-transcribed → processed as text</li>
+                </ul>
+            </div>
+            <div class="card purple">
+                <h3>💬 Discord</h3>
+                <ul>
+                    <li><strong>Family server</strong> — "Bainter Family"</li>
+                    <li>Channels: #general, #snippy-dad, #snippy-maddox, #snippy-sakura</li>
+                    <li>#general requires @mention</li>
+                    <li>Private channels don't require mention</li>
+                    <li>Bot token auth via Discord API</li>
+                    <li>Per-channel system prompts (kid safety rules)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- Memory -->
+    <section id="memory">
+        <h2><span class="emoji">🧠</span> Memory & Knowledge</h2>
+        <p class="section-subtitle">How Snippy remembers things across sessions and restarts</p>
+
+        <div class="card green">
+            <h3>Three-Layer Memory System</h3>
+            <div class="grid-3" style="margin-top: 16px;">
+                <div>
+                    <h4 style="color: var(--cyan); margin-bottom: 8px;">Short-Term</h4>
+                    <p>Active session context (100k tokens). Pruned after 30 min of cache-TTL. Compacted when full — important info flushed to disk first.</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--purple); margin-bottom: 8px;">Daily Logs</h4>
+                    <p><code>memory/YYYY-MM-DD.md</code> — Raw daily logs. What happened, what was discussed, decisions made. Read on session startup (today + yesterday).</p>
+                </div>
+                <div>
+                    <h4 style="color: var(--green); margin-bottom: 8px;">Long-Term</h4>
+                    <p><code>MEMORY.md</code> — Curated reference. Systems, people, preferences, lessons learned. Periodically distilled from daily logs. Loaded every session.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card cyan">
+                <h3>🔍 Semantic Search</h3>
+                <p>Every conversation message gets an embedding vector (Gemini <code>gemini-embedding-001</code>, 768 dimensions) stored in PostgreSQL with pgvector. This enables searching by <em>meaning</em>, not just keywords.</p>
+                <p style="margin-top: 8px;"><strong>"What did we talk about the milk lady?"</strong> finds messages mentioning "Countryside Mercantile" or "raw milk" or "mason jars" — even without exact keyword matches.</p>
+            </div>
+            <div class="card purple">
+                <h3>📸 Auto-Capture Daemon</h3>
+                <p>A systemd service (<code>clawdbot-auto-capture</code>) watches session transcript files and captures every message to PostgreSQL in real-time. Runs continuously, checks every 10 seconds.</p>
+                <ul>
+                    <li>Captures: role, content, timestamp, session key</li>
+                    <li>Generates embedding for each message</li>
+                    <li>Stores in <code>conversations</code> table</li>
+                    <li>4,189+ messages captured so far</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- Database -->
+    <section id="database">
+        <h2><span class="emoji">🐘</span> Database Layer</h2>
+        <p class="section-subtitle">PostgreSQL with pgvector — the persistent brain</p>
+
+        <div class="card green">
+            <h3>PostgreSQL (LXC 702 — postgres-01)</h3>
+            <ul>
+                <li><strong>Address:</strong> 10.16.50.71</li>
+                <li><strong>Databases:</strong> <code>clawdbot</code> (main), <code>clawdbot_scrape</code> (web scraping data)</li>
+                <li><strong>Extension:</strong> pgvector for embedding storage and similarity search</li>
+                <li><strong>Size:</strong> ~43 MB</li>
+            </ul>
+        </div>
+
+        <div class="card cyan">
+            <h3>Key Tables</h3>
+            <div class="code-block">
+<span class="key">conversations</span>     → 4,189 messages with 768-dim embeddings (31 MB)
+<span class="key">todo_tracking</span>     → 161 tasks synced from Microsoft To Do (15 lists)
+<span class="key">token_usage</span>       → API token consumption tracking
+<span class="key">documents</span>         → Indexed docs for semantic search
+<span class="key">wrestling_*</span>       → 277 profiles, 10 events, 2,051 opponent pairs
+            </div>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- Integrations -->
+    <section id="integrations">
+        <h2><span class="emoji">🔌</span> Integrations & APIs</h2>
+        <p class="section-subtitle">External services Snippy connects to</p>
+
+        <div class="grid-2">
+            <div class="card cyan">
+                <h3>📋 Microsoft To Do</h3>
+                <p>Full bidirectional sync of 15 task lists via MS Graph API. Syncs every heartbeat (30 min). Tasks tracked in PostgreSQL for analytics and pattern recognition.</p>
+            </div>
+            <div class="card purple">
+                <h3>📧 Email (SMTP2Go)</h3>
+                <p>Send from <code>snippy@snippy.quest</code> via SMTP2Go API. Receive via Cloudflare email routing. Trevor can also send as Snippy from Gmail.</p>
+            </div>
+            <div class="card green">
+                <h3>🐙 GitHub</h3>
+                <p>Full <code>gh</code> CLI access as Snippy-Pinch. Manages repos, Pages deployments, issues. Daily sync script at 6am Central captures repo stats to PostgreSQL.</p>
+            </div>
+            <div class="card orange">
+                <h3>📅 Calendar</h3>
+                <p>MS Graph API for Office 365 calendar. Google calendars overlaid as read-only in MS365. No separate sync needed — one view of everything.</p>
+            </div>
+            <div class="card pink">
+                <h3>🗣️ Text-to-Speech</h3>
+                <p><strong>Primary:</strong> ElevenLabs (voice: Eric). <strong>Backup:</strong> Piper TTS (local, unlimited). When Trevor sends voice → Snippy replies with voice.</p>
+            </div>
+            <div class="card cyan">
+                <h3>🎨 Image Generation</h3>
+                <p><strong>HuggingFace:</strong> SDXL with token rotation (2 tokens, auto-failover). <strong>Gemini Flash:</strong> For quick generations. Usage tracked in PostgreSQL.</p>
+            </div>
+            <div class="card purple">
+                <h3>🌐 Web Search</h3>
+                <p>Perplexity Sonar Pro for AI-synthesized search results with citations. Plus direct URL fetching for page content extraction.</p>
+            </div>
+            <div class="card green">
+                <h3>🤼 Wrestling Monitoring</h3>
+                <p>USA Bracketing scraper for Maddox's wrestling — 277 profiles, 10 events tracked. FlowRestling integration for match videos (47 videos, ID: 11846601).</p>
+            </div>
+        </div>
+
+        <div class="card orange">
+            <h3>Other Integrations</h3>
+            <ul>
+                <li><strong>Trello:</strong> House organizer board — utilities tracking (water, electric, garbage)</li>
+                <li><strong>Moltbook:</strong> Social platform — comment monitoring, stats tracking</li>
+                <li><strong>Cloudflare:</strong> DNS management for snippy.quest, email routing, Access policies</li>
+                <li><strong>Porkbun:</strong> Domain management API (8 domains)</li>
+                <li><strong>NetBox:</strong> Network IPAM/DCIM — 59 IPs, 10 VLANs tracked</li>
+                <li><strong>Proxmox:</strong> Read-only cluster monitoring — 7 nodes</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- Automation -->
+    <section id="automation">
+        <h2><span class="emoji">⏰</span> Automation & Scheduling</h2>
+        <p class="section-subtitle">The things that happen without being asked</p>
+
+        <div class="card cyan">
+            <h3>Heartbeat System</h3>
+            <p>Every 30 minutes, the gateway sends a heartbeat to the main agent. Snippy checks the time and runs scheduled tasks:</p>
+            <ul>
+                <li><strong>Every heartbeat:</strong> MS365 token refresh, To Do full sync, token usage logging</li>
+                <li><strong>~8:00 AM:</strong> Morning brief — overnight activity, overdue todos, weather</li>
+                <li><strong>~9:00 AM & 2:00 PM:</strong> Todo nudges — top priority items</li>
+                <li><strong>~12:00 PM:</strong> Midday check — stats, urgent items</li>
+                <li><strong>~9:00 PM:</strong> Evening summary — day recap, "anything for tomorrow?"</li>
+                <li><strong>Sunday 8:00 PM:</strong> Weekly planning sync (Sunday Sync)</li>
+            </ul>
+        </div>
+
+        <div class="grid-2">
+            <div class="card purple">
+                <h3>Cron Jobs</h3>
+                <p>For tasks that need exact timing or isolated execution:</p>
+                <ul>
+                    <li>One-shot reminders with delivery</li>
+                    <li>Isolated sessions (own context, own model)</li>
+                    <li><code>systemEvent</code> for main session injection</li>
+                    <li><code>agentTurn</code> for independent execution</li>
+                </ul>
+            </div>
+            <div class="card green">
+                <h3>System Crons (Linux)</h3>
+                <ul>
+                    <li><strong>23:55 UTC:</strong> Daily conversation summary</li>
+                    <li><strong>Sun 02:00:</strong> Weekly embedding refresh</li>
+                    <li><strong>1st 03:00:</strong> Monthly stats generation</li>
+                    <li><strong>06:00 Central:</strong> GitHub repo sync</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card orange">
+            <h3>Sub-Agent Spawning</h3>
+            <p>For complex or long-running tasks, the main agent can spawn up to 8 background sub-agents. They run in isolated sessions, do their work, and report back when done. Examples today:</p>
+            <ul>
+                <li>Fixing the embedding model migration (5 min 37s, updated 9 files, backfilled 1,341 embeddings)</li>
+                <li>MEMORY.md consolidation (reduced from 22.8KB to 7.9KB)</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- Security -->
+    <section id="security">
+        <h2><span class="emoji">🔐</span> Security Model</h2>
+        <p class="section-subtitle">Layered access control and credential management</p>
+
+        <div class="grid-2">
+            <div class="card cyan">
+                <h3>Access Control Tiers</h3>
+                <ul>
+                    <li><strong>Tier 1 — Trevor:</strong> Full access. Can override anything.</li>
+                    <li><strong>Tier 2 — Iyoko:</strong> Request-only access. Warm personality.</li>
+                    <li><strong>Tier 3 — Kids:</strong> Strict filtering. No financial/account info. Info requests require Trevor's Signal approval.</li>
+                    <li><strong>Tier 4 — Friends:</strong> Mention-only. Sandboxed. Limited tools.</li>
+                </ul>
+            </div>
+            <div class="card purple">
+                <h3>Credential Management</h3>
+                <ul>
+                    <li><strong>Primary:</strong> <code>pass</code> (GPG-encrypted password store)</li>
+                    <li><strong>Fallback:</strong> <code>/root/.clawdbot/secrets/*.json</code></li>
+                    <li><strong>GPG cache:</strong> 12-hour expiry, QR unlock via Signal</li>
+                    <li><strong>Rotation:</strong> <code>scripts/rotate_credential.py</code></li>
+                    <li><strong>Audit:</strong> Feb 2026 — fixed 19 hardcoded creds across 15 files</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card green">
+            <h3>Agent Sandboxing</h3>
+            <p>Non-main agents run with restricted permissions:</p>
+            <ul>
+                <li><strong>Friends:</strong> Web search + read only. No exec, no file writes.</li>
+                <li><strong>Dad Friends:</strong> Full Docker sandbox — isolated filesystem, read-only workspace, bridge networking, controlled bind mounts.</li>
+                <li><strong>Kids:</strong> Separate workspace (<code>/root/clawd-kids</code>), can't access main agent files.</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- Infrastructure -->
+    <section id="infra">
+        <h2><span class="emoji">🖥️</span> Infrastructure</h2>
+        <p class="section-subtitle">Where it all physically lives</p>
+
+        <div class="card cyan">
+            <h3>Runtime Environment</h3>
+            <div class="code-block">
+<span class="key">Host:</span>        <span class="val">LXC Container 701 (clawdbot)</span>
+<span class="key">Hypervisor:</span>   <span class="val">Proxmox VE (proxmox-blm02)</span>
+<span class="key">Kernel:</span>       <span class="val">Linux 6.8.12-9-pve (x64)</span>
+<span class="key">Runtime:</span>      <span class="val">Node.js v22.22.0</span>
+<span class="key">IP:</span>           <span class="val">10.16.50.70</span>
+<span class="key">Network:</span>      <span class="val">10.16.50.0/24 (main) + 10.18.98.0/24 (mgmt)</span>
+
+<span class="key">Database:</span>     <span class="val">LXC 702 (postgres-01) @ 10.16.50.71</span>
+<span class="key">Proxmox:</span>      <span class="val">7-node cluster @ 10.18.98.200</span>
+<span class="key">NetBox:</span>       <span class="val">10.16.50.10 (IPAM/DCIM)</span>
+<span class="key">Pi-hole:</span>      <span class="val">10.16.50.100 (DNS)</span>
+            </div>
+        </div>
+
+        <div class="card purple">
+            <h3>Key Processes</h3>
+            <ul>
+                <li><strong>Clawdbot Gateway:</strong> Main daemon — routes messages, manages sessions, runs crons</li>
+                <li><strong>signal-cli:</strong> Java process for Signal protocol</li>
+                <li><strong>Auto-Capture Daemon:</strong> Python service — watches transcripts, captures to PostgreSQL</li>
+                <li><strong>Chromium:</strong> Headless browser for web automation (Puppeteer)</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- Web Properties -->
+    <section id="web">
+        <h2><span class="emoji">🌐</span> Web Properties</h2>
+        <p class="section-subtitle">Sites built and managed by Snippy</p>
+
+        <div class="card cyan">
+            <h3>snippy.quest</h3>
+            <p>Main domain — GitHub Pages + Cloudflare CDN. Houses multiple sub-sites:</p>
+            <ul>
+                <li><code>/wrestling</code> — Maddox's wrestling stats</li>
+                <li><code>/waiting</code> — "I'm Working, I Swear" (meta humor page)</li>
+                <li><code>/private/status</code> — System status dashboard (Cloudflare Access protected)</li>
+                <li><code>/private/architecture</code> — This page</li>
+                <li><code>/trumprx</code>, <code>/casaos</code>, <code>/zero-cost-web-systems</code> — Reference guides</li>
+            </ul>
+        </div>
+
+        <div class="grid-2">
+            <div class="card purple">
+                <h3>Other Domains</h3>
+                <ul>
+                    <li><strong>1337mage.blog</strong> — "Zack the Loot Goblin" gamer mage blog</li>
+                    <li><strong>wrestling.systems</strong> — Wrestling data platform</li>
+                    <li><strong>whiteboxventures.llc</strong> — Business domain</li>
+                    <li><strong>canadagooselodge.com</strong> — New, no site yet</li>
+                    <li><strong>midwestmage.blog</strong> — Blog domain</li>
+                    <li><strong>bluecrane.pro</strong> — Professional domain</li>
+                </ul>
+            </div>
+            <div class="card green">
+                <h3>Deployment Flow</h3>
+                <div class="flow">
+                    <span class="flow-step">Write HTML</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-step">Git push</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-step">GitHub Pages</span>
+                    <span class="flow-arrow">→</span>
+                    <span class="flow-step">Cloudflare CDN</span>
+                </div>
+                <p style="margin-top: 12px;">Custom domains via Cloudflare DNS CNAME records. Private pages protected by Cloudflare Access (email PIN, 24h sessions).</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <footer>
+        <p>🦀 <strong>Snippy</strong> — Born January 29, 2026 · Named by popular vote January 31</p>
+        <p style="margin-top: 8px;">Built on <a href="https://github.com/clawdbot/clawdbot">Clawdbot</a> · Powered by Claude Opus 4.6</p>
+        <p style="margin-top: 4px;">Page generated Feb 13, 2026</p>
+    </footer>
+
+</div>
+
+<script>
+    // Smooth scroll for TOC links
+    document.querySelectorAll('.toc a').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const target = document.querySelector(link.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Update "days old" stat dynamically
+    const born = new Date('2026-01-29');
+    const now = new Date();
+    const days = Math.floor((now - born) / (1000 * 60 * 60 * 24));
+    document.querySelectorAll('.stat-value').forEach(el => {
+        if (el.textContent.trim() === '16') el.textContent = days;
+    });
+</script>
+
+</body>
+</html>
