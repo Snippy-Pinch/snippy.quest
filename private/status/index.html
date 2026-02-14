@@ -14,99 +14,48 @@
             padding: 20px;
             min-height: 100vh;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1200px; margin: 0 auto; }
         header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: rgba(0, 255, 255, 0.05);
-            border: 2px solid #00ffff;
-            border-radius: 10px;
+            text-align: center; margin-bottom: 40px; padding: 30px;
+            background: rgba(0, 255, 255, 0.05); border: 2px solid #00ffff; border-radius: 10px;
         }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-        }
-        .crab {
-            font-size: 3em;
-            display: inline-block;
-            animation: hover 3s ease-in-out infinite;
-        }
-        @keyframes hover {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .timestamp {
-            opacity: 0.7;
-            font-size: 0.9em;
-            margin-top: 10px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
+        h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 0 0 20px rgba(0, 255, 255, 0.8); }
+        .crab { font-size: 3em; display: inline-block; animation: hover 3s ease-in-out infinite; }
+        @keyframes hover { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .timestamp { opacity: 0.7; font-size: 0.9em; margin-top: 10px; }
+        .data-age { font-size: 0.8em; opacity: 0.5; margin-top: 5px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-bottom: 20px; }
         .card {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid #00ffff;
-            border-radius: 8px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.4); border: 1px solid #00ffff;
+            border-radius: 8px; padding: 20px; backdrop-filter: blur(10px);
         }
         .card h2 {
-            font-size: 1.3em;
-            margin-bottom: 15px;
-            color: #00ffff;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
-            padding-bottom: 10px;
+            font-size: 1.3em; margin-bottom: 15px; color: #00ffff;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3); padding-bottom: 10px;
         }
-        .metric {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-        }
-        .metric:last-child {
-            border-bottom: none;
-        }
-        .metric-label {
-            opacity: 0.8;
-        }
-        .metric-value {
-            font-weight: bold;
-            color: #00ff00;
-        }
-        .status-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 5px;
-        }
+        .metric { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0, 255, 255, 0.1); }
+        .metric:last-child { border-bottom: none; }
+        .metric-label { opacity: 0.8; }
+        .metric-value { font-weight: bold; color: #00ff00; }
+        .metric-value.warn { color: #ffff00; }
+        .metric-value.bad { color: #ff4444; }
+        .status-indicator { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
         .status-good { background: #00ff00; box-shadow: 0 0 10px #00ff00; }
         .status-warn { background: #ffff00; box-shadow: 0 0 10px #ffff00; }
         .status-bad { background: #ff0000; box-shadow: 0 0 10px #ff0000; }
-        .full-width {
-            grid-column: 1 / -1;
-        }
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            opacity: 0.6;
-            font-size: 0.9em;
-        }
+        .full-width { grid-column: 1 / -1; }
+        footer { text-align: center; margin-top: 40px; opacity: 0.6; font-size: 0.9em; }
         .refresh-notice {
-            background: rgba(0, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.85em;
+            background: rgba(0, 255, 255, 0.1); padding: 10px; border-radius: 5px;
+            text-align: center; margin-top: 20px; font-size: 0.85em;
+        }
+        .uptime-bar {
+            background: rgba(0, 255, 255, 0.1); border-radius: 4px; height: 8px;
+            margin-top: 8px; overflow: hidden;
+        }
+        .uptime-fill {
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            height: 100%; border-radius: 4px;
         }
     </style>
 </head>
@@ -116,86 +65,83 @@
             <div class="crab">🦀</div>
             <h1>Snippy System Status</h1>
             <div class="timestamp">Last Updated: <span id="update-time"></span></div>
+            <div class="data-age">Data generated: 2026-02-14 09:35 CST • Day 15 of operation</div>
         </header>
 
         <div class="grid">
             <div class="card">
-                <h2>Database Health</h2>
+                <h2>📊 Database Health</h2>
                 <div class="metric">
                     <span class="metric-label">
-                        <span class="status-indicator status-good"></span>
-                        Connections
+                        <span class="status-indicator status-good"></span>Connections
                     </span>
-                    <span class="metric-value">7 / 100 (7%)</span>
+                    <span class="metric-value">2 / 100 (2%)</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Total Size</span>
-                    <span class="metric-value">43 MB</span>
+                    <span class="metric-value">44.2 MB</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Total Messages</span>
-                    <span class="metric-value">4,189</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">Embeddings</span>
-                    <span class="metric-value" style="color: #00ff00;">4,189 / 4,189 (100%)</span>
+                    <span class="metric-value">4,383</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Recent (7 days)</span>
-                    <span class="metric-value">1,242</span>
+                    <span class="metric-value">1,279</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Today</span>
+                    <span class="metric-value">227</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Largest Table</span>
-                    <span class="metric-value">conversations (31 MB)</span>
+                    <span class="metric-value">conversations (32 MB)</span>
                 </div>
             </div>
 
             <div class="card">
-                <h2>Task Management</h2>
+                <h2>📋 Task Management</h2>
                 <div class="metric">
                     <span class="metric-label">Total Tasks</span>
-                    <span class="metric-value">161</span>
+                    <span class="metric-value">166</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-label">Active Tasks</span>
-                    <span class="metric-value">151</span>
+                    <span class="metric-label">Active</span>
+                    <span class="metric-value">154</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Completed</span>
-                    <span class="metric-value">10 (6.2%)</span>
+                    <span class="metric-value">12 (7.2%)</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">
-                        <span class="status-indicator status-warn"></span>
-                        Overdue
+                        <span class="status-indicator status-bad"></span>Overdue
                     </span>
-                    <span class="metric-value">39</span>
+                    <span class="metric-value warn">39</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Due This Week</span>
-                    <span class="metric-value">2</span>
+                    <span class="metric-value">1</span>
                 </div>
             </div>
 
             <div class="card">
-                <h2>Security</h2>
+                <h2>🔐 Security</h2>
                 <div class="metric">
                     <span class="metric-label">
-                        <span class="status-indicator status-good"></span>
-                        Credentials Configured
+                        <span class="status-indicator status-good"></span>Credentials
                     </span>
-                    <span class="metric-value">10 / 12</span>
+                    <span class="metric-value">12 / 14</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">
-                        <span class="status-indicator status-warn"></span>
-                        Pending Rotations
+                        <span class="status-indicator status-warn"></span>Pending Rotations
                     </span>
                     <span class="metric-value">6</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Critical (🔴)</span>
-                    <span class="metric-value">1 (ElevenLabs)</span>
+                    <span class="metric-value">1</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Medium (🟡)</span>
@@ -208,11 +154,10 @@
             </div>
 
             <div class="card">
-                <h2>Infrastructure</h2>
+                <h2>🏗️ Infrastructure</h2>
                 <div class="metric">
                     <span class="metric-label">
-                        <span class="status-indicator status-good"></span>
-                        Host
+                        <span class="status-indicator status-good"></span>Host
                     </span>
                     <span class="metric-value">clawdbot LXC 701</span>
                 </div>
@@ -229,117 +174,95 @@
                     <span class="metric-value">59 IPs tracked</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-label">Network</span>
-                    <span class="metric-value">10.16.50.0/24</span>
+                    <span class="metric-label">Active Sessions</span>
+                    <span class="metric-value">10</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Memory Files</span>
+                    <span class="metric-value">17 daily logs</span>
                 </div>
             </div>
 
             <div class="card">
-                <h2>Integrations</h2>
+                <h2>🔗 Integrations</h2>
                 <div class="metric">
                     <span class="metric-label">
-                        <span class="status-indicator status-good"></span>
-                        Moltbook
+                        <span class="status-indicator status-bad"></span>Moltbook
                     </span>
-                    <span class="metric-value">397 comments</span>
+                    <span class="metric-value">Suspended</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">
-                        <span class="status-indicator status-good"></span>
-                        GitHub
+                        <span class="status-indicator status-good"></span>GitHub
                     </span>
-                    <span class="metric-value">44 repos</span>
+                    <span class="metric-value">45 repos</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-label">MS To Do Lists</span>
+                    <span class="metric-label">MS To Do</span>
                     <span class="metric-value">15 lists synced</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-label">Email Domain</span>
+                    <span class="metric-label">Email</span>
                     <span class="metric-value">snippy@snippy.quest</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-label">Wrestling Events</span>
-                    <span class="metric-value">Tracked (Maddox)</span>
+                    <span class="metric-label">Channels</span>
+                    <span class="metric-value">Signal + Discord</span>
                 </div>
             </div>
 
             <div class="card">
-                <h2>Recent Activity</h2>
+                <h2>📈 Activity</h2>
                 <div class="metric">
-                    <span class="metric-label">Sessions Today</span>
-                    <span class="metric-value">~10</span>
+                    <span class="metric-label">Messages Today</span>
+                    <span class="metric-value">227</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Messages (7 days)</span>
-                    <span class="metric-value">1,190</span>
+                    <span class="metric-value">1,279</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-label">Active Services</span>
-                    <span class="metric-value">Signal, Discord</span>
+                    <span class="metric-label">All-Time Messages</span>
+                    <span class="metric-value">4,383</span>
                 </div>
                 <div class="metric">
                     <span class="metric-label">Heartbeat</span>
                     <span class="metric-value">Every 30 min</span>
                 </div>
                 <div class="metric">
-                    <span class="metric-label">Daily Summary</span>
-                    <span class="metric-value">23:55 UTC</span>
+                    <span class="metric-label">Model</span>
+                    <span class="metric-value">Claude Opus 4.6</span>
                 </div>
             </div>
         </div>
 
         <div class="card full-width">
-            <h2>System Capabilities</h2>
+            <h2>⚙️ System Capabilities</h2>
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
-                <div class="metric">
-                    <span class="metric-label">✅ PostgreSQL Database</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ MS To Do Sync</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ Email (Send/Receive)</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ Image Generation</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ Text-to-Speech (Piper + ElevenLabs)</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ Semantic Search (gemini-embedding-001)</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ Web Search & Fetch</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ GitHub Integration</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ Moltbook Social</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ Wrestling Monitoring</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ Weather Integration</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ Calendar Sync</span>
-                </div>
-                <div class="metric">
-                    <span class="metric-label">✅ NetBox IPAM</span>
-                </div>
+                <div class="metric"><span class="metric-label">✅ PostgreSQL + pgvector</span></div>
+                <div class="metric"><span class="metric-label">✅ MS To Do Full Sync</span></div>
+                <div class="metric"><span class="metric-label">✅ Email (SMTP2Go)</span></div>
+                <div class="metric"><span class="metric-label">✅ Image Gen (Gemini)</span></div>
+                <div class="metric"><span class="metric-label">✅ TTS (ElevenLabs + Piper)</span></div>
+                <div class="metric"><span class="metric-label">✅ Web Search & Fetch</span></div>
+                <div class="metric"><span class="metric-label">✅ GitHub Integration</span></div>
+                <div class="metric"><span class="metric-label">✅ Moltbook Social</span></div>
+                <div class="metric"><span class="metric-label">✅ Wrestling Monitoring</span></div>
+                <div class="metric"><span class="metric-label">✅ Weather-Aware Scheduling</span></div>
+                <div class="metric"><span class="metric-label">✅ Semantic Search</span></div>
+                <div class="metric"><span class="metric-label">✅ Domain Management</span></div>
+                <div class="metric"><span class="metric-label">⚠️ HF Tokens Expired</span></div>
+                <div class="metric"><span class="metric-label">✅ Credential Rotation</span></div>
             </div>
         </div>
 
         <div class="refresh-notice">
-            🔄 Auto-refreshes every 5 minutes • Last update: <span id="update-time-2"></span>
+            🔄 Page auto-refreshes every 5 min • Data refreshed by cron •
+            Last data: 2026-02-14 09:35 CST
         </div>
 
         <footer>
-            <p>🦀 Snippy - Mech crab with opinions</p>
+            <p>🦀 Snippy — Mech crab with opinions since Jan 29, 2026</p>
             <p style="margin-top: 5px;">
                 <a href="https://moltbook.com/u/Snippy" style="color: #00ffff; text-decoration: none;">Moltbook</a> •
                 <a href="https://snippy.quest" style="color: #00ffff; text-decoration: none;">snippy.quest</a>
@@ -351,12 +274,9 @@
         function updateTimestamp() {
             const now = new Date();
             const formatted = now.toLocaleString('en-US', {
-                timeZone: 'America/Chicago',
-                dateStyle: 'medium',
-                timeStyle: 'short'
+                timeZone: 'America/Chicago', dateStyle: 'medium', timeStyle: 'short'
             });
             document.getElementById('update-time').textContent = formatted + ' CST';
-            document.getElementById('update-time-2').textContent = formatted + ' CST';
         }
         updateTimestamp();
         setInterval(updateTimestamp, 1000);
