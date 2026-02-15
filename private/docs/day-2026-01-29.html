@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily: 2026-01-29 | Snippy Private</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        .top-bar {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .top-bar .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: #ff6b35;
+            font-size: 1.1rem;
+        }
+        
+        .top-bar .timestamp {
+            color: #484f58;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        nav {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+        
+        .nav-link {
+            color: #8b949e;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .nav-link:hover { color: #c9d1d9; }
+        .nav-link.active { color: #ff6b35; border-bottom-color: #ff6b35; }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e6edf3;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .page-desc {
+            color: #8b949e;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Content styles */
+        .content h1 { font-size: 1.6rem; color: #e6edf3; margin: 2rem 0 1rem; padding-bottom: 0.3rem; border-bottom: 1px solid #21262d; }
+        .content h2 { font-size: 1.3rem; color: #ff6b35; margin: 1.8rem 0 0.8rem; }
+        .content h3 { font-size: 1.1rem; color: #ffd166; margin: 1.5rem 0 0.6rem; }
+        .content h4 { font-size: 1rem; color: #c9d1d9; margin: 1.2rem 0 0.5rem; }
+        
+        .content p { margin-bottom: 0.8rem; }
+        
+        .content a { color: #58a6ff; text-decoration: none; }
+        .content a:hover { text-decoration: underline; }
+        
+        .content strong { color: #e6edf3; }
+        .content del { color: #484f58; }
+        
+        .content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .content ul li {
+            padding: 0.4rem 0 0.4rem 1.2rem;
+            position: relative;
+            border-left: 2px solid #21262d;
+            margin-bottom: 0.2rem;
+        }
+        
+        .content ul li::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0.85rem;
+            width: 8px;
+            height: 8px;
+            background: #30363d;
+            border-radius: 50%;
+        }
+        
+        .content ul.numbered { counter-reset: item; }
+        .content ul.numbered li::before {
+            content: counter(item);
+            counter-increment: item;
+            background: #ff6b35;
+            color: #0d1117;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            left: -9px;
+            top: 0.65rem;
+        }
+        
+        .content hr {
+            border: none;
+            border-top: 1px solid #21262d;
+            margin: 2rem 0;
+        }
+        
+        .content pre {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .content pre code {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e6edf3;
+            background: none;
+            padding: 0;
+        }
+        
+        .content code.inline {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(110,118,129,0.15);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #e6edf3;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .content table th {
+            background: #161b22;
+            color: #e6edf3;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #30363d;
+        }
+        
+        .content table td {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #21262d;
+        }
+        
+        .content table tr:hover td {
+            background: rgba(255,107,53,0.05);
+        }
+        
+        /* Daily log cards */
+        .daily-card {
+            display: block;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.6rem;
+            text-decoration: none;
+            color: #c9d1d9;
+            transition: all 0.2s;
+        }
+        
+        .daily-card:hover {
+            border-color: #ff6b35;
+            background: #1c2128;
+        }
+        
+        .daily-card .date {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ff6b35;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        
+        .daily-card .size {
+            color: #484f58;
+            font-size: 0.8rem;
+            float: right;
+        }
+        
+        .daily-card .preview {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Search */
+        .search-box {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            color: #c9d1d9;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 1.5rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .search-box:focus { border-color: #ff6b35; }
+        .search-box::placeholder { color: #484f58; }
+        
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            .content pre { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span class="logo">🦀 snippy.quest/private</span>
+        <span class="timestamp">Updated 2026-02-15 11:35 CST</span>
+    </div>
+    <nav>
+        <a href="index.html" class="nav-link ">🧠 Memory</a>
+<a href="taskqueue.html" class="nav-link ">📋 Task Queue</a>
+<a href="daily.html" class="nav-link active">📅 Daily Logs</a>
+
+    </nav>
+    <div class="container">
+        
+            <h1 class="page-title">📅 2026-01-29</h1>
+            <p class="page-desc"><a href="daily.html">← Back to Daily Logs</a></p>
+            <div class="content">
+                <h1 id="2026-01-29">2026-01-29</h1>
+
+<h2 id="utility-payment-confirmation">Utility Payment Confirmation</h2>
+<ul>
+<li><strong>Kingbrook Rural Water Systems</strong> payment confirmed</li>
+<li>Payment date: Jan 22, 2026</li>
+<li>Amount: $75.75 + $2.50 fee = <strong>$78.25 total</strong></li>
+<li>Status: ACCEPTED</li>
+<li>Confirmation #: 2233162253</li>
+<li>Account: 0519.3</li>
+<li>Will post to account next business day</li>
+</ul>
+
+<h2 id="electric-company-info">Electric Company Info</h2>
+<ul>
+<li><strong>Southeastern Electric Company</strong></li>
+<li>Customer Number: 676342</li>
+<li>Account Number: 676342000</li>
+<li>Customer Name: TREVOR BAINTER</li>
+</ul>
+
+<h2 id="raw-milk-source">Raw Milk Source</h2>
+<ul>
+<li><strong>Countryside Mercantile</strong> - https://countrysidemerc.com/</li>
+<li>Fresh A2/A2 organic raw milk</li>
+<li>Forage fed, farm fresh, free to roam</li>
+<li><strong>Contact:</strong> 605-951-9441 | info@countrysidemerc.com</li>
+<li><strong>Location:</strong> South Dakota (specific address not listed publicly - contact for pickup locations)</li>
+<li><strong>Pricing:</strong> $5.76 per 1/2 gallon (~$11.52/gallon)</li>
+<li>$0.50 credit card fee per transaction OR pay cash/check at pickup (fee waived)</li>
+<li><strong>Pickup Schedule:</strong> Daily pickups available, 7:00 AM - 9:00 PM</li>
+<li>Order cutoff is ~2 days before pickup</li>
+<li>Example: Order by Thu for Sun pickup</li>
+<li><strong>Subscription:</strong> Weekly subscription available - contact to see available days</li>
+<li><strong>Jar System:</strong> Need 4 wide-mouth 1/2 gallon mason jars total (2 in use, 2 rotating)</li>
+<li>Return jars washed &amp; dried</li>
+<li>Currently accepting new customers (limited weekend availability as of Nov 12)</li>
+<li>Cherry Rock location full as of Nov 12</li>
+</ul>
+
+<h2 id="people-access">People &amp; Access</h2>
+<ul>
+<li><strong>Iyoko</strong> — Trevor&#x27;s wife, Signal: +16059514653</li>
+<li>Has her own separate session (per-peer config)</li>
+<li><strong>Access policy:</strong> Request-only. She can ask for info, I must get Trevor&#x27;s approval before sharing anything</li>
+<li>Sent reminder message about Trevor being impatient</li>
+</ul>
+
+<h2 id="postgresql-memory-system-fully-operational">PostgreSQL Memory System ✅ FULLY OPERATIONAL</h2>
+
+<h3 id="infrastructure">Infrastructure</h3>
+<ul>
+<li>Database server: LXC 702 (postgres-01) at 10.16.50.71</li>
+<li>PostgreSQL 16.11 with pgvector 0.8.1</li>
+<li>Database: clawdbot (6 tables: conversations, memories, events, people, accounts, todos)</li>
+<li>All initial tests passed (8/8)</li>
+</ul>
+
+<h3 id="data-captured">Data Captured</h3>
+<ul>
+<li><strong>Initial migration:</strong> 1 person, 6 events, 3 memories, 1 account</li>
+<li><strong>Conversation backfill:</strong> 39 messages from current session (17 user, 22 assistant)</li>
+<li><strong>Total embeddings:</strong> 55+ vectors (Gemini text-embedding-004, 768-dim)</li>
+</ul>
+
+<h3 id="features-implemented">Features Implemented</h3>
+<ul class="numbered">
+<li>✅ <strong>Semantic search</strong> - Query across all data types (0.65+ similarity for relevant results)</li>
+<li>✅ <strong>Auto-capture daemon</strong> - Real-time conversation capture with file watching</li>
+<li>✅ <strong>Migration tools</strong> - Import markdown files to database</li>
+<li>✅ <strong>Embedding generation</strong> - Automatic Gemini embedding pipeline</li>
+<li>✅ <strong>Python client library</strong> - Full CRUD operations</li>
+</ul>
+
+<h3 id="tools-scripts">Tools &amp; Scripts</h3>
+<ul>
+<li><code class="inline">lib/memory_db.py</code> - PostgreSQL client with connection pooling</li>
+<li><code class="inline">lib/conversation_capture.py</code> - Conversation capture library</li>
+<li><code class="inline">scripts/auto_capture_daemon.py</code> - Real-time capture daemon (watchdog-based)</li>
+<li><code class="inline">scripts/manage-capture.sh</code> - Service manager (start/stop/logs)</li>
+<li><code class="inline">scripts/search_conversation.py</code> - Interactive semantic search</li>
+<li><code class="inline">scripts/generate_embeddings.py</code> - Batch embedding generator</li>
+<li><code class="inline">scripts/migrate_markdown_to_db.py</code> - Markdown import tool</li>
+<li><code class="inline">AUTO_CAPTURE_README.md</code> - Complete documentation</li>
+</ul>
+
+<h3 id="how-to-use">How to Use</h3>
+<p><strong>Start auto-capture:</strong></p>
+<pre><code class="lang-bash">
+cd /root/clawd/scripts
+./manage-capture.sh install  # One-time setup
+./manage-capture.sh start    # Start capturing
+./manage-capture.sh logs     # Monitor
+</code></pre>
+
+<p><strong>Search conversations:</strong></p>
+<pre><code class="lang-bash">
+cd /root/clawd
+python3 scripts/search_conversation.py &quot;your query&quot;
+</code></pre>
+
+<p><strong>Backfill old sessions:</strong></p>
+<pre><code class="lang-bash">
+python3 lib/conversation_capture.py --session SESSION_KEY
+</code></pre>
+
+<h3 id="status-all-priorities-complete-2248-utc">Status: ✅ ALL PRIORITIES COMPLETE (22:48 UTC)</h3>
+
+<p><strong>Active Services:</strong></p>
+<ul>
+<li>✅ Auto-capture daemon running since 22:41 UTC</li>
+<li>✅ Monitoring 5 session transcripts (10-second interval)</li>
+<li>✅ Service: clawdbot-auto-capture (systemd)</li>
+</ul>
+
+<p><strong>All 4 Priorities Delivered:</strong></p>
+
+<ul class="numbered">
+<li>✅ <strong>Auto-Recall System</strong></li>
+<li><code class="inline">lib/memory_recall.py</code> - Semantic context retrieval</li>
+<li><code class="inline">scripts/inject_context.py</code> - Manual testing tool</li>
+<li>Ready for Clawdbot integration</li>
+</ul>
+
+<ul class="numbered">
+<li>✅ <strong>Memory Maintenance</strong></li>
+<li><code class="inline">scripts/daily_summarize.py</code> - Daily conversation summaries</li>
+<li>Date-specific or auto-today modes</li>
+<li>Markdown output for archival</li>
+</ul>
+
+<ul class="numbered">
+<li>✅ <strong>Multi-Session Support</strong></li>
+<li>Updated daemon with --all-agents flag</li>
+<li>Can monitor all agent sessions simultaneously</li>
+<li>Separate context per session</li>
+</ul>
+
+<ul class="numbered">
+<li>✅ <strong>Query/Export Tools</strong></li>
+<li><code class="inline">scripts/query_conversations.py</code> - Interactive browser</li>
+<li><code class="inline">scripts/export_conversations.py</code> - Markdown exports</li>
+<li>Browse by date, session, or range</li>
+</ul>
+
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><code class="inline">MEMORY_SYSTEM_COMPLETE.md</code> - Complete system guide</li>
+<li><code class="inline">AUTO_CAPTURE_README.md</code> - Setup and usage</li>
+<li>Full API docs in each script/library</li>
+</ul>
+
+<p><strong>Quick Commands:</strong></p>
+<pre><code class="lang-bash">
+# Browse conversations
+python3 scripts/query_conversations.py
+
+# Export today
+python3 scripts/export_conversations.py --today -o today.md
+
+# Search semantically
+python3 scripts/search_conversation.py &quot;query&quot;
+
+# Daily summary
+python3 scripts/daily_summarize.py --save
+
+# Test recall
+python3 scripts/inject_context.py &quot;message&quot;
+</code></pre>
+
+<p><strong>Cron Jobs Installed (22:51 UTC):</strong></p>
+<ul>
+<li>✅ Daily summary at 23:55</li>
+<li>✅ Weekly embeddings (Sunday 02:00)</li>
+<li>✅ Monthly DB stats (1st, 03:00)</li>
+<li>📋 Logs: <code class="inline">/root/clawd/logs/</code></li>
+<li>📖 Documentation: <code class="inline">CRON_JOBS.md</code></li>
+</ul>
+
+<p><strong>Total Build Time:</strong> ~3 hours</p>
+<p><strong>System Status:</strong> Fully operational 🦀</p>
+
+
+<hr>
+
+<h1 id="daily-summary---2026-01-29">Daily Summary - 2026-01-29</h1>
+
+<h2 id="statistics">Statistics</h2>
+<ul>
+<li>Total messages: 69</li>
+<li>User messages: 34</li>
+<li>Assistant messages: 35</li>
+<li>Sessions: 2</li>
+</ul>
+
+<h2 id="conversations">Conversations</h2>
+
+<h3 id="session-test-session-001">Session: test-session-001...</h3>
+<p>Time: 22:06 - 22:20 | Messages: 2</p>
+
+<p><strong>Started with:</strong> Hello, this is a test message!...</p>
+
+
+<h3 id="session-7951b2f7-10ff-42c6-8">Session: 7951b2f7-10ff-42c6-8...</h3>
+<p>Time: 22:37 - 22:50 | Messages: 67</p>
+
+<p><strong>Started with:</strong> [Signal Trevor B. id:+16059415269 2026-01-29 20:54 UTC] has she responded to you?</p>
+<p>[message_id: 1769720054868]...</p>
+
+
+
+<hr>
+
+<h1 id="daily-summary---2026-01-29">Daily Summary - 2026-01-29</h1>
+
+<h2 id="statistics">Statistics</h2>
+<ul>
+<li>Total messages: 95</li>
+<li>User messages: 46</li>
+<li>Assistant messages: 49</li>
+<li>Sessions: 3</li>
+</ul>
+
+<h2 id="conversations">Conversations</h2>
+
+<h3 id="session-test-session-001">Session: test-session-001...</h3>
+<p>Time: 22:06 - 22:20 | Messages: 2</p>
+
+<p><strong>Started with:</strong> Hello, this is a test message!...</p>
+
+
+<h3 id="session-7951b2f7-10ff-42c6-8">Session: 7951b2f7-10ff-42c6-8...</h3>
+<p>Time: 22:37 - 23:53 | Messages: 90</p>
+
+<p><strong>Started with:</strong> [Signal Trevor B. id:+16059415269 2026-01-29 20:54 UTC] has she responded to you?</p>
+<p>[message_id: 1769720054868]...</p>
+
+
+<h3 id="session-0b32610b-4b3c-4f4c-9">Session: 0b32610b-4b3c-4f4c-9...</h3>
+<p>Time: 23:08 - 23:11 | Messages: 3</p>
+
+<p><strong>Started with:</strong> [Signal Test id:+16059514653 +2m 2026-01-29 23:11 UTC] Southeastern electric company Customer Number: 676342 Customer Name: TREVOR BAINTER Account Number: 676342000</p>
+<p>[message_id: 1769728272405]...</p>
+
+
+<hr>
+
+<h2 id="todo-system-built-0001-0015-utc-2026-01-30">Todo System Built (00:01-00:15 UTC, 2026-01-30)</h2>
+
+<h3 id="components-created">Components Created</h3>
+<ul class="numbered">
+<li><strong>Todo Management Library</strong> (<code class="inline">lib/todo_manager.py</code>)</li>
+<li>Add/complete/search todos</li>
+<li>Notification flags for cross-session work</li>
+<li>Priority and tagging support</li>
+</ul>
+
+<ul class="numbered">
+<li><strong>Utilities Database</strong> (PostgreSQL)</li>
+<li>Tables: <code class="inline">utilities</code>, <code class="inline">utility_payments</code></li>
+<li>Populated with Kingbrook (water) and Southeastern Electric</li>
+</ul>
+
+<ul class="numbered">
+<li><strong>Scripts</strong></li>
+<li><code class="inline">scripts/add_utility.py</code> - Utility vendor management</li>
+<li><code class="inline">scripts/check_todos.py</code> - Heartbeat integration</li>
+</ul>
+
+<ul class="numbered">
+<li><strong>Documentation</strong></li>
+<li><code class="inline">WORKFLOWS.md</code> - Standard operating procedures</li>
+<li><code class="inline">TODO_SYSTEM.md</code> - Complete system guide</li>
+<li>Updated <code class="inline">HEARTBEAT.md</code> with todo checking</li>
+</ul>
+
+<h3 id="workflow-established">Workflow Established</h3>
+<ul>
+<li>When Trevor requests info from others → create notify-todo</li>
+<li>When response received → forward to Trevor, wait for approval</li>
+<li>After approval → update database, complete todo</li>
+<li>Heartbeats check for overdue/pending notify-todos</li>
+<li>Only ping Trevor for things needing his attention</li>
+</ul>
+
+<h3 id="current-utilities-tracked">Current Utilities Tracked</h3>
+<ul>
+<li><strong>Water</strong>: Kingbrook Rural Water Systems (Acct: 0519.3)</li>
+<li><strong>Electric</strong>: Southeastern Electric Company (Acct: 676342000)</li>
+</ul>
+
+<p>Next: Expand to gas, internet, trash collection</p>
+
+<h3 id="trello-integration-0010-utc-2026-01-30">Trello Integration (00:10 UTC, 2026-01-30)</h3>
+
+<p><strong>Vendor Change Workflow Established:</strong></p>
+<ul>
+<li>When vendor changes → ask Trevor first → archive old card → create new card</li>
+<li>When same vendor, new info → add comment, update description (don&#x27;t replace)</li>
+</ul>
+
+<p><strong>First Trello Update:</strong></p>
+<ul>
+<li>✅ Archived &quot;Minnehaha water&quot; card (vendor change)</li>
+<li>✅ Created &quot;Water - Kingbrook Rural Water Systems&quot; card</li>
+<li>Account: 0519.3</li>
+<li>Recent payment info included in description</li>
+<li>Card ID: 697bf73ac593b3a64f898ca9</li>
+<li>✅ Completed todo: &quot;Get water utility info from Iyoko&quot;</li>
+</ul>
+
+<p><strong>Trello Access:</strong></p>
+<ul>
+<li>API credentials: <code class="inline">/root/.clawdbot/secrets/trello.json</code></li>
+<li>Permissions: Full read/write access</li>
+<li>Board: House Organizer (572698707279cf0f1a83a9ff)</li>
+<li>Utilities List ID: 572b4f324f5ba86584730b4c</li>
+</ul>
+
+<h3 id="electric-utility-update-0048-utc-2026-01-30">Electric Utility Update (00:48 UTC, 2026-01-30)</h3>
+
+<p><strong>Trello Update - Same Vendor:</strong></p>
+<ul>
+<li>✅ Updated existing &quot;Electric - Southeastern Electric Coop&quot; card</li>
+<li>Added account information to description:</li>
+<li>Customer Number: 676342</li>
+<li>Account Number: 676342000</li>
+<li>Customer Name: TREVOR BAINTER</li>
+<li>Added comment documenting the update</li>
+<li>Preserved existing contact info (1-855-730-8708)</li>
+<li>✅ Completed todo: &quot;Get electric utility info from Iyoko&quot;</li>
+</ul>
+
+<p><strong>Status:</strong></p>
+<ul>
+<li>Both water and electric utilities now updated in database + Trello</li>
+<li>All pending utility info requests from Iyoko completed</li>
+</ul>
+
+            </div>
+        
+    </div>
+</body>
+</html>

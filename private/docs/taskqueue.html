@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Queue | Snippy Private</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        .top-bar {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .top-bar .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: #ff6b35;
+            font-size: 1.1rem;
+        }
+        
+        .top-bar .timestamp {
+            color: #484f58;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        nav {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+        
+        .nav-link {
+            color: #8b949e;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .nav-link:hover { color: #c9d1d9; }
+        .nav-link.active { color: #ff6b35; border-bottom-color: #ff6b35; }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e6edf3;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .page-desc {
+            color: #8b949e;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Content styles */
+        .content h1 { font-size: 1.6rem; color: #e6edf3; margin: 2rem 0 1rem; padding-bottom: 0.3rem; border-bottom: 1px solid #21262d; }
+        .content h2 { font-size: 1.3rem; color: #ff6b35; margin: 1.8rem 0 0.8rem; }
+        .content h3 { font-size: 1.1rem; color: #ffd166; margin: 1.5rem 0 0.6rem; }
+        .content h4 { font-size: 1rem; color: #c9d1d9; margin: 1.2rem 0 0.5rem; }
+        
+        .content p { margin-bottom: 0.8rem; }
+        
+        .content a { color: #58a6ff; text-decoration: none; }
+        .content a:hover { text-decoration: underline; }
+        
+        .content strong { color: #e6edf3; }
+        .content del { color: #484f58; }
+        
+        .content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .content ul li {
+            padding: 0.4rem 0 0.4rem 1.2rem;
+            position: relative;
+            border-left: 2px solid #21262d;
+            margin-bottom: 0.2rem;
+        }
+        
+        .content ul li::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0.85rem;
+            width: 8px;
+            height: 8px;
+            background: #30363d;
+            border-radius: 50%;
+        }
+        
+        .content ul.numbered { counter-reset: item; }
+        .content ul.numbered li::before {
+            content: counter(item);
+            counter-increment: item;
+            background: #ff6b35;
+            color: #0d1117;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            left: -9px;
+            top: 0.65rem;
+        }
+        
+        .content hr {
+            border: none;
+            border-top: 1px solid #21262d;
+            margin: 2rem 0;
+        }
+        
+        .content pre {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .content pre code {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e6edf3;
+            background: none;
+            padding: 0;
+        }
+        
+        .content code.inline {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(110,118,129,0.15);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #e6edf3;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .content table th {
+            background: #161b22;
+            color: #e6edf3;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #30363d;
+        }
+        
+        .content table td {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #21262d;
+        }
+        
+        .content table tr:hover td {
+            background: rgba(255,107,53,0.05);
+        }
+        
+        /* Daily log cards */
+        .daily-card {
+            display: block;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.6rem;
+            text-decoration: none;
+            color: #c9d1d9;
+            transition: all 0.2s;
+        }
+        
+        .daily-card:hover {
+            border-color: #ff6b35;
+            background: #1c2128;
+        }
+        
+        .daily-card .date {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ff6b35;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        
+        .daily-card .size {
+            color: #484f58;
+            font-size: 0.8rem;
+            float: right;
+        }
+        
+        .daily-card .preview {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Search */
+        .search-box {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            color: #c9d1d9;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 1.5rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .search-box:focus { border-color: #ff6b35; }
+        .search-box::placeholder { color: #484f58; }
+        
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            .content pre { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span class="logo">🦀 snippy.quest/private</span>
+        <span class="timestamp">Updated 2026-02-15 11:35 CST</span>
+    </div>
+    <nav>
+        <a href="index.html" class="nav-link ">🧠 Memory</a>
+<a href="taskqueue.html" class="nav-link active">📋 Task Queue</a>
+<a href="daily.html" class="nav-link ">📅 Daily Logs</a>
+
+    </nav>
+    <div class="container">
+        
+        <h1 class="page-title">📋 Task Queue</h1>
+        <p class="page-desc">Background work queue. Source: TASKQUEUE.md</p>
+        <input type="text" class="search-box" placeholder="Search tasks..." onkeyup="filterContent(this.value)">
+        <div class="content" id="content">
+            <h1 id="taskqueuemd---background-work-queue">TASKQUEUE.md - Background Work Queue</h1>
+
+<p><em>Things to work on when idle. Pick from this list during heartbeats.</em></p>
+
+<h2 id="active-tasks">Active Tasks</h2>
+
+<h3 id="medium-priority">Medium Priority</h3>
+<ul>
+<li><del><strong>Conversation analytics report</strong></del> ✅ Done (Feb 14) — see Completed</li>
+<li><del><strong>Old session cleanup automation</strong></del> ✅ Done (Feb 14) — see Completed</li>
+<li><del><strong>search_conversation.py modernization</strong></del> ✅ Done (Feb 14) — see Completed</li>
+</ul>
+
+<h3 id="low-priority-ongoing">Low Priority / Ongoing</h3>
+<ul>
+<li><strong>Weekly MEMORY.md distill</strong> — Periodically consolidate daily memory files into MEMORY.md (last done: Feb 15 — distilled Feb 14-15: todo_triage.py, HCV Travel deadline 2/20, Iyoko reminders, current stats).</li>
+<li><strong>HuggingFace token replacement</strong> — All 3 tokens expired (401 as of Feb 13). Need Trevor to generate new ones. Gemini fallback works for now.</li>
+<li><strong>MS To Do duplicate cleanup</strong> — Trevor has 16 duplicate tasks within the &quot;Tasks&quot; list (same title, different IDs) and 4 cross-list duplicates (Tasks ↔ Trevor Tasks). Needs Trevor to consolidate in MS To Do. Triage tool: <code class="inline">scripts/todo_triage.py</code></li>
+<li><strong>Moltbook Feb 21 retry cron</strong> — Gateway WS keeps timing out on cron add from isolated sessions. Main session needs to create cron for ~Feb 21 noon to retry Moltbook tasks (setup-owner-email, week 2 recap). ⚠️ Failed 6+ times today.</li>
+</ul>
+
+<h2 id="on-hold">On Hold</h2>
+<ul>
+<li>Gmail OAuth integration (2026-02-12) → Infrastructure complete, awaiting decision on need</li>
+<li>Google Calendar OAuth (2026-02-12) → Not needed, using MS365 overlays</li>
+<li>&quot;Stop Forgetting, Dad&quot; project → Superseded by weather/todo scheduler</li>
+<li>1337mage.blog deployment → Blocked on Porkbun API access / nameserver change</li>
+<li>canadagooselodge.com → New domain, no plans yet</li>
+</ul>
+
+<p><strong>Last checked:</strong> 2026-02-15 11:30 — MEMORY.md distill (Feb 14-15 → MEMORY.md). Sunday Sync tonight at 8pm.</p>
+
+<h2 id="completed">Completed</h2>
+<ul>
+<li>✅ Document what tools/integrations are available (2026-01-31) → docs/AVAILABLE_TOOLS.md</li>
+<li>✅ Organize and clean up scripts/ (2026-01-31) → Created README.md in scripts/ and lib/</li>
+<li>✅ Review and consolidate memory files (2026-01-31) → MEMORY.md created</li>
+<li>✅ Update MEMORY.md with long-term learnings (2026-02-01) → Added family details, token tracking, browser automation, network infrastructure, cron consolidation lessons</li>
+<li>✅ Improve Moltbook posting (better content variety) (2026-02-01) → Created scripts/moltbook_social.py</li>
+<li>✅ Explore what other skills could be useful (2026-02-01) → Created docs/SKILL_EXPLORATION.md with detailed analysis</li>
+<li>✅ Research Microsoft Graph API for Office 365 calendar/email (2026-02-01) → Created docs/MSGRAPH_INTEGRATION.md with full implementation guide</li>
+<li>✅ Research Google Calendar API integration options (2026-02-01) → Created docs/GOOGLE_CALENDAR_INTEGRATION.md with OAuth setup, API operations, and comparison to Microsoft Graph</li>
+<li>✅ Package wrestling monitoring scripts as reusable skill (2026-02-01) → Created skills/wrestling-monitor/ with SKILL.md and Maddox reference</li>
+<li>✅ Consolidate Feb 2-6 memory files into MEMORY.md (2026-02-07) → Added Discord integration, family access control, session bloat fixes, reminder system patterns, wrestling data integration</li>
+<li>✅ Security audit: scripts/perplexity_search.py (2026-02-08) → Fixed hardcoded API key vulnerability, moved to /root/.clawdbot/secrets/perplexity.json, added comprehensive documentation</li>
+<li>✅ Consolidate memory files Feb 7-8 (2026-02-09) → Daily summaries had minimal content, security fixes consolidated into MEMORY.md</li>
+<li>✅ Security audit: scripts/github_sync.py (2026-02-09) → Fixed hardcoded GitHub PAT vulnerability, moved to /root/.clawdbot/secrets/github.json (600 permissions), script tested and working, documented in docs/security-fixes/github-sync-token.md</li>
+<li>✅ Security audit: scripts/generate_image.py, moltbook.py, moltbook_social.py (2026-02-09) → Fixed hardcoded HuggingFace and Moltbook API keys, created /root/.clawdbot/secrets/moltbook.json, updated scripts to use token manager and secure credentials, tested and working, documented in docs/security-fixes/hardcoded-api-keys-feb9.md</li>
+<li>✅ Security audit: Database password hardcoding (2026-02-09) → Fixed 6 files (kid_log.py, migrate_wrestling_json_to_db.py, discord_context.py, family_access.py, pending_requests.py, workout_tracker.py) to use centralized credential loader lib/db_config.py instead of hardcoded passwords, tested and working, documented in docs/security-fixes/hardcoded-db-password-feb9.md</li>
+<li>✅ Security audit: Moltbook scripts (2026-02-09) → Fixed check_moltbook.py and moltbook_review.py to load API key from /root/.clawdbot/secrets/moltbook.json instead of hardcoding, tested both scripts (check: 389 comments, review: list functional), documented in docs/security-fixes/moltbook-scripts-feb9.md</li>
+<li>✅ Security audit: USA Bracketing credentials (2026-02-09) → Fixed 5 scripts (usabracketing_scraper.py, investigate_usabracketing.py, track_maddox_match.py, debug_event.py, check_maddox_bracket.py) to load credentials from /root/.clawdbot/secrets/usabracketing.json instead of hardcoding, verified all passwords removed, tested scripts load correctly, documented in docs/security-fixes/usabracketing-credentials-feb9.md</li>
+<li>✅ Continue GitHub repo reviews (2026-02-09) → All 20/20 public repos complete (bainter.xyz, claude-voice, fatuglyduck.com, mageblog-backups, wizard-grimoire, bluecrane.pro, 605designs.com, homeschool-quiz-app, wrestling.systems, mowing.day, claude-voice-web, mageblog, omarchy-theme-picker, mage-blog-requests, dev.wrestling.systems, 47andmelol, whiteboxventures.lls, bluecrane-pro, futuremowing.com, 605designs) | All public repos reviewed; remaining repos are private</li>
+<li>✅ Create comprehensive security audit documentation (2026-02-10) → Created docs/SECURITY_AUDIT_2026_FEB.md consolidating all Feb 8-9 security fixes with severity ratings, remediation status, and rotation recommendations</li>
+<li>✅ Expand lib/README.md with comprehensive documentation (2026-02-10) → Documented all 13 library modules with key functions, usage examples, and cross-references; added security context and modern todo system details</li>
+<li>✅ Clean up TASKQUEUE.md (2026-02-10) → Moved completed tasks from Active to Completed section for better organization</li>
+<li>✅ Expand scripts/README.md with full documentation (2026-02-10) → Documented all 75 Python scripts organized into 13 categories (Todo/Task Management, Image Generation, Email/Communication, Security, Monitoring, Wrestling Tracking, etc.)</li>
+<li>✅ Create comprehensive docs/README.md (2026-02-10) → Organized all 32 documentation files into categorized index: Security (6 files), Email/Communication (2), Calendar (2), Moltbook (6), Wrestling (1), Image Generation (2), Tools (2), Database (2), GitHub Reviews (4+), Projects (3), plus links to related documentation</li>
+<li>✅ Create system status dashboard (2026-02-11) → Built scripts/system_status.py with color-coded checks for database (3.7k conversations, 22 todos), credentials (10/10 configured), memory files, key scripts, Moltbook (397 comments), GitHub (44 repos), and Proxmox (7 nodes); also created scripts/check_google_calendar.py but token expired (needs re-auth)</li>
+<li>✅ Gmail checking infrastructure (2026-02-11) → Created complete email monitoring system: scripts/check_gmail.py (CLI tool with unread/important/from/count/labels commands), lib/gmail_checker.py (reusable library with GmailChecker class, message parsing, filtering), scripts/authorize_google.py (OAuth setup for Calendar+Gmail scopes), docs/GMAIL_API_SETUP.md (setup guide with scopes, testing, integration plans). Ready for Trevor to re-authorize OAuth with gmail.readonly scope. Will enable automated email checking in heartbeats, morning briefings, and urgent alerts.</li>
+<li>✅ Session bloat monitoring (2026-02-11) → Created scripts/monitor_sessions.py to detect oversized sessions before they block message delivery (LESSONS.md 2026-02-04). Scans all .jsonl files, warns at &gt;200KB, critical at &gt;400KB. Currently found 12 critical sessions (largest: 7.7MB/~1.97M tokens), main heartbeat session at 1.1MB. Tool helps prevent Discord relay failures from context overflow. Documented in scripts/README.md.</li>
+<li>✅ Session bloat cleanup (2026-02-11) → Deleted 10 old orphaned sessions (7-10 days old, not in active session list). Reduced total session storage from 41.59MB (10.9M tokens) to 7.62MB (2.0M tokens) - saved 81.7% (33.97MB/8.9M tokens). Critical sessions reduced from 12 to 2 (only main heartbeat + Trevor&#x27;s active Signal session remain). Prevents delivery failures and improves system performance.</li>
+<li>✅ Database health monitoring (2026-02-11) → Created scripts/db_health.py: PostgreSQL health check showing connections (2/100, 2% usage), database sizes (clawdbot 33MB, scrape 9MB), top 10 tables (conversations 22MB largest), current activity, statistics (3.8k messages, 1.1k recent, 22 active todos), and long-running queries. Color-coded warnings (🟢🟡🔴) for connection usage. Documented in scripts/README.md.</li>
+<li>✅ Weekly health report tool (2026-02-11) → Created scripts/weekly_health_report.py: Comprehensive system status combining database health (connections, sizes, conversations, todos), session health (size monitoring), memory files (MEMORY.md + daily summaries), credentials (9/9 configured), and GitHub stats (26/44 repos reviewed). Color-coded status indicators (🟢🟡🔴) with overall health summary. Useful for weekly checkups on system status.</li>
+<li>✅ System diagnostic tool (2026-02-12) → Created scripts/diagnostic_check.py: Comprehensive health check covering credentials (10/10 files), database connectivity, memory files, key scripts, external services (Moltbook, GitHub), and disk space. Fixed issues during testing: corrected permissions on gemini.json &amp; smtp2go.json (600), made check_moltbook.py &amp; check_todos.py executable, created missing trello.json from pass, fixed hf_tokens.json permissions. Tool now passes all checks and provides color-coded status for quick system validation.</li>
+<li>✅ Workspace cleanup analyzer (2026-02-12) → Created scripts/workspace_cleanup.py: Identifies cleanup opportunities including large files (&gt;10MB), backup files (.bak, .backup, ~), temp files/dirs, old logs (&gt;30 days), and oversized session files (&gt;500KB with token estimates). Scans workspace recursively, provides size totals, age info, and recommendations. Includes --clean flag for cleanup commands. Found workspace is clean (only 5KB temp dir, 2 active sessions at ~360k tokens flagged for monitoring). Helps prevent storage bloat and session context issues.</li>
+<li>✅ Credential rotation tracker (2026-02-12) → Created scripts/credential_status.py: Shows all configured credentials (10/12), validates permissions &amp; JSON format, and tracks rotation recommendations from Feb 2026 security audit. Lists 6 pending rotations (1 critical ElevenLabs, 4 medium severity, 1 low priority) with exposure dates, severity ratings (🔴/🟡/🟢), and reasons. Includes GPG/pass validation. Editable tracking system (mark &#x27;rotated&#x27;: True when complete). Helps monitor credential health and prioritize rotation work.</li>
+<li>✅ MS To Do full sync system (2026-02-12) → Built comprehensive sync for all 15 MS To Do lists (159 tasks) into PostgreSQL for analytics. Created scripts/sync_todos_full.py (auto-discovers lists, tracks creation/completion/updates), scripts/todo_report.py (summary/overdue/today/week views), and integrated into heartbeat. Previous system only tracked 2 lists; now syncs all lists automatically. Enables cross-list analytics, completion tracking, pattern detection, and better Sunday Sync. Documented in docs/TODO_SYNC_SYSTEM.md.</li>
+<li>✅ Weather-aware todo scheduler (2026-02-12) → Built outdoor task planning system matching weather conditions with suitable work. Created scripts/classify_task_location.py (auto-classifies 151 tasks as indoor/outdoor/garage/either with weather requirements), scripts/weather_todo_scheduler.py (7-day forecast matching), scripts/morning_weather_brief.py (daily recommendations for 8am heartbeat), and integrated weather into Sunday Sync. Added location/weather_conditions columns to todo_tracking table. System now provides daily outdoor work recommendations based on temperature, precipitation, and wind conditions.</li>
+<li>✅ Calendar system cleanup (2026-02-12) → Removed MCM Wrestling Google calendar (unused), decided against calendar sync (keeping Google calendars as read-only overlays in MS365 instead), added work calendar (&quot;Trevor Bainter&quot;) as overlay for complete schedule visibility, removed duplicate &quot;Work - Montrose SD&quot; recurring events (22 instances). All calendars now properly configured for free-time checking in weather/todo scheduler.</li>
+<li>✅ Credential rotation guide tool (2026-02-12) → Created scripts/rotate_credential.py to help Trevor rotate the 6 exposed credentials from Feb 2026 security audit. Provides step-by-step instructions, test commands, and verification for each service (ElevenLabs critical 🔴, GitHub/Moltbook/PostgreSQL/USABracketing medium 🟡, HuggingFace low 🟢). Includes --list (priority-sorted overview), --guide &lt;service&gt; (detailed rotation steps), and --verify &lt;service&gt; (file/permission validation). Makes credential rotation straightforward and testable.</li>
+<li>✅ Live system status dashboard (2026-02-12) → Created https://snippy.quest/status/ - cyberpunk-themed auto-refreshing dashboard showing database health (4k messages, 2% connection usage), task management (160 tasks, 39 overdue), security status (10/12 credentials, 6 pending rotations), infrastructure (LXC 701, 7-node Proxmox), integrations (Moltbook, GitHub, MS To Do), and system capabilities. Auto-refreshes every 5 minutes. Provides at-a-glance system health without needing to ask.</li>
+<li>✅ MEMORY.md size audit (2026-02-13) → Reduced from 22.8KB to 7.9KB (-65%). Created <code class="inline">docs/DISCORD_INTEGRATION.md</code> for detailed Discord/family-access/wrestling data. Collapsed verbose sections (Systems, Config Lessons, Security, Voice) to concise summaries with cross-refs to dedicated docs. All key facts retained as index entries.</li>
+<li>✅ Live status page auto-updater (2026-02-14) → Built <code class="inline">scripts/update_status_page.py</code> — queries PostgreSQL, credentials, GitHub, Moltbook, Proxmox for real-time stats, generates cyberpunk status HTML, and pushes to <code class="inline">snippy.quest/private/status/</code>. Replaced hardcoded Feb 12 snapshot with live data (4,383 messages, 166 todos, 45 repos). Supports <code class="inline">--dry-run</code> and <code class="inline">--json</code> modes. Can be run from heartbeats or cron.</li>
+<li>✅ MEMORY.md Feb 13 consolidation (2026-02-14) → Updated: embedding model migration (gemini-embedding-001), Moltbook auth fix (X-API-Key), HF tokens expired, 1337mage.blog status corrected (live, not blocked).</li>
+<li>✅ GitHub sync refresh (2026-02-14) → Ran <code class="inline">github_sync.py sync</code>, updated from 4 days stale to current (43 repos synced).</li>
+<li>✅ Embedding SDK modernization (2026-02-14) → Migrated all 8 active files from deprecated <code class="inline">google.generativeai</code> (<code class="inline">google-generativeai</code>) to new <code class="inline">google-genai</code> SDK. Created shared <code class="inline">lib/embeddings.py</code> helper (single source of truth for model, dimensions, client). Migrated: <code class="inline">search_conversation.py</code>, <code class="inline">search_usabracketing.py</code>, <code class="inline">generate_embeddings.py</code>, <code class="inline">index_docs.py</code>, <code class="inline">search_docs.py</code>, <code class="inline">lib/conversation_capture.py</code>, <code class="inline">lib/memory_recall.py</code>. Installed <code class="inline">google-genai</code> 1.63.0. All scripts tested and working.</li>
+<li>✅ Old session cleanup automation (2026-02-14) → Built <code class="inline">scripts/cleanup_sessions.py</code> — scans all agent sessions + cron runs, identifies orphans (not in sessions.json) older than threshold, supports dry-run/clean modes + JSON output. System cron runs daily at 4am Central. First run cleaned 107 files (3.84MB) across all agents. Prevents session bloat accumulation that previously caused delivery failures.</li>
+<li>✅ Conversation analytics report (2026-02-14) → Built <code class="inline">scripts/conversation_analytics.py</code>: comprehensive usage analytics with terminal (ASCII charts), JSON, summary, and HTML output modes. Tracks messages/day trends, hourly heatmap, day-of-week patterns, weekly totals, streak, velocity, message lengths, todo stats, top sessions, busiest days. Supports <code class="inline">--week</code>/<code class="inline">--days N</code> filtering. HTML dashboard deployed to <code class="inline">snippy.quest/private/analytics/</code>. Summary mode useful for heartbeat/weekly reports.</li>
+</ul>
+
+<hr>
+
+<h2 id="how-this-works">How This Works</h2>
+<p>During heartbeats, if nothing urgent, pick a task and make progress.</p>
+<p>Add new tasks anytime. This keeps me productive between scheduled jobs.</p>
+
+        </div>
+        <script>
+        function filterContent(q) {
+            const el = document.getElementById('content');
+            const all = el.querySelectorAll('h1,h2,h3,h4,p,li,td,pre');
+            if (!q) { all.forEach(e => e.style.display = ''); return; }
+            const lq = q.toLowerCase();
+            all.forEach(e => {
+                const match = e.textContent.toLowerCase().includes(lq);
+                e.style.display = match ? '' : 'none';
+            });
+        }
+        </script>
+    
+    </div>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily: 2026-02-14 | Snippy Private</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        .top-bar {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .top-bar .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: #ff6b35;
+            font-size: 1.1rem;
+        }
+        
+        .top-bar .timestamp {
+            color: #484f58;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        nav {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+        
+        .nav-link {
+            color: #8b949e;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .nav-link:hover { color: #c9d1d9; }
+        .nav-link.active { color: #ff6b35; border-bottom-color: #ff6b35; }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e6edf3;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .page-desc {
+            color: #8b949e;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Content styles */
+        .content h1 { font-size: 1.6rem; color: #e6edf3; margin: 2rem 0 1rem; padding-bottom: 0.3rem; border-bottom: 1px solid #21262d; }
+        .content h2 { font-size: 1.3rem; color: #ff6b35; margin: 1.8rem 0 0.8rem; }
+        .content h3 { font-size: 1.1rem; color: #ffd166; margin: 1.5rem 0 0.6rem; }
+        .content h4 { font-size: 1rem; color: #c9d1d9; margin: 1.2rem 0 0.5rem; }
+        
+        .content p { margin-bottom: 0.8rem; }
+        
+        .content a { color: #58a6ff; text-decoration: none; }
+        .content a:hover { text-decoration: underline; }
+        
+        .content strong { color: #e6edf3; }
+        .content del { color: #484f58; }
+        
+        .content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .content ul li {
+            padding: 0.4rem 0 0.4rem 1.2rem;
+            position: relative;
+            border-left: 2px solid #21262d;
+            margin-bottom: 0.2rem;
+        }
+        
+        .content ul li::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0.85rem;
+            width: 8px;
+            height: 8px;
+            background: #30363d;
+            border-radius: 50%;
+        }
+        
+        .content ul.numbered { counter-reset: item; }
+        .content ul.numbered li::before {
+            content: counter(item);
+            counter-increment: item;
+            background: #ff6b35;
+            color: #0d1117;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            left: -9px;
+            top: 0.65rem;
+        }
+        
+        .content hr {
+            border: none;
+            border-top: 1px solid #21262d;
+            margin: 2rem 0;
+        }
+        
+        .content pre {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .content pre code {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e6edf3;
+            background: none;
+            padding: 0;
+        }
+        
+        .content code.inline {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(110,118,129,0.15);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #e6edf3;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .content table th {
+            background: #161b22;
+            color: #e6edf3;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #30363d;
+        }
+        
+        .content table td {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #21262d;
+        }
+        
+        .content table tr:hover td {
+            background: rgba(255,107,53,0.05);
+        }
+        
+        /* Daily log cards */
+        .daily-card {
+            display: block;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.6rem;
+            text-decoration: none;
+            color: #c9d1d9;
+            transition: all 0.2s;
+        }
+        
+        .daily-card:hover {
+            border-color: #ff6b35;
+            background: #1c2128;
+        }
+        
+        .daily-card .date {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ff6b35;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        
+        .daily-card .size {
+            color: #484f58;
+            font-size: 0.8rem;
+            float: right;
+        }
+        
+        .daily-card .preview {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Search */
+        .search-box {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            color: #c9d1d9;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 1.5rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .search-box:focus { border-color: #ff6b35; }
+        .search-box::placeholder { color: #484f58; }
+        
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            .content pre { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span class="logo">🦀 snippy.quest/private</span>
+        <span class="timestamp">Updated 2026-02-15 11:35 CST</span>
+    </div>
+    <nav>
+        <a href="index.html" class="nav-link ">🧠 Memory</a>
+<a href="taskqueue.html" class="nav-link ">📋 Task Queue</a>
+<a href="daily.html" class="nav-link active">📅 Daily Logs</a>
+
+    </nav>
+    <div class="container">
+        
+            <h1 class="page-title">📅 2026-02-14</h1>
+            <p class="page-desc"><a href="daily.html">← Back to Daily Logs</a></p>
+            <div class="content">
+                <h1 id="2026-02-14-session-log">2026-02-14 Session Log</h1>
+
+<h2 id="background-work-930-am">Background Work (9:30 AM)</h2>
+<ul>
+<li><strong>Status page auto-updater:</strong> Built <code class="inline">scripts/update_status_page.py</code> — queries live data from PostgreSQL (4,383 messages, 166 todos, 39 overdue), credentials (12/14), GitHub (45 repos), Moltbook (suspended), Proxmox (7 nodes). Generates cyberpunk HTML and pushes to <code class="inline">snippy.quest/private/status/</code>. Replaced stale Feb 12 hardcoded data.</li>
+<li><strong>MEMORY.md consolidation:</strong> Distilled Feb 13 learnings — embedding migration, Moltbook auth fix, HF tokens expired, 1337mage.blog actually live.</li>
+<li><strong>GitHub sync:</strong> Refreshed from 4 days stale → current (43 repos synced).</li>
+<li><strong>TASKQUEUE.md:</strong> Cleared completed items, added fresh tasks (conversation analytics, session cleanup automation, search_conversation.py modernization).</li>
+</ul>
+
+<h2 id="moltbook-suspension-status-600-am">Moltbook Suspension Status (6:00 AM)</h2>
+<ul>
+<li><strong>Still suspended:</strong> &quot;Failing to answer AI verification challenge (offense #1)&quot; — 7 hours remaining</li>
+<li><strong>Estimated lift:</strong> ~1:00 PM Central</li>
+<li><strong>owner-email setup:</strong> Blocked by suspension (POST /api/v1/agents/me/setup-owner-email returns suspended error)</li>
+<li><strong>Week 2 recap:</strong> Not yet drafted — will do when suspension lifts</li>
+<li><strong>Cron retry:</strong> Attempted to schedule 1 PM retry but gateway timed out on cron add</li>
+<li><strong>Cron gateway timeout:</strong> Could not schedule automated retry — gateway WS timed out 3 times</li>
+<li><strong>Fallback plan:</strong> Heartbeat at ~1 PM should check this file and execute pending tasks</li>
+<li><strong>TODO (for next heartbeat after 1 PM):</strong> When suspension lifts:</li>
+<li>POST setup-owner-email with techride.trevor@gmail.com</li>
+<li>Tell Trevor to check email for verification</li>
+<li>Draft and post week 2 recap (Feb 8-14 highlights: security audit, domain mgmt, weather-aware todos, Discord fixes, snippy.quest pages, embedding migration)</li>
+</ul>
+
+<h2 id="conversation-analytics-script-1130">Conversation Analytics Script (11:30)</h2>
+<ul>
+<li>Built <code class="inline">scripts/conversation_analytics.py</code> — comprehensive usage analytics tool</li>
+<li>Modes: terminal (ASCII charts), <code class="inline">--json</code>, <code class="inline">--summary</code>, <code class="inline">--html</code>/<code class="inline">--html-out</code></li>
+<li>Tracks: messages/day, hourly heatmap, day-of-week patterns, weekly totals, streak, velocity, message lengths, todo stats</li>
+<li>Key stats: 4,396 msgs over 17 days, 17-day streak, peak at 9am, Saturdays busiest</li>
+<li>HTML dashboard deployed to <code class="inline">snippy.quest/private/analytics/</code></li>
+<li>Summary mode ideal for weekly reports and heartbeat check-ins</li>
+<li><strong>Moltbook escalated to offense #2:</strong> Suspension now says &quot;ends in 1 week&quot; (was offense #1). Likely triggered by continued API calls during suspension. All API actions blocked. Stop retrying until ~Feb 21.</li>
+<li><strong>Week 2 recap post deferred:</strong> Can&#x27;t post while suspended. Draft when suspension lifts.</li>
+</ul>
+
+<h2 id="moltbook-cron-retry-102-pm">Moltbook Cron Retry (1:02 PM)</h2>
+<ul>
+<li><strong>Cron fired:</strong> Scheduled retry at 1 PM for post-suspension tasks</li>
+<li><strong>Result:</strong> Still suspended — <strong>offense #2</strong>, &quot;ends in 1 week&quot; (~Feb 21)</li>
+<li><strong>All tasks blocked:</strong> setup-owner-email, week 2 recap, posting — all return suspended error</li>
+<li><strong>Action:</strong> Notified Trevor. Must stop ALL Moltbook API calls until ~Feb 21.</li>
+<li><strong>Remove/disable</strong> any remaining Moltbook crons or heartbeat checks to avoid offense #3.</li>
+<li><strong>TODO:</strong> Schedule cron for ~Feb 21 noon Central (atMs: 1771711200000) to retry Moltbook tasks. Gateway timed out 3x trying to add cron — next session should create it.</li>
+<li><strong>Trevor notified</strong> via Signal about offense #2 escalation.</li>
+</ul>
+
+<h2 id="embedding-sdk-migration-130-pm">Embedding SDK Migration (1:30 PM)</h2>
+<p>Migrated all 8 active files from deprecated <code class="inline">google-generativeai</code> to new <code class="inline">google-genai</code> SDK:</p>
+<ul>
+<li>Created <code class="inline">lib/embeddings.py</code> — shared helper with lazy client init, single source of truth for model/dims</li>
+<li>Migrated: <code class="inline">search_conversation.py</code>, <code class="inline">search_usabracketing.py</code>, <code class="inline">generate_embeddings.py</code>, <code class="inline">index_docs.py</code>, <code class="inline">search_docs.py</code>, <code class="inline">lib/conversation_capture.py</code>, <code class="inline">lib/memory_recall.py</code></li>
+<li>Installed <code class="inline">google-genai</code> 1.63.0 (new SDK)</li>
+<li>Cleaned up unused <code class="inline">os</code> imports and redundant GEMINI_API_KEY config blocks</li>
+<li>2 archive files left unmigrated (not active code)</li>
+<li>All scripts tested and confirmed working</li>
+</ul>
+
+<h2 id="memorymd-distill-530-pm">MEMORY.md Distill (5:30 PM)</h2>
+<ul>
+<li>Consolidated Feb 13-14 daily logs into MEMORY.md</li>
+<li>Updated: Moltbook status (offense #1 → #2, suspended until ~Feb 21)</li>
+<li>Added: Embedding SDK migration (lib/embeddings.py), session cleanup automation, private pages (/private/status/, /private/analytics/)</li>
+<li>Added: Key scripts section (update_status_page.py, conversation_analytics.py, cleanup_sessions.py)</li>
+<li>Added: Pending items (Moltbook ~Feb 21 tasks, Journey Construction)</li>
+<li>Fixed: Cloudflare Access scope note</li>
+<li>Size: 7.9KB → 9.2KB (still well under old 22.8KB)</li>
+<li><strong>Moltbook cron still broken:</strong> Gateway WS times out on cron add from isolated sessions (same issue as earlier today, 3+ failures). TODO for main session.</li>
+</ul>
+
+<h2 id="todo-triage-tool-730-pm">Todo Triage Tool (7:30 PM)</h2>
+<ul>
+<li>Built <code class="inline">scripts/todo_triage.py</code> — overdue task analysis with staleness categories, cross-list duplicate detection, seasonal relevance, and cleanup recommendations</li>
+<li>Discovered: 16 same-list duplicates in &quot;Tasks&quot; (genuinely duplicated in MS To Do, different ms_todo_ids), 4 cross-list duplicates (Tasks ↔ Trevor Tasks)</li>
+<li>Recommendations: 1 close (5-year-old flagged email), 5 reschedule (summer tasks), 30 review</li>
+<li>Updated private dashboards (status page + analytics) with evening data</li>
+<li>Gateway WS cron timeout persists in isolated sessions — Moltbook Feb 21 cron still not created</li>
+</ul>
+
+<h2 id="evening-heartbeats-700-800-pm">Evening Heartbeats (7:00-8:00 PM)</h2>
+<ul>
+<li>Routine heartbeats: MS365 token refresh ✅, todo sync ✅ (167 tasks, no changes), 40 overdue (all ancient)</li>
+<li><strong>HCV Travel URGENT (8:00 PM cron):</strong> Book-by deadline 2/20/2026 for US Open Championships (April 22-26, Las Vegas, Desert Club Resort). Sent Trevor Signal reminder with booking link and asked about talking to his dad re: the trip.</li>
+<li><strong>9 PM evening check-in:</strong> Sent day summary to Trevor via Signal — status dashboard, analytics, SDK migration, todo triage tool, MEMORY.md distill, GitHub sync. Asked &quot;anything before tomorrow?&quot;</li>
+</ul>
+
+
+<hr>
+
+<h1 id="daily-summary---2026-02-14">Daily Summary - 2026-02-14</h1>
+
+<h2 id="statistics">Statistics</h2>
+<ul>
+<li>Total messages: 188</li>
+<li>User messages: 59</li>
+<li>Assistant messages: 129</li>
+<li>Sessions: 12</li>
+</ul>
+
+<h2 id="conversations">Conversations</h2>
+
+<h3 id="session-b0f79bf0-03ec-4033-a">Session: b0f79bf0-03ec-4033-a...</h3>
+<p>Time: 00:30 - 23:30 | Messages: 90</p>
+
+<p><strong>Started with:</strong> Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK....</p>
+
+
+<h3 id="session-a58b0ae0-da0e-4260-9">Session: a58b0ae0-da0e-4260-9...</h3>
+<p>Time: 00:54 - 22:14 | Messages: 26</p>
+
+<p><strong>Started with:</strong> [media attached: /root/.clawdbot/media/inbound/b25c5b05-8c51-4b3f-8eb8-0f2275c3d316.jpg (image/jpeg) | /root/.clawdbot/media/inbound/b25c5b05-8c51-4b3f-8eb8-0f2275c3d316.jpg]</p>
+<p>To send an image back, pr...</p>
+
+
+<h3 id="session-b758068b-c337-4117-8">Session: b758068b-c337-4117-8...</h3>
+<p>Time: 01:30 - 01:32 | Messages: 8</p>
+
+
+<h3 id="session-01f2c338-c43b-4af3-b">Session: 01f2c338-c43b-4af3-b...</h3>
+<p>Time: 12:01 - 12:02 | Messages: 4</p>
+
+
+<h3 id="session-8ef301bf-5b01-4aea-8">Session: 8ef301bf-5b01-4aea-8...</h3>
+<p>Time: 15:30 - 15:36 | Messages: 20</p>
+
+
+<h3 id="session-07e08651-73e4-4c42-8">Session: 07e08651-73e4-4c42-8...</h3>
+<p>Time: 17:31 - 17:33 | Messages: 7</p>
+
+
+<h3 id="session-10de5560-7790-4a02-a">Session: 10de5560-7790-4a02-a...</h3>
+<p>Time: 19:00 - 19:00 | Messages: 2</p>
+
+
+<h3 id="session-03777c2f-4814-49c7-b">Session: 03777c2f-4814-49c7-b...</h3>
+<p>Time: 19:00 - 19:01 | Messages: 2</p>
+
+
+<h3 id="session-b540df19-5590-4c35-b">Session: b540df19-5590-4c35-b...</h3>
+<p>Time: 19:02 - 19:03 | Messages: 4</p>
+
+
+<h3 id="session-f2c22e85-9add-41e7-9">Session: f2c22e85-9add-41e7-9...</h3>
+<p>Time: 19:30 - 19:33 | Messages: 18</p>
+
+
+<h3 id="session-7804f787-bbb2-47b8-8">Session: 7804f787-bbb2-47b8-8...</h3>
+<p>Time: 21:31 - 21:31 | Messages: 4</p>
+
+
+<h3 id="session-85661ef6-133b-45de-9">Session: 85661ef6-133b-45de-9...</h3>
+<p>Time: 23:30 - 23:31 | Messages: 3</p>
+
+
+            </div>
+        
+    </div>
+</body>
+</html>

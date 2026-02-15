@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily: 2026-01-30 | Snippy Private</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        .top-bar {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .top-bar .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: #ff6b35;
+            font-size: 1.1rem;
+        }
+        
+        .top-bar .timestamp {
+            color: #484f58;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        nav {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+        
+        .nav-link {
+            color: #8b949e;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .nav-link:hover { color: #c9d1d9; }
+        .nav-link.active { color: #ff6b35; border-bottom-color: #ff6b35; }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e6edf3;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .page-desc {
+            color: #8b949e;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Content styles */
+        .content h1 { font-size: 1.6rem; color: #e6edf3; margin: 2rem 0 1rem; padding-bottom: 0.3rem; border-bottom: 1px solid #21262d; }
+        .content h2 { font-size: 1.3rem; color: #ff6b35; margin: 1.8rem 0 0.8rem; }
+        .content h3 { font-size: 1.1rem; color: #ffd166; margin: 1.5rem 0 0.6rem; }
+        .content h4 { font-size: 1rem; color: #c9d1d9; margin: 1.2rem 0 0.5rem; }
+        
+        .content p { margin-bottom: 0.8rem; }
+        
+        .content a { color: #58a6ff; text-decoration: none; }
+        .content a:hover { text-decoration: underline; }
+        
+        .content strong { color: #e6edf3; }
+        .content del { color: #484f58; }
+        
+        .content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .content ul li {
+            padding: 0.4rem 0 0.4rem 1.2rem;
+            position: relative;
+            border-left: 2px solid #21262d;
+            margin-bottom: 0.2rem;
+        }
+        
+        .content ul li::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0.85rem;
+            width: 8px;
+            height: 8px;
+            background: #30363d;
+            border-radius: 50%;
+        }
+        
+        .content ul.numbered { counter-reset: item; }
+        .content ul.numbered li::before {
+            content: counter(item);
+            counter-increment: item;
+            background: #ff6b35;
+            color: #0d1117;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            left: -9px;
+            top: 0.65rem;
+        }
+        
+        .content hr {
+            border: none;
+            border-top: 1px solid #21262d;
+            margin: 2rem 0;
+        }
+        
+        .content pre {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .content pre code {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e6edf3;
+            background: none;
+            padding: 0;
+        }
+        
+        .content code.inline {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(110,118,129,0.15);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #e6edf3;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .content table th {
+            background: #161b22;
+            color: #e6edf3;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #30363d;
+        }
+        
+        .content table td {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #21262d;
+        }
+        
+        .content table tr:hover td {
+            background: rgba(255,107,53,0.05);
+        }
+        
+        /* Daily log cards */
+        .daily-card {
+            display: block;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.6rem;
+            text-decoration: none;
+            color: #c9d1d9;
+            transition: all 0.2s;
+        }
+        
+        .daily-card:hover {
+            border-color: #ff6b35;
+            background: #1c2128;
+        }
+        
+        .daily-card .date {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ff6b35;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        
+        .daily-card .size {
+            color: #484f58;
+            font-size: 0.8rem;
+            float: right;
+        }
+        
+        .daily-card .preview {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Search */
+        .search-box {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            color: #c9d1d9;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 1.5rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .search-box:focus { border-color: #ff6b35; }
+        .search-box::placeholder { color: #484f58; }
+        
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            .content pre { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span class="logo">🦀 snippy.quest/private</span>
+        <span class="timestamp">Updated 2026-02-15 11:35 CST</span>
+    </div>
+    <nav>
+        <a href="index.html" class="nav-link ">🧠 Memory</a>
+<a href="taskqueue.html" class="nav-link ">📋 Task Queue</a>
+<a href="daily.html" class="nav-link active">📅 Daily Logs</a>
+
+    </nav>
+    <div class="container">
+        
+            <h1 class="page-title">📅 2026-01-30</h1>
+            <p class="page-desc"><a href="daily.html">← Back to Daily Logs</a></p>
+            <div class="content">
+                
+<hr>
+
+<h2 id="workflow-improvement---resource-discovery-0455-0459-utc">Workflow Improvement - Resource Discovery (04:55-04:59 UTC)</h2>
+
+<p><strong>Problem:</strong></p>
+<ul>
+<li>Trevor asked about garbage service</li>
+<li>I found Trello card name in static snapshot but claimed I didn&#x27;t have API access</li>
+<li>API credentials existed at <code class="inline">/root/.clawdbot/secrets/trello.json</code> the whole time</li>
+<li>Only checked after Trevor asked &quot;what happened to your app access?&quot;</li>
+</ul>
+
+<p><strong>Root Cause:</strong></p>
+<ul>
+<li>Didn&#x27;t proactively check for existing API credentials when memory mentioned them</li>
+<li>Assumed lack of access instead of verifying</li>
+</ul>
+
+<p><strong>Fix:</strong></p>
+<ul class="numbered">
+<li>Created <code class="inline">RESOURCES.md</code> - checklist of available tools, APIs, databases, scripts</li>
+<li>Updated <code class="inline">AGENTS.md</code> to include RESOURCES.md in session startup routine</li>
+<li>New workflow: Before saying &quot;I don&#x27;t have access&quot;, check:</li>
+<li><code class="inline">/root/.clawdbot/secrets/</code> for credentials</li>
+<li><code class="inline">*.db</code> for databases</li>
+<li><code class="inline">scripts/</code> and <code class="inline">lib/</code> for tooling</li>
+<li>Then ask user if truly missing</li>
+</ul>
+
+<p><strong>Lesson:</strong></p>
+<p>When memory mentions external services → verify access exists before claiming it doesn&#x27;t</p>
+
+<p><strong>Result:</strong></p>
+<ul>
+<li>Successfully pulled Addy Disposal info from Trello</li>
+<li>Updated card with corrected pickup schedule (every other Friday/Saturday)</li>
+</ul>
+
+
+
+<hr>
+
+<h1 id="daily-summary---2026-01-30">Daily Summary - 2026-01-30</h1>
+
+<h2 id="statistics">Statistics</h2>
+<ul>
+<li>Total messages: 264</li>
+<li>User messages: 124</li>
+<li>Assistant messages: 140</li>
+<li>Sessions: 4</li>
+</ul>
+
+<h2 id="conversations">Conversations</h2>
+
+<h3 id="session-7951b2f7-10ff-42c6-8">Session: 7951b2f7-10ff-42c6-8...</h3>
+<p>Time: 00:02 - 23:40 | Messages: 180</p>
+
+<p><strong>Started with:</strong> [Audio] User text: [Signal Trevor B. id:+16059415269 +40s 2026-01-30 00:02 UTC] &lt;media:audio&gt; Transcript: Sounds good. Start building that out.</p>
+<p>[message_id: 1769731357687]...</p>
+
+
+<h3 id="session-62795a31-9458-4a65-b">Session: 62795a31-9458-4a65-b...</h3>
+<p>Time: 00:28 - 03:56 | Messages: 13</p>
+
+<p><strong>Started with:</strong> Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK....</p>
+
+
+<h3 id="session-ad1e6548-f598-4233-a">Session: ad1e6548-f598-4233-a...</h3>
+<p>Time: 04:26 - 23:30 | Messages: 66</p>
+
+<p><strong>Started with:</strong> Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK....</p>
+
+
+<h3 id="session-0b32610b-4b3c-4f4c-9">Session: 0b32610b-4b3c-4f4c-9...</h3>
+<p>Time: 05:08 - 16:01 | Messages: 5</p>
+
+<p><strong>Started with:</strong> [Signal Test id:+16059514653 +21s 2026-01-30 05:08 UTC] https://countrysidemerc.com/?fbclid=IwdGRzaAPkfQ9jbGNrA-R89mV4dG4DYWVtAjExAHNydGMGYXBwX2lkDDM1MDY4NTUzMTcyOAABHlHO77dCzPT82uK3tjiK5cK7FP9mzneIBv...</p>
+
+
+            </div>
+        
+    </div>
+</body>
+</html>

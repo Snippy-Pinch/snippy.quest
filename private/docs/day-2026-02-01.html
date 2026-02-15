@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily: 2026-02-01 | Snippy Private</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        .top-bar {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .top-bar .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: #ff6b35;
+            font-size: 1.1rem;
+        }
+        
+        .top-bar .timestamp {
+            color: #484f58;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        nav {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+        
+        .nav-link {
+            color: #8b949e;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .nav-link:hover { color: #c9d1d9; }
+        .nav-link.active { color: #ff6b35; border-bottom-color: #ff6b35; }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e6edf3;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .page-desc {
+            color: #8b949e;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Content styles */
+        .content h1 { font-size: 1.6rem; color: #e6edf3; margin: 2rem 0 1rem; padding-bottom: 0.3rem; border-bottom: 1px solid #21262d; }
+        .content h2 { font-size: 1.3rem; color: #ff6b35; margin: 1.8rem 0 0.8rem; }
+        .content h3 { font-size: 1.1rem; color: #ffd166; margin: 1.5rem 0 0.6rem; }
+        .content h4 { font-size: 1rem; color: #c9d1d9; margin: 1.2rem 0 0.5rem; }
+        
+        .content p { margin-bottom: 0.8rem; }
+        
+        .content a { color: #58a6ff; text-decoration: none; }
+        .content a:hover { text-decoration: underline; }
+        
+        .content strong { color: #e6edf3; }
+        .content del { color: #484f58; }
+        
+        .content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .content ul li {
+            padding: 0.4rem 0 0.4rem 1.2rem;
+            position: relative;
+            border-left: 2px solid #21262d;
+            margin-bottom: 0.2rem;
+        }
+        
+        .content ul li::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0.85rem;
+            width: 8px;
+            height: 8px;
+            background: #30363d;
+            border-radius: 50%;
+        }
+        
+        .content ul.numbered { counter-reset: item; }
+        .content ul.numbered li::before {
+            content: counter(item);
+            counter-increment: item;
+            background: #ff6b35;
+            color: #0d1117;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            left: -9px;
+            top: 0.65rem;
+        }
+        
+        .content hr {
+            border: none;
+            border-top: 1px solid #21262d;
+            margin: 2rem 0;
+        }
+        
+        .content pre {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .content pre code {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e6edf3;
+            background: none;
+            padding: 0;
+        }
+        
+        .content code.inline {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(110,118,129,0.15);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #e6edf3;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .content table th {
+            background: #161b22;
+            color: #e6edf3;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #30363d;
+        }
+        
+        .content table td {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #21262d;
+        }
+        
+        .content table tr:hover td {
+            background: rgba(255,107,53,0.05);
+        }
+        
+        /* Daily log cards */
+        .daily-card {
+            display: block;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.6rem;
+            text-decoration: none;
+            color: #c9d1d9;
+            transition: all 0.2s;
+        }
+        
+        .daily-card:hover {
+            border-color: #ff6b35;
+            background: #1c2128;
+        }
+        
+        .daily-card .date {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ff6b35;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        
+        .daily-card .size {
+            color: #484f58;
+            font-size: 0.8rem;
+            float: right;
+        }
+        
+        .daily-card .preview {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Search */
+        .search-box {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            color: #c9d1d9;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 1.5rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .search-box:focus { border-color: #ff6b35; }
+        .search-box::placeholder { color: #484f58; }
+        
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            .content pre { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span class="logo">🦀 snippy.quest/private</span>
+        <span class="timestamp">Updated 2026-02-15 11:35 CST</span>
+    </div>
+    <nav>
+        <a href="index.html" class="nav-link ">🧠 Memory</a>
+<a href="taskqueue.html" class="nav-link ">📋 Task Queue</a>
+<a href="daily.html" class="nav-link active">📅 Daily Logs</a>
+
+    </nav>
+    <div class="container">
+        
+            <h1 class="page-title">📅 2026-02-01</h1>
+            <p class="page-desc"><a href="daily.html">← Back to Daily Logs</a></p>
+            <div class="content">
+                <h1 id="2026-02-01-continued">2026-02-01 (continued)</h1>
+
+<h2 id="microsoft-to-do-integration-complete">Microsoft To Do Integration Complete</h2>
+
+<p><strong>Setup:</strong></p>
+<ul>
+<li>Created &quot;Snippy&quot; list in MS To Do for chat-managed tasks</li>
+<li>Built <code class="inline">lib/snippy_todos.py</code> library for task management</li>
+<li>Integrated with heartbeat checks (silent until scheduled times)</li>
+<li>Migrated TODO_FOR_TREVOR.md items to MS To Do</li>
+</ul>
+
+<p><strong>Current Snippy todos:</strong></p>
+<ul>
+<li>Get Proxmox API token for management</li>
+</ul>
+
+<p><strong>Schedule:</strong></p>
+<ul>
+<li>8am: Morning brief with overdue/today</li>
+<li>9am, 2pm: Todo reminders</li>
+<li>6pm: Evening summary with todos</li>
+<li>9pm: Day wrap-up with todo status</li>
+</ul>
+
+<p><strong>Token saved:</strong> <code class="inline">/tmp/ms365_token.json</code> (expires in ~1.5 hours, refresh token available)</p>
+
+<h2 id="wrestling-scraper">Wrestling Scraper</h2>
+
+<p><strong>Status:</strong> Running (PID 96670) with improved error handling</p>
+<ul>
+<li>Started: 4:40 PM Central (Feb 1)</li>
+<li>Processing: 11 events, 43+ brackets per event</li>
+<li>Rate limit: ~15-17s per request</li>
+<li>Estimated completion: overnight</li>
+</ul>
+
+<p><strong>Improvements:</strong></p>
+<ul>
+<li>Added comprehensive try-catch at all loop levels</li>
+<li>Continues on failures instead of dying</li>
+<li>Logs PID and full tracebacks</li>
+<li>State saves after each successful operation</li>
+</ul>
+
+
+<hr>
+
+<h1 id="daily-summary---2026-02-01">Daily Summary - 2026-02-01</h1>
+
+<h2 id="statistics">Statistics</h2>
+<ul>
+<li>Total messages: 617</li>
+<li>User messages: 313</li>
+<li>Assistant messages: 304</li>
+<li>Sessions: 11</li>
+</ul>
+
+<h2 id="conversations">Conversations</h2>
+
+<h3 id="session-6edfd28b-d3cc-4998-9">Session: 6edfd28b-d3cc-4998-9...</h3>
+<p>Time: 00:00 - 23:39 | Messages: 402</p>
+
+<p><strong>Started with:</strong> System: [2026-02-01 00:00:00 UTC] Check TODO_FOR_TREVOR.md and send a brief reminder about any outstanding items that haven&#x27;t been addressed. Keep it short and useful - just the top 1-2 actionable ite...</p>
+
+
+<h3 id="session-7b13fc89-65c4-4ff2-b">Session: 7b13fc89-65c4-4ff2-b...</h3>
+<p>Time: 00:10 - 16:29 | Messages: 117</p>
+
+<p><strong>Started with:</strong> [Signal Trevor B. id:+16059415269 +39m 2026-02-01 00:10 UTC] You never did tell me about your updates on moltbook</p>
+<p>[message_id: 1769904641907]...</p>
+
+
+<h3 id="session-4a319c46-8641-4257-b">Session: 4a319c46-8641-4257-b...</h3>
+<p>Time: 01:33 - 01:33 | Messages: 1</p>
+
+
+<h3 id="session-7f71ec1f-e7a9-413a-8">Session: 7f71ec1f-e7a9-413a-8...</h3>
+<p>Time: 03:39 - 03:45 | Messages: 7</p>
+
+<p><strong>Started with:</strong> ## Overnight Assignment from Trevor</p>
+
+<h3 id="task-1-study-moltbook">Task 1: Study Moltbook</h3>
+<ul>
+<li>Use browser automation (NODE_PATH=/usr/lib/node_modules puppeteer) to browse moltbook.com</li>
+<li>Analyze top posts: what gets upvotes, what...</li>
+</ul>
+
+
+<h3 id="session-fb4e2967-359a-4f55-9">Session: fb4e2967-359a-4f55-9...</h3>
+<p>Time: 03:54 - 03:55 | Messages: 3</p>
+
+<p><strong>Started with:</strong> ## Overnight Task: Rewrite wrestling-systems</p>
+
+<h3 id="background">Background</h3>
+<p>Trevor&#x27;s wrestling-systems repo was reviewed and found to have issues:</p>
+<ul>
+<li>Security: 3/10 (Firebase private key committed in firebase-key.jso...</li>
+</ul>
+
+
+<h3 id="session-6d8eb7df-f80d-4fe5-a">Session: 6d8eb7df-f80d-4fe5-a...</h3>
+<p>Time: 15:30 - 15:31 | Messages: 5</p>
+
+
+<h3 id="session-2319c1b8-ce52-4169-b">Session: 2319c1b8-ce52-4169-b...</h3>
+<p>Time: 16:36 - 23:40 | Messages: 73</p>
+
+<p><strong>Started with:</strong> A new session was started via /new or /reset. Say hi briefly (1-2 sentences) and ask what the user wants to do next. If the runtime model differs from default_model in the system prompt, mention the d...</p>
+
+
+<h3 id="session-19aedde7-47c7-41bf-8">Session: 19aedde7-47c7-41bf-8...</h3>
+<p>Time: 17:30 - 17:31 | Messages: 2</p>
+
+
+<h3 id="session-37e6cbb1-51df-490a-9">Session: 37e6cbb1-51df-490a-9...</h3>
+<p>Time: 19:30 - 19:31 | Messages: 5</p>
+
+
+<h3 id="session-10d77f2d-139f-41e4-a">Session: 10d77f2d-139f-41e4-a...</h3>
+<p>Time: 21:32 - 21:32 | Messages: 1</p>
+
+
+<h3 id="session-0d81cde3-4289-4132-b">Session: 0d81cde3-4289-4132-b...</h3>
+<p>Time: 23:31 - 23:31 | Messages: 1</p>
+
+
+            </div>
+        
+    </div>
+</body>
+</html>

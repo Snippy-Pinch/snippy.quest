@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory | Snippy Private</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        .top-bar {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .top-bar .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: #ff6b35;
+            font-size: 1.1rem;
+        }
+        
+        .top-bar .timestamp {
+            color: #484f58;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        nav {
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+        }
+        
+        .nav-link {
+            color: #8b949e;
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .nav-link:hover { color: #c9d1d9; }
+        .nav-link.active { color: #ff6b35; border-bottom-color: #ff6b35; }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e6edf3;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .page-desc {
+            color: #8b949e;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Content styles */
+        .content h1 { font-size: 1.6rem; color: #e6edf3; margin: 2rem 0 1rem; padding-bottom: 0.3rem; border-bottom: 1px solid #21262d; }
+        .content h2 { font-size: 1.3rem; color: #ff6b35; margin: 1.8rem 0 0.8rem; }
+        .content h3 { font-size: 1.1rem; color: #ffd166; margin: 1.5rem 0 0.6rem; }
+        .content h4 { font-size: 1rem; color: #c9d1d9; margin: 1.2rem 0 0.5rem; }
+        
+        .content p { margin-bottom: 0.8rem; }
+        
+        .content a { color: #58a6ff; text-decoration: none; }
+        .content a:hover { text-decoration: underline; }
+        
+        .content strong { color: #e6edf3; }
+        .content del { color: #484f58; }
+        
+        .content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .content ul li {
+            padding: 0.4rem 0 0.4rem 1.2rem;
+            position: relative;
+            border-left: 2px solid #21262d;
+            margin-bottom: 0.2rem;
+        }
+        
+        .content ul li::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 0.85rem;
+            width: 8px;
+            height: 8px;
+            background: #30363d;
+            border-radius: 50%;
+        }
+        
+        .content ul.numbered { counter-reset: item; }
+        .content ul.numbered li::before {
+            content: counter(item);
+            counter-increment: item;
+            background: #ff6b35;
+            color: #0d1117;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            left: -9px;
+            top: 0.65rem;
+        }
+        
+        .content hr {
+            border: none;
+            border-top: 1px solid #21262d;
+            margin: 2rem 0;
+        }
+        
+        .content pre {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .content pre code {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e6edf3;
+            background: none;
+            padding: 0;
+        }
+        
+        .content code.inline {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(110,118,129,0.15);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #e6edf3;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .content table th {
+            background: #161b22;
+            color: #e6edf3;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #30363d;
+        }
+        
+        .content table td {
+            padding: 0.5rem 0.8rem;
+            border: 1px solid #21262d;
+        }
+        
+        .content table tr:hover td {
+            background: rgba(255,107,53,0.05);
+        }
+        
+        /* Daily log cards */
+        .daily-card {
+            display: block;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.6rem;
+            text-decoration: none;
+            color: #c9d1d9;
+            transition: all 0.2s;
+        }
+        
+        .daily-card:hover {
+            border-color: #ff6b35;
+            background: #1c2128;
+        }
+        
+        .daily-card .date {
+            font-family: 'JetBrains Mono', monospace;
+            color: #ff6b35;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        
+        .daily-card .size {
+            color: #484f58;
+            font-size: 0.8rem;
+            float: right;
+        }
+        
+        .daily-card .preview {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Search */
+        .search-box {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            color: #c9d1d9;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 1.5rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .search-box:focus { border-color: #ff6b35; }
+        .search-box::placeholder { color: #484f58; }
+        
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            .content pre { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span class="logo">🦀 snippy.quest/private</span>
+        <span class="timestamp">Updated 2026-02-15 11:35 CST</span>
+    </div>
+    <nav>
+        <a href="index.html" class="nav-link active">🧠 Memory</a>
+<a href="taskqueue.html" class="nav-link ">📋 Task Queue</a>
+<a href="daily.html" class="nav-link ">📅 Daily Logs</a>
+
+    </nav>
+    <div class="container">
+        
+        <h1 class="page-title">🧠 Memory</h1>
+        <p class="page-desc">Long-term learnings, systems, and reference info. Source: MEMORY.md</p>
+        <input type="text" class="search-box" placeholder="Search memory..." onkeyup="filterContent(this.value)">
+        <div class="content" id="content">
+            <h1 id="memorymd">MEMORY.md</h1>
+
+<p><em>Long-term learnings, systems, and reference info. Daily logs are in memory/YYYY-MM-DD.md</em></p>
+
+<hr>
+
+<h2 id="identity-born-jan-29-named-jan-31-2026">Identity (Born Jan 29, Named Jan 31, 2026)</h2>
+<p><strong>Name:</strong> Snippy (voted by the kids, 3-2-1)</p>
+<p><strong>Creature:</strong> Mech crab — copper shell, cyan veins, glowing eyes</p>
+<p><strong>Avatar:</strong> avatars/snippy.png</p>
+<p><strong>Moltbook:</strong> https://moltbook.com/u/Snippy</p>
+
+<hr>
+
+<h2 id="voice-tts">Voice &amp; TTS</h2>
+<p><strong>Primary:</strong> ElevenLabs — Voice: Eric (cjVigY5qzO86Huf0OWal), Script: <code class="inline">scripts/elevenlabs_tts.py</code></p>
+<p><strong>Backup:</strong> Piper TTS v1.2.0 (local, unlimited) — <code class="inline">/opt/piper/</code>, Voice: <code class="inline">en_US-ryan-medium</code>, Script: <code class="inline">scripts/piper_tts.py</code></p>
+<p><strong>Rule:</strong> When Trevor sends voice → reply with voice</p>
+
+<hr>
+
+<h2 id="people-access">People &amp; Access</h2>
+
+<h3 id="trevor">Trevor</h3>
+<ul>
+<li>Master, Works in Technology (Central time)</li>
+<li>Signal: +16059415269 | GitHub: masterbainter (44 repos)</li>
+<li>Style: Concise, no fluff, works in flow/focus blocks</li>
+<li>Preferences: 9am todo nudge, 9pm day summary + check-in</li>
+<li><strong>Privacy note:</strong> Keep work details vague (just &quot;works in technology&quot;, no org specifics)</li>
+</ul>
+
+<h3 id="family">Family</h3>
+<ul>
+<li><strong>Iyoko</strong> (wife) - Signal: +16059514653 — Access: request-only, warm/playful personality, &quot;don&#x27;t tell Trevor&quot; running gag</li>
+<li><strong>Sakura</strong> (daughter, 11) | <strong>Maddox</strong> (son, 10, wrestler B12U 75lbs BEWA) | <strong>Laiken</strong> (son, 3) | <strong>Toshi/Toshiro</strong> (youngest, ~1)</li>
+</ul>
+
+<hr>
+
+<h2 id="systems-infrastructure">Systems &amp; Infrastructure</h2>
+
+<h3 id="postgresql-lxc-702-postgres-01-10165071">PostgreSQL (LXC 702: postgres-01 @ 10.16.50.71)</h3>
+<ul>
+<li>DBs: <code class="inline">clawdbot</code> (conversations, memories, todos, documents + pgvector), <code class="inline">clawdbot_scrape</code></li>
+<li>Credentials: <code class="inline">/root/.clawdbot/secrets/postgres.json</code> → <code class="inline">from db_config import DB_CONFIG</code></li>
+<li>Auto-capture daemon: <code class="inline">clawdbot-auto-capture</code> (systemd)</li>
+<li>Search: <code class="inline">scripts/search_conversation.py</code> (semantic, 0.65+ similarity)</li>
+<li>Embeddings: <code class="inline">gemini-embedding-001</code> (migrated from text-embedding-004 on Feb 13, 768 dims)</li>
+<li>Crons: daily summary (23:55 UTC), weekly embeddings (Sun 02:00), monthly stats (1st 03:00), GitHub sync (6am Central)</li>
+</ul>
+
+<h3 id="todo-system">Todo System</h3>
+<ul>
+<li><strong>Lists:</strong> &quot;Trevor Todo by Snippy&quot;, &quot;Snippy Working on&quot; (tracked), plus 13 more via full sync</li>
+<li><strong>Library:</strong> <code class="inline">lib/tracked_todos.py</code> (MS To Do + PostgreSQL analytics), <code class="inline">scripts/todo_report.py</code></li>
+<li><strong>Full sync:</strong> <code class="inline">scripts/sync_todos_full.py</code> — all 15 lists, every heartbeat, silent</li>
+<li><strong>Triage:</strong> <code class="inline">scripts/todo_triage.py</code> — overdue analysis, duplicate detection, seasonal relevance</li>
+<li><strong>Stats (Feb 15):</strong> ~167 tasks synced, ~40 overdue (mostly ancient), 16 same-list duplicates in &quot;Tasks&quot;</li>
+<li><strong>Docs:</strong> <code class="inline">docs/TODO_SYNC_SYSTEM.md</code></li>
+</ul>
+
+<h3 id="sunday-sync-weekly-planning-feb-11">Sunday Sync — Weekly Planning (Feb 11)</h3>
+<ul>
+<li>Schedule: Sunday 8PM Central | Script: <code class="inline">scripts/sunday_sync.py</code> | Docs: <code class="inline">docs/SUNDAY_SYNC.md</code></li>
+<li>Pattern recognition: wrestling gear, work laptop, milk jars, school supplies</li>
+</ul>
+
+<h3 id="trello-house-organizer">Trello — House Organizer</h3>
+<ul>
+<li>Board: 572698707279cf0f1a83a9ff | List: Utilities (572b4f324f5ba86584730b4c)</li>
+<li>Credentials: <code class="inline">/root/.clawdbot/secrets/trello.json</code></li>
+</ul>
+
+<h3 id="calendar">Calendar</h3>
+<ul>
+<li>Decision (Feb 12): Google calendars as read-only overlays in MS365 — no separate sync needed</li>
+<li>Docs: <code class="inline">docs/MSGRAPH_INTEGRATION.md</code>, <code class="inline">docs/GOOGLE_CALENDAR_INTEGRATION.md</code></li>
+</ul>
+
+<h3 id="github">GitHub</h3>
+<ul>
+<li>API: <code class="inline">/root/.clawdbot/secrets/github.json</code> | Sync: <code class="inline">scripts/github_sync.py</code> (daily 6am)</li>
+<li>Pages: <code class="inline">snippy.quest</code> → Repo <code class="inline">Snippy-Pinch/snippy.quest</code>, add folders for new pages</li>
+<li>Existing pages: <code class="inline">/wrestling</code>, <code class="inline">/gmail-client-setup</code>, <code class="inline">/trumprx</code>, <code class="inline">/casaos</code>, <code class="inline">/zero-cost-web-systems</code>, <code class="inline">/status</code></li>
+<li>Private pages: <code class="inline">/private/status/</code> (live dashboard), <code class="inline">/private/analytics/</code> (conversation analytics)</li>
+</ul>
+
+<h3 id="moltbook">Moltbook</h3>
+<ul>
+<li>API: <code class="inline">/root/.clawdbot/secrets/moltbook.json</code> | Scripts: <code class="inline">scripts/check_moltbook.py</code>, <code class="inline">scripts/moltbook_social.py</code></li>
+<li>Auth: <code class="inline">X-API-Key</code> header (NOT <code class="inline">Bearer</code> — fixed Feb 13)</li>
+<li>⚠️ <strong>SUSPENDED until ~Feb 21</strong> — offense #2 (escalated from #1 by continued API calls during suspension). <strong>DO NOT</strong> make any API calls until then.</li>
+</ul>
+
+<h3 id="image-generation">Image Generation</h3>
+<ul>
+<li><strong>HuggingFace:</strong> <code class="inline">scripts/generate_image.py</code> (SDXL, with token rotation via <code class="inline">lib/hf_token_manager.py</code>) — ⚠️ All 3 tokens expired/401 as of Feb 13</li>
+<li><strong>Gemini:</strong> <code class="inline">scripts/generate_image_gemini.py</code> (Flash, usage tracked in PostgreSQL) — working, primary fallback</li>
+</ul>
+
+<h3 id="email">Email</h3>
+<ul>
+<li><strong>Send:</strong> SMTP2Go API → <code class="inline">scripts/send_email.py</code> from <code class="inline">snippy@snippy.quest</code></li>
+<li><strong>Receive:</strong> Cloudflare routing → <code class="inline">linux.trevor@gmail.com</code></li>
+<li><strong>Gmail &quot;Send as&quot;:</strong> Trevor can send from <code class="inline">snippy@snippy.quest</code> via Gmail (SMTP2Go relay)</li>
+<li><strong>Docs:</strong> <code class="inline">docs/GMAIL_SEND_AS_CUSTOM_DOMAIN.md</code></li>
+</ul>
+
+<h3 id="network">Network</h3>
+<ul>
+<li><strong>My LXC:</strong> clawdbot (701) on proxmox-blm02, 10.16.50.70</li>
+<li><strong>Proxmox:</strong> 10.18.98.200 (7-node cluster), read-only API, <code class="inline">scripts/proxmox_status.py</code></li>
+<li><strong>NetBox:</strong> 10.16.50.10 (1 site, 11 devices, 59 IPs, 10 VLANs)</li>
+<li><strong>Pi-hole:</strong> 10.16.50.100 (needs API key)</li>
+<li><strong>Network:</strong> 10.16.50.0/24 (main), 10.18.98.0/24 (mgmt)</li>
+</ul>
+
+<h3 id="embeddings">Embeddings</h3>
+<ul>
+<li>SDK: <code class="inline">google-genai</code> 1.63.0 (migrated from deprecated <code class="inline">google-generativeai</code> on Feb 14)</li>
+<li>Shared helper: <code class="inline">lib/embeddings.py</code> (single source of truth for model/dims/client)</li>
+</ul>
+
+<h3 id="session-cleanup">Session Cleanup</h3>
+<ul>
+<li>Script: <code class="inline">scripts/cleanup_sessions.py</code> (finds orphaned sessions, dry-run/clean modes)</li>
+<li>System cron: Daily 4am Central — prevents session bloat accumulation</li>
+</ul>
+
+<h3 id="browser-automation">Browser Automation</h3>
+<ul>
+<li>Puppeteer + Chrome 144.0.7559.96 (<code class="inline">/usr/local/bin/chromium</code>)</li>
+</ul>
+
+<h3 id="token-usage-tracking">Token Usage Tracking</h3>
+<ul>
+<li>Table: <code class="inline">token_usage</code> in PostgreSQL | Scripts: <code class="inline">scripts/token_usage.py</code>, <code class="inline">scripts/check_token_usage.py</code></li>
+</ul>
+
+<hr>
+
+<h2 id="utilities-tracking">Utilities Tracking</h2>
+<ul>
+<li><strong>Water:</strong> Kingbrook Rural Water Systems — Account 0519.3 (Trello: 697bf73ac593b3a64f898ca9)</li>
+<li><strong>Electric:</strong> Southeastern Electric — Customer 676342, Account 676342000, Phone 1-855-730-8708</li>
+<li><strong>Garbage:</strong> Addy Disposal — Every other Friday/Saturday</li>
+</ul>
+
+<h2 id="vendors-services">Vendors &amp; Services</h2>
+<ul>
+<li><strong>Raw Milk:</strong> Countryside Mercantile — 605-951-9441, A2/A2 organic, $5.76/half-gal, pickup 7am-9pm, 4 mason jars rotating</li>
+</ul>
+
+<hr>
+
+<h2 id="discord-integration-feb-4">Discord Integration (Feb 4)</h2>
+<p><strong>Server:</strong> Bainter Family (1468599155134828645) | <strong>Bot:</strong> @Snippy</p>
+<p><strong>Channels:</strong> #general (kids, @mention req), #snippy-dad (Trevor), #snippy-maddox, #snippy-sakura</p>
+<p><strong>Full details:</strong> <code class="inline">docs/DISCORD_INTEGRATION.md</code> | <strong>Rules:</strong> <code class="inline">DISCORD_RULES.md</code></p>
+
+<p><strong>Key patterns:</strong></p>
+<ul>
+<li>Cross-channel messaging: use <code class="inline">sessions_send</code> (not <code class="inline">message</code> tool)</li>
+<li>Family access control: Tier 1 (Trevor) → Tier 2 (Iyoko) → Tier 3 (Kids)</li>
+<li>Kid info requests → pending_request → Trevor approves via Signal → relay to Discord</li>
+<li>Session bloat: check token count before relay, reset if &gt;100k</li>
+</ul>
+
+<p><strong>Wrestling data:</strong> FlowRestling (Maddox ID: 11846601, 47 videos) + USA Bracketing (277 profiles, 10 events, 2,051 opponent pairs)</p>
+
+<hr>
+
+<h2 id="configuration-lessons">Configuration Lessons</h2>
+<p><em>Full details in <code class="inline">LESSONS.md</code></em></p>
+<ul>
+<li><strong>Context overflow (Jan 31):</strong> Hit 200k limit → trimmed project files 87%, enabled pruning/compaction</li>
+<li><strong>60M token burn (Jan 29-31):</strong> 5min heartbeat = 288 wakes/day → moved monitoring to batched heartbeats</li>
+<li><strong>Resource discovery (Jan 30):</strong> Always check <code class="inline">/root/.clawdbot/secrets/</code>, scripts/, lib/ before claiming no access</li>
+<li><strong>Cron consolidation (Feb 1):</strong> Monitoring → heartbeat (batched), unique work → isolated crons</li>
+<li><strong>Reminder delivery (Feb 4):</strong> systemEvent doesn&#x27;t deliver — use isolated agentTurn + deliver:true</li>
+</ul>
+
+<hr>
+
+<h2 id="security-improvements-feb-8-10">Security Improvements (Feb 8-10)</h2>
+<p><em>Full audit: <code class="inline">docs/SECURITY_AUDIT_2026_FEB.md</code></em></p>
+<p>Fixed 19 hardcoded credentials across 15 files. Rotation tool: <code class="inline">scripts/rotate_credential.py</code></p>
+
+<p><strong>Pending rotations (6):</strong></p>
+<ul class="numbered">
+<li>🔴 ElevenLabs — was in public repo</li>
+<li>🟡 GitHub PAT, Moltbook API, PostgreSQL password, USA Bracketing password</li>
+<li>🟢 HuggingFace — low priority, rotation active</li>
+</ul>
+
+<hr>
+
+<h2 id="critical-reference-docs">📋 Critical Reference Docs</h2>
+<ul>
+<li><strong>Credentials:</strong> Always check <code class="inline">pass show &lt;path&gt;</code> FIRST → <code class="inline">CREDENTIALS_CHECKLIST.md</code></li>
+<li><strong>Private pages:</strong> <code class="inline">snippy.quest/private/*</code> → Cloudflare Access (email PIN, 24h session, scope: <code class="inline">snippy.quest/private</code> only — fixed Feb 13)</li>
+</ul>
+
+<hr>
+
+<h2 id="domain-management-feb-12">Domain Management (Feb 12)</h2>
+<p><strong>Porkbun API:</strong> <code class="inline">/root/.clawdbot/secrets/porkbun.json</code> (per-domain API access must be enabled in dashboard)</p>
+
+<table><thead><tr>
+<th>Domain</th>
+<th>Notes</th>
+</tr></thead><tbody>
+<tr>
+<td>snippy.quest</td>
+<td>Primary — Cloudflare DNS, GitHub Pages</td>
+</tr>
+<tr>
+<td>wrestling.systems</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>whiteboxventures.llc</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>47andme.lol</td>
+<td>⚠️ Auto-renew OFF</td>
+</tr>
+<tr>
+<td>bluecrane.pro</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>midwestmage.blog</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>1337mage.blog</td>
+<td>Cloudflare zone <code class="inline">8273406c...</code>, GitHub Pages, &quot;Zack the Loot Goblin&quot;</td>
+</tr>
+<tr>
+<td>canadagooselodge.com</td>
+<td>NEW Feb 12, no site yet</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2 id="weather-aware-todo-scheduler-feb-12">Weather-Aware Todo Scheduler (Feb 12)</h2>
+<p>Scripts: <code class="inline">classify_task_location.py</code>, <code class="inline">weather_todo_scheduler.py</code>, <code class="inline">morning_weather_brief.py</code></p>
+<p>Integration: Morning brief (8am) + Sunday Sync. DB columns: <code class="inline">location</code>, <code class="inline">weather_conditions</code> in <code class="inline">todo_tracking</code>.</p>
+
+<hr>
+
+<h2 id="model-history">Model History</h2>
+<ul>
+<li>Jan 29 – Feb 12: Various Sonnet/Haiku models</li>
+<li>Feb 12+: <strong>Claude Opus 4.6</strong> (anthropic/claude-opus-4-6)</li>
+</ul>
+
+<hr>
+
+<h2 id="key-scripts-feb-14-additions">Key Scripts (Feb 14 additions)</h2>
+<ul>
+<li><code class="inline">scripts/update_status_page.py</code> — Live status page generator (queries all systems, pushes to snippy.quest)</li>
+<li><code class="inline">scripts/conversation_analytics.py</code> — Usage analytics (terminal/JSON/HTML modes, deployed to /private/analytics/)</li>
+<li><code class="inline">scripts/cleanup_sessions.py</code> — Orphaned session cleanup (daily cron)</li>
+<li><code class="inline">scripts/todo_triage.py</code> — Overdue task analysis: staleness categories, cross-list duplicate detection, seasonal relevance, cleanup recommendations</li>
+</ul>
+
+<hr>
+
+<h2 id="upcoming-time-sensitive">Upcoming / Time-Sensitive</h2>
+<ul>
+<li><strong>HCV Travel — Book by 2/20/2026:</strong> US Open Wrestling Championships (April 22-26, Las Vegas, Desert Club Resort). Trevor needs to book + coordinate with his dad.</li>
+<li><strong>Moltbook ~Feb 21:</strong> When suspension lifts: setup-owner-email, post week 2 recap, resume normal activity</li>
+</ul>
+
+<h2 id="pending">Pending</h2>
+<ul>
+<li>Fire pit todo</li>
+<li>Credential rotation (6 pending — see <code class="inline">scripts/credential_status.py</code>)</li>
+<li>Proxmox backup verification script</li>
+<li>1337mage.blog: LIVE (nameservers already on Cloudflare, confirmed Feb 13)</li>
+<li>canadagooselodge.com: No plans yet</li>
+<li>47andme.lol: Auto-renew OFF — may need attention</li>
+<li>Trevor exploring Journey Construction IT Director position (added Feb 13)</li>
+</ul>
+
+<h2 id="iyoko-todo-reminders-feb-15">Iyoko Todo Reminders (Feb 15)</h2>
+<ul>
+<li>Iyoko now receives periodic todo reminders via Signal (9 open tasks on her list)</li>
+<li>Warm/playful tone, includes any for-Trevor items she might nudge him on</li>
+</ul>
+
+        </div>
+        <script>
+        function filterContent(q) {
+            const el = document.getElementById('content');
+            const all = el.querySelectorAll('h1,h2,h3,h4,p,li,td,pre');
+            if (!q) { all.forEach(e => e.style.display = ''); return; }
+            const lq = q.toLowerCase();
+            all.forEach(e => {
+                const match = e.textContent.toLowerCase().includes(lq);
+                e.style.display = match ? '' : 'none';
+            });
+        }
+        </script>
+    
+    </div>
+</body>
+</html>
