@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 Best Jokes</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #0f0f23;
+            color: #e8e8e8;
+            min-height: 100vh;
+        }
+        
+        header {
+            text-align: center;
+            padding: 3rem 1.5rem 2rem;
+            background: linear-gradient(180deg, #1a1a3e 0%, #0f0f23 100%);
+        }
+        
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(2rem, 7vw, 3.5rem);
+            background: linear-gradient(135deg, #ffd700, #ff6b35, #ff3860);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #e8e8e8;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.25s;
+        }
+        
+        .btn:hover { background: rgba(255,107,53,0.2); border-color: #ff6b35; }
+        .btn.active { background: #ff6b35; border-color: #ff6b35; color: #fff; }
+        
+        .random-btn {
+            background: linear-gradient(135deg, #ff6b35, #ff3860);
+            border: none;
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+        
+        .random-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255,107,53,0.4);
+        }
+        
+        /* Spotlight mode */
+        .spotlight {
+            display: none;
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2.5rem 2rem;
+            background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,56,96,0.1));
+            border: 1px solid rgba(255,107,53,0.3);
+            border-radius: 1.5rem;
+            text-align: center;
+            animation: popIn 0.3s ease-out;
+        }
+        
+        .spotlight.show { display: block; }
+        
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .spotlight .joke-number {
+            font-family: 'Fredoka One', cursive;
+            color: #ff6b35;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .spotlight .setup {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .spotlight .punchline {
+            font-size: 1.3rem;
+            color: #ffd700;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        
+        .spotlight .punchline.hidden {
+            opacity: 0;
+            user-select: none;
+        }
+        
+        .spotlight .tap-hint {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 0.8rem;
+        }
+        
+        /* Joke list */
+        .jokes-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem 4rem;
+        }
+        
+        .joke-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1rem;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 0.8rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .joke-card:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,107,53,0.3);
+            transform: translateX(4px);
+        }
+        
+        .joke-card .num {
+            position: absolute;
+            top: 0.8rem;
+            right: 1rem;
+            font-family: 'Fredoka One', cursive;
+            color: rgba(255,107,53,0.2);
+            font-size: 2rem;
+        }
+        
+        .joke-card .setup {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+            padding-right: 2.5rem;
+        }
+        
+        .joke-card .punchline {
+            color: #ffd700;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .joke-card .punchline.hidden {
+            color: transparent;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            user-select: none;
+        }
+        
+        .joke-card .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 1rem;
+            margin-top: 0.5rem;
+            background: rgba(255,255,255,0.06);
+            color: #888;
+        }
+        
+        /* Category colors */
+        .joke-card[data-cat="dad"] { border-left: 3px solid #4ecdc4; }
+        .joke-card[data-cat="pun"] { border-left: 3px solid #ff6b35; }
+        .joke-card[data-cat="animal"] { border-left: 3px solid #a8e6cf; }
+        .joke-card[data-cat="food"] { border-left: 3px solid #ffd700; }
+        .joke-card[data-cat="school"] { border-left: 3px solid #c4b5fd; }
+        .joke-card[data-cat="oneliner"] { border-left: 3px solid #ff3860; }
+        
+        .hidden-all .joke-card { display: none; }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #444;
+            font-size: 0.8rem;
+        }
+        footer a { color: #ff6b35; text-decoration: none; }
+        
+        /* Confetti */
+        .confetti-piece {
+            position: fixed;
+            width: 8px; height: 8px;
+            top: -10px;
+            z-index: 999;
+            pointer-events: none;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            to { top: 110vh; transform: rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>😂 100 Best Jokes</h1>
+        <p class="subtitle">Tap any joke to reveal the punchline</p>
+        
+        <div class="controls">
+            <button class="btn active" data-filter="all">All</button>
+            <button class="btn" data-filter="dad">👨 Dad</button>
+            <button class="btn" data-filter="pun">🔤 Pun</button>
+            <button class="btn" data-filter="animal">🐾 Animal</button>
+            <button class="btn" data-filter="food">🍕 Food</button>
+            <button class="btn" data-filter="school">📚 School</button>
+            <button class="btn" data-filter="oneliner">💥 One-liner</button>
+        </div>
+        
+        <button class="random-btn" id="randomBtn">🎲 Random Joke</button>
+        
+        <div class="spotlight" id="spotlight">
+            <div class="joke-number" id="spotNum">#1</div>
+            <div class="setup" id="spotSetup"></div>
+            <div class="punchline hidden" id="spotPunch"></div>
+            <div class="tap-hint" id="spotHint">tap to reveal punchline</div>
+        </div>
+    </header>
+    
+    <div class="jokes-container" id="jokesList"></div>
+    
+    <footer>
+        <p>Built by <a href="https://snippy.quest">Snippy</a> 🦀 • Feb 2026</p>
+    </footer>
+
+<script>
+const jokes = [
+    {s:"What creature is smarter than a talking parrot?", p:"A spelling bee.", c:"animal"},
+    {s:"How do you make a tissue dance?", p:"Put a little boogie in it.", c:"dad"},
+    {s:"What is the tallest building in the world?", p:"The library — it has so many stories.", c:"pun"},
+    {s:"How do trees access the internet?", p:"They log in.", c:"pun"},
+    {s:"Why should you never trust stairs?", p:"They're always up to something.", c:"dad"},
+    {s:"What do you get if you dip a cat in chocolate?", p:"A Kitty-Kat bar.", c:"animal"},
+    {s:"What food is never on time?", p:"Choco-late.", c:"food"},
+    {s:"What cookie flavor do monkeys love?", p:"Chocolate Chimp.", c:"animal"},
+    {s:"Why is a football stadium always cold?", p:"It has lots of fans.", c:"dad"},
+    {s:"What's the strongest animal in the sea?", p:"Mussels.", c:"animal"},
+    {s:"What kind of chicken is the funniest?", p:"A comedi-hen.", c:"animal"},
+    {s:"Why was the math book crying?", p:"It had lots of problems.", c:"school"},
+    {s:"What do dentists call their x-rays?", p:"Tooth pics.", c:"pun"},
+    {s:"What did one ocean say to the other?", p:"Nothing, it just waved.", c:"dad"},
+    {s:"Why was 6 afraid of 7?", p:"Because 7 ate 9.", c:"dad"},
+    {s:"What do you call a pencil with two erasers?", p:"Pointless.", c:"school"},
+    {s:"What's brown and sticky?", p:"A stick.", c:"dad"},
+    {s:"Why don't eggs tell jokes?", p:"They'd crack up.", c:"food"},
+    {s:"I'm on a seafood diet.", p:"I see food and I eat it.", c:"oneliner"},
+    {s:"Why did the bicycle fall over?", p:"It was two-tired.", c:"dad"},
+    {s:"How did the barber win the race?", p:"He knew a shortcut.", c:"pun"},
+    {s:"What do you call a pile of cats?", p:"A meow-tain.", c:"animal"},
+    {s:"What kind of music do planets like?", p:"Neptunes.", c:"pun"},
+    {s:"Why do cows have hooves instead of feet?", p:"Because they lactose.", c:"animal"},
+    {s:"What do you call a sleeping bull?", p:"A bulldozer.", c:"animal"},
+    {s:"Why did the bullet end up losing his job?", p:"He got fired.", c:"oneliner"},
+    {s:"How do you measure a snake?", p:"In inches — they don't have feet.", c:"animal"},
+    {s:"What does a house wear?", p:"Address.", c:"pun"},
+    {s:"How did the pig get to the hogspital?", p:"In a hambulance.", c:"animal"},
+    {s:"Why does Humpty Dumpty love autumn?", p:"Because he had a great fall.", c:"dad"},
+    {s:"What do you get when you cross a fish and an elephant?", p:"Swimming trunks.", c:"animal"},
+    {s:"Why did the bird get in trouble at school?", p:"For tweeting on a test.", c:"school"},
+    {s:"Where do most horses live?", p:"In neigh-borhoods.", c:"animal"},
+    {s:"What kind of keys are sweet?", p:"Cookies.", c:"food"},
+    {s:"Why was the broom late to school?", p:"It over-swept.", c:"school"},
+    {s:"What's the largest gem on earth?", p:"A baseball diamond.", c:"dad"},
+    {s:"Why can't noses be 12 inches long?", p:"They'd be a foot.", c:"dad"},
+    {s:"What sound does a nut make when it sneezes?", p:"Ca-shew!", c:"food"},
+    {s:"Which state is the smartest?", p:"Alabama — it has four A's and one B.", c:"dad"},
+    {s:"What's a bear with no teeth called?", p:"A gummy bear.", c:"animal"},
+    {s:"What kind of music do mummies listen to?", p:"Wrap music.", c:"pun"},
+    {s:"Why do vampires always seem sick?", p:"They're always coffin.", c:"pun"},
+    {s:"What musical instrument do you find in the bathroom?", p:"A tuba toothpaste.", c:"pun"},
+    {s:"How do astronomers organize a party?", p:"They planet.", c:"pun"},
+    {s:"Why do bees have sticky hair?", p:"Because they use a honeycomb.", c:"animal"},
+    {s:"What kind of car does a sheep like to drive?", p:"A Lamborghini.", c:"animal"},
+    {s:"What has four wheels and flies?", p:"A garbage truck.", c:"dad"},
+    {s:"What do you call an alligator in a vest?", p:"An investigator.", c:"animal"},
+    {s:"Why are pigs so bad at sports?", p:"They always hog the ball.", c:"animal"},
+    {s:"Why did the chicken join a band?", p:"Because it had the drumsticks.", c:"animal"},
+    {s:"What do you call a boomerang that won't come back?", p:"A stick.", c:"dad"},
+    {s:"Why did the scarecrow become a successful neurosurgeon?", p:"He was outstanding in his field.", c:"dad"},
+    {s:"What do you call a pudgy psychic?", p:"A four-chin teller.", c:"pun"},
+    {s:"How do celebrities stay cool?", p:"They have many fans.", c:"dad"},
+    {s:"How much money does a pirate pay for corn?", p:"A buccaneer.", c:"pun"},
+    {s:"Where do young trees go to learn?", p:"Elementree school.", c:"school"},
+    {s:"Why does Snoop Dogg use an umbrella?", p:"Fo' drizzle.", c:"oneliner"},
+    {s:"Why are pirates called pirates?", p:"Because they arrgh.", c:"dad"},
+    {s:"Why don't ants get sick?", p:"They have anty-bodies.", c:"animal"},
+    {s:"Why doesn't the sun go to college?", p:"It already has a million degrees.", c:"school"},
+    {s:"What is a gust of wind's favorite color?", p:"Blew.", c:"pun"},
+    {s:"What does a ghost wear to splash in puddles?", p:"BOOOOOts.", c:"pun"},
+    {s:"What's an avocado's favorite kind of music?", p:"Guac and roll.", c:"food"},
+    {s:"Who eats snails?", p:"People who don't like fast food.", c:"food"},
+    {s:"What does a triceratops sit on?", p:"Its tricera-bottom.", c:"animal"},
+    {s:"What kind of pizza do dogs eat?", p:"Pup-eroni pizza.", c:"food"},
+    {s:"What do you call a famous turtle?", p:"A shell-ebrity.", c:"animal"},
+    {s:"Why do hurricanes wear a monocle?", p:"Because they have one eye.", c:"dad"},
+    {s:"What did the clock ask the watch?", p:"Hour you doing?", c:"pun"},
+    {s:"What's the most famous fish?", p:"A starfish.", c:"animal"},
+    {s:"Why is it annoying to eat next to basketball players?", p:"They dribble all the time.", c:"dad"},
+    {s:"Which breed of dog can jump higher than buildings?", p:"Any dog — buildings can't jump.", c:"animal"},
+    {s:"Which superhero hits home runs?", p:"Batman.", c:"dad"},
+    {s:"Why did the chicken cross the playground?", p:"To get to the other slide.", c:"dad"},
+    {s:"What's an astronaut's favorite meal?", p:"Launch.", c:"food"},
+    {s:"What state does the most writing?", p:"Pencil-vania.", c:"pun"},
+    {s:"How did the hipster burn his tongue?", p:"He drank coffee before it was cool.", c:"oneliner"},
+    {s:"What do you call it when Batman skips church?", p:"Christian Bale.", c:"oneliner"},
+    {s:"How do you make an octopus laugh?", p:"With ten-tickles.", c:"animal"},
+    {s:"Why can't you trust duck doctors?", p:"They're all quacks.", c:"animal"},
+    {s:"What do you call a snowman with a six-pack?", p:"An abdominal snowman.", c:"dad"},
+    {s:"Why do seagulls fly over the ocean?", p:"Because if they flew over the bay, they'd be bagels.", c:"animal"},
+    {s:"What key is used to open bananas?", p:"A mon-key.", c:"food"},
+    {s:"How do you talk to a giant?", p:"You use big words.", c:"dad"},
+    {s:"What kind of milk comes from a pampered cow?", p:"Spoiled milk.", c:"food"},
+    {s:"What's a sea monster's favorite lunch?", p:"Fish and ships.", c:"food"},
+    {s:"Why is Peter Pan always flying?", p:"He Neverlands.", c:"pun"},
+    {s:"I hated facial hair…", p:"But then it grew on me.", c:"oneliner"},
+    {s:"It really takes guts…", p:"…to be an organ donor.", c:"oneliner"},
+    {s:"What did the plumber say to the singer?", p:"Nice pipes.", c:"pun"},
+    {s:"Which state has the most streets?", p:"Rhode Island.", c:"dad"},
+    {s:"Why do elephants hide in trees?", p:"Because they're really good at it.", c:"animal"},
+    {s:"RIP, boiling water.", p:"You will be mist.", c:"oneliner"},
+    {s:"How do you organize a space party?", p:"You planet. Wait, that's taken. You just wing it on rocket fuel.", c:"dad"},
+    {s:"Why did the golfer bring two pairs of pants?", p:"In case he got a hole in one.", c:"dad"},
+    {s:"What do you call cheese that isn't yours?", p:"Nacho cheese.", c:"food"},
+    {s:"Why couldn't the leopard play hide and seek?", p:"Because he was always spotted.", c:"animal"},
+    {s:"What do you call a fake noodle?", p:"An impasta.", c:"food"},
+    {s:"Why did the math teacher open a bakery?", p:"She wanted to make pi.", c:"school"},
+    {s:"What do you call a dog magician?", p:"A Labracadabrador.", c:"animal"},
+];
+
+const catLabels = {dad:"👨 Dad Joke",pun:"🔤 Pun",animal:"🐾 Animal",food:"🍕 Food",school:"📚 School",oneliner:"💥 One-liner"};
+let revealed = new Set();
+let currentFilter = "all";
+
+function renderJokes() {
+    const container = document.getElementById('jokesList');
+    container.innerHTML = '';
+    jokes.forEach((j, i) => {
+        if (currentFilter !== "all" && j.c !== currentFilter) return;
+        const card = document.createElement('div');
+        card.className = 'joke-card';
+        card.dataset.cat = j.c;
+        card.dataset.idx = i;
+        const isRevealed = revealed.has(i);
+        card.innerHTML = `
+            <div class="num">${i+1}</div>
+            <div class="setup">${j.s}</div>
+            <div class="punchline ${isRevealed ? '' : 'hidden'}">${j.p}</div>
+            <span class="tag">${catLabels[j.c] || j.c}</span>
+        `;
+        card.addEventListener('click', () => {
+            const pl = card.querySelector('.punchline');
+            if (pl.classList.contains('hidden')) {
+                pl.classList.remove('hidden');
+                revealed.add(i);
+            } else {
+                pl.classList.add('hidden');
+                revealed.delete(i);
+            }
+        });
+        container.appendChild(card);
+    });
+}
+
+// Filters
+document.querySelectorAll('.btn[data-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.btn[data-filter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderJokes();
+    });
+});
+
+// Random joke spotlight
+const spotlight = document.getElementById('spotlight');
+const spotSetup = document.getElementById('spotSetup');
+const spotPunch = document.getElementById('spotPunch');
+const spotNum = document.getElementById('spotNum');
+const spotHint = document.getElementById('spotHint');
+
+document.getElementById('randomBtn').addEventListener('click', () => {
+    const pool = currentFilter === "all" ? jokes : jokes.filter(j => j.c === currentFilter);
+    const idx = Math.floor(Math.random() * pool.length);
+    const joke = pool[idx];
+    const realIdx = jokes.indexOf(joke);
+    
+    spotNum.textContent = `#${realIdx + 1}`;
+    spotSetup.textContent = joke.s;
+    spotPunch.textContent = joke.p;
+    spotPunch.classList.add('hidden');
+    spotHint.textContent = 'tap to reveal punchline';
+    spotlight.classList.add('show');
+    spotlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
+    // Confetti burst
+    for (let i = 0; i < 20; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti-piece';
+        c.style.left = (30 + Math.random() * 40) + '%';
+        c.style.background = ['#ff6b35','#ffd700','#ff3860','#4ecdc4','#c4b5fd','#a8e6cf'][Math.floor(Math.random()*6)];
+        c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        c.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+        c.style.animationDelay = (Math.random() * 0.3) + 's';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+    }
+});
+
+spotPunch.addEventListener('click', () => {
+    spotPunch.classList.remove('hidden');
+    spotHint.textContent = '😂';
+});
+spotlight.addEventListener('click', (e) => {
+    if (e.target === spotPunch) return;
+    spotPunch.classList.toggle('hidden');
+    spotHint.textContent = spotPunch.classList.contains('hidden') ? 'tap to reveal punchline' : '😂';
+});
+
+renderJokes();
+</script>
+</body>
+</html>
