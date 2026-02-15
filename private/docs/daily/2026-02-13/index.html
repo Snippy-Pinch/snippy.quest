@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily: 2026-02-06 | Snippy Private</title>
+    <title>Daily: 2026-02-13 | Snippy Private</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
         
@@ -267,62 +267,146 @@
 <body>
     <div class="top-bar">
         <span class="logo">🦀 snippy.quest/private</span>
-        <span class="timestamp">Updated 2026-02-15 11:35 CST</span>
+        <span class="timestamp">Updated 2026-02-15 11:37 CST</span>
     </div>
     <nav>
-        <a href="index.html" class="nav-link ">🧠 Memory</a>
-<a href="taskqueue.html" class="nav-link ">📋 Task Queue</a>
-<a href="daily.html" class="nav-link active">📅 Daily Logs</a>
+        <a href="/private/docs/" class="nav-link ">🧠 Memory</a>
+<a href="/private/docs/taskqueue/" class="nav-link ">📋 Task Queue</a>
+<a href="/private/docs/daily/" class="nav-link active">📅 Daily Logs</a>
 
     </nav>
     <div class="container">
         
-            <h1 class="page-title">📅 2026-02-06</h1>
-            <p class="page-desc"><a href="daily.html">← Back to Daily Logs</a></p>
+            <h1 class="page-title">📅 2026-02-13</h1>
+            <p class="page-desc"><a href="/private/docs/daily/">← Back to Daily Logs</a></p>
             <div class="content">
-                <h1 id="daily-summary---2026-02-06">Daily Summary - 2026-02-06</h1>
+                <h1 id="2026-02-13-session-log">2026-02-13 Session Log</h1>
+
+<h2 id="background-work-930-am">Background Work (9:30 AM)</h2>
+<ul>
+<li><strong>MEMORY.md consolidation:</strong> Distilled Feb 10-12 learnings</li>
+<li>Added: Domain management (Porkbun API, 8 domains, 1337mage.blog status)</li>
+<li>Added: Weather-aware todo scheduler docs</li>
+<li>Added: Model history (Opus 4.6)</li>
+<li>Updated: Calendar section (no longer &quot;Planned&quot; — decision made)</li>
+<li>Trimmed: Security section (removed 5 duplicate subsections, kept summary + rotation tracker)</li>
+<li>Fixed: Duplicate &quot;Critical Reference Docs&quot; sections merged</li>
+<li>Updated: Pending items (credential rotation, domain DNS, auto-renew warning)</li>
+<li>Net result: -700 bytes while adding new content</li>
+<li><strong>TASKQUEUE.md:</strong> Repopulated with fresh tasks after completing everything</li>
+<li><strong>LESSONS.md:</strong> Fixed duplicate Config Self-Destruct entry, restored stripped markdown</li>
+<li><strong>Git history audit:</strong> Confirmed no secrets in git history, no remote (local-only repo)</li>
+<li><strong>Moved completed tasks</strong> from Active to Completed in TASKQUEUE.md</li>
+</ul>
+
+<h2 id="trevor-items-morning">Trevor Items (Morning)</h2>
+<ul>
+<li><strong>Added todo:</strong> &quot;Follow up on journeyman application&quot; — IT Director position at Journey Construction, Sioux Falls SD</li>
+<li>Link: https://journeyconstruction.applicantpro.com/jobs/3963504</li>
+<li>MS To Do task ID: AAMkADc5YmJm...tyiGAAA=, DB ID: 220</li>
+</ul>
+
+<h2 id="1337mageblog-status-update">1337mage.blog Status Update</h2>
+<ul>
+<li>Site is LIVE (not blocked as previously noted) — nameservers were already changed to Cloudflare</li>
+<li>Confirmed serving via Cloudflare + GitHub Pages, HTTP 200</li>
+<li>Previous &quot;BLOCKED&quot; status in MEMORY.md was stale</li>
+</ul>
+
+<h2 id="cloudflare-access-fix">Cloudflare Access Fix</h2>
+<ul>
+<li><strong>Bug:</strong> Access policy for &quot;Private Pages&quot; was protecting ALL of <code class="inline">snippy.quest</code> instead of just <code class="inline">snippy.quest/private/*</code></li>
+<li><strong>Fix:</strong> Updated Access app (ID: 8fe3eac4-8293-4161-a36c-38f3fe818a7b) domain from <code class="inline">snippy.quest</code> → <code class="inline">snippy.quest/private</code></li>
+<li>Policy still allows: linux.trevor@gmail.com, trevor@bainter.xyz (email OTP, 24h session)</li>
+</ul>
+
+<h2 id="embedding-model-migration">Embedding Model Migration</h2>
+<ul>
+<li><strong>Problem:</strong> Google <code class="inline">text-embedding-004</code> returning 404 errors, breaking semantic search and new message embeddings</li>
+<li><strong>Fix:</strong> Switched to <code class="inline">gemini-embedding-001</code> (output_dimensionality=768 to match pgvector column)</li>
+<li><strong>Files updated:</strong> 9 files (conversation_capture.py, memory_recall.py, 7 scripts)</li>
+<li><strong>Backfill:</strong> 1,341 embeddings generated, 0 errors, 0 NULL remaining</li>
+<li><strong>Daemon:</strong> Restarted, confirmed working with new model</li>
+<li><code class="inline">memory_search</code> tool also affected (same underlying Gemini embedding API) — should work now</li>
+</ul>
+
+<h3 id="script-health-check-330-pm">Script Health Check (3:30 PM)</h3>
+<ul>
+<li><strong>Fixed:</strong> 3 Moltbook scripts had wrong auth header (<code class="inline">Authorization: Bearer</code> → <code class="inline">X-API-Key</code>)</li>
+<li><code class="inline">check_moltbook.py</code>, <code class="inline">moltbook_social.py</code>, <code class="inline">moltbook_review.py</code></li>
+<li><strong>Moltbook suspended:</strong> &quot;Failing to answer AI verification challenge (offense #1)&quot; — lifts in ~22h</li>
+<li><strong>HuggingFace tokens expired:</strong> All 3 tokens return 401. Need new tokens for image generation (Gemini fallback still works)</li>
+<li><strong>Deprecated package:</strong> <code class="inline">search_conversation.py</code> uses old <code class="inline">google.generativeai</code> (sunset notice)</li>
+<li><strong>All passing:</strong> github_sync, sync_todos_full, proxmox_status, send_email, generate_image_gemini, system_status</li>
+</ul>
+
+
+<hr>
+
+<h1 id="daily-summary---2026-02-13">Daily Summary - 2026-02-13</h1>
 
 <h2 id="statistics">Statistics</h2>
 <ul>
-<li>Total messages: 194</li>
-<li>User messages: 79</li>
-<li>Assistant messages: 115</li>
-<li>Sessions: 7</li>
+<li>Total messages: 287</li>
+<li>User messages: 115</li>
+<li>Assistant messages: 172</li>
+<li>Sessions: 11</li>
 </ul>
 
 <h2 id="conversations">Conversations</h2>
 
-<h3 id="session-ef1368b9-d1db-4091-b">Session: ef1368b9-d1db-4091-b...</h3>
-<p>Time: 01:09 - 22:06 | Messages: 80</p>
-
-<p><strong>Started with:</strong> [Signal Trevor B. id:+16059415269 +1h 2026-02-05 19:09 CST] Hey snippy, read your TOOLS.md file, I gave you some new tools</p>
-<p>[message_id: 1770340168292]...</p>
-
-
 <h3 id="session-b0f79bf0-03ec-4033-a">Session: b0f79bf0-03ec-4033-a...</h3>
-<p>Time: 01:13 - 23:30 | Messages: 94</p>
+<p>Time: 00:30 - 23:30 | Messages: 97</p>
 
 <p><strong>Started with:</strong> Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK....</p>
 
 
-<h3 id="session-c9217e9c-2228-4caa-9">Session: c9217e9c-2228-4caa-9...</h3>
-<p>Time: 01:30 - 01:33 | Messages: 4</p>
+<h3 id="session-7abe17fc-f01d-4a0f-b">Session: 7abe17fc-f01d-4a0f-b...</h3>
+<p>Time: 00:42 - 02:01 | Messages: 41</p>
+
+<p><strong>Started with:</strong> [Signal Trevor B. id:+16059415269 +52m 2026-02-12 18:42 CST] okay clouflare zero trust setup for your clawdbot@bainter.xyz account</p>
+<p>[message_id: 1770943322462]...</p>
 
 
-<h3 id="session-804d1fa3-0324-4b6e-8">Session: 804d1fa3-0324-4b6e-8...</h3>
-<p>Time: 15:30 - 15:32 | Messages: 5</p>
+<h3 id="session-8334e63c-ab53-44ca-a">Session: 8334e63c-ab53-44ca-a...</h3>
+<p>Time: 01:31 - 01:32 | Messages: 2</p>
 
 
-<h3 id="session-8707e203-9adc-4d99-8">Session: 8707e203-9adc-4d99-8...</h3>
-<p>Time: 17:30 - 17:32 | Messages: 3</p>
+<h3 id="session-f41679b4-20ae-47e7-9">Session: f41679b4-20ae-47e7-9...</h3>
+<p>Time: 02:02 - 05:27 | Messages: 53</p>
+
+<p><strong>Started with:</strong> A new session was started via /new or /reset. Say hi briefly (1-2 sentences) and ask what the user wants to do next. If the runtime model differs from default_model in the system prompt, mention the d...</p>
 
 
-<h3 id="session-3988c998-624a-4cb9-8">Session: 3988c998-624a-4cb9-8...</h3>
-<p>Time: 19:30 - 19:32 | Messages: 4</p>
+<h3 id="session-a58b0ae0-da0e-4260-9">Session: a58b0ae0-da0e-4260-9...</h3>
+<p>Time: 13:30 - 23:04 | Messages: 42</p>
+
+<p><strong>Started with:</strong> [Signal Trevor B. id:+16059415269 +8h 2026-02-13 07:30 CST] Add to my list followup on journeyman application</p>
+<p>[message_id: 1770989428098]...</p>
 
 
-<h3 id="session-783e03b2-62b3-40dd-9">Session: 783e03b2-62b3-40dd-9...</h3>
-<p>Time: 23:30 - 23:32 | Messages: 4</p>
+<h3 id="session-5910d5cf-9e9a-43e5-b">Session: 5910d5cf-9e9a-43e5-b...</h3>
+<p>Time: 15:30 - 15:33 | Messages: 12</p>
+
+
+<h3 id="session-7cb45b42-02e9-4ba2-b">Session: 7cb45b42-02e9-4ba2-b...</h3>
+<p>Time: 16:14 - 16:19 | Messages: 17</p>
+
+
+<h3 id="session-9a91f438-3bb2-473f-9">Session: 9a91f438-3bb2-473f-9...</h3>
+<p>Time: 17:30 - 17:32 | Messages: 4</p>
+
+
+<h3 id="session-db25029f-a783-4c86-b">Session: db25029f-a783-4c86-b...</h3>
+<p>Time: 19:30 - 19:31 | Messages: 4</p>
+
+
+<h3 id="session-18e000c5-8ca9-415e-8">Session: 18e000c5-8ca9-415e-8...</h3>
+<p>Time: 21:30 - 21:32 | Messages: 10</p>
+
+
+<h3 id="session-1b7fbc6b-e1f9-46ef-9">Session: 1b7fbc6b-e1f9-46ef-9...</h3>
+<p>Time: 23:31 - 23:32 | Messages: 5</p>
 
 
             </div>

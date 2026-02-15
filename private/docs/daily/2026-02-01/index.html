@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily: 2026-01-30 | Snippy Private</title>
+    <title>Daily: 2026-02-01 | Snippy Private</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
         
@@ -267,97 +267,144 @@
 <body>
     <div class="top-bar">
         <span class="logo">🦀 snippy.quest/private</span>
-        <span class="timestamp">Updated 2026-02-15 11:35 CST</span>
+        <span class="timestamp">Updated 2026-02-15 11:37 CST</span>
     </div>
     <nav>
-        <a href="index.html" class="nav-link ">🧠 Memory</a>
-<a href="taskqueue.html" class="nav-link ">📋 Task Queue</a>
-<a href="daily.html" class="nav-link active">📅 Daily Logs</a>
+        <a href="/private/docs/" class="nav-link ">🧠 Memory</a>
+<a href="/private/docs/taskqueue/" class="nav-link ">📋 Task Queue</a>
+<a href="/private/docs/daily/" class="nav-link active">📅 Daily Logs</a>
 
     </nav>
     <div class="container">
         
-            <h1 class="page-title">📅 2026-01-30</h1>
-            <p class="page-desc"><a href="daily.html">← Back to Daily Logs</a></p>
+            <h1 class="page-title">📅 2026-02-01</h1>
+            <p class="page-desc"><a href="/private/docs/daily/">← Back to Daily Logs</a></p>
             <div class="content">
-                
+                <h1 id="2026-02-01-continued">2026-02-01 (continued)</h1>
+
+<h2 id="microsoft-to-do-integration-complete">Microsoft To Do Integration Complete</h2>
+
+<p><strong>Setup:</strong></p>
+<ul>
+<li>Created &quot;Snippy&quot; list in MS To Do for chat-managed tasks</li>
+<li>Built <code class="inline">lib/snippy_todos.py</code> library for task management</li>
+<li>Integrated with heartbeat checks (silent until scheduled times)</li>
+<li>Migrated TODO_FOR_TREVOR.md items to MS To Do</li>
+</ul>
+
+<p><strong>Current Snippy todos:</strong></p>
+<ul>
+<li>Get Proxmox API token for management</li>
+</ul>
+
+<p><strong>Schedule:</strong></p>
+<ul>
+<li>8am: Morning brief with overdue/today</li>
+<li>9am, 2pm: Todo reminders</li>
+<li>6pm: Evening summary with todos</li>
+<li>9pm: Day wrap-up with todo status</li>
+</ul>
+
+<p><strong>Token saved:</strong> <code class="inline">/tmp/ms365_token.json</code> (expires in ~1.5 hours, refresh token available)</p>
+
+<h2 id="wrestling-scraper">Wrestling Scraper</h2>
+
+<p><strong>Status:</strong> Running (PID 96670) with improved error handling</p>
+<ul>
+<li>Started: 4:40 PM Central (Feb 1)</li>
+<li>Processing: 11 events, 43+ brackets per event</li>
+<li>Rate limit: ~15-17s per request</li>
+<li>Estimated completion: overnight</li>
+</ul>
+
+<p><strong>Improvements:</strong></p>
+<ul>
+<li>Added comprehensive try-catch at all loop levels</li>
+<li>Continues on failures instead of dying</li>
+<li>Logs PID and full tracebacks</li>
+<li>State saves after each successful operation</li>
+</ul>
+
+
 <hr>
 
-<h2 id="workflow-improvement---resource-discovery-0455-0459-utc">Workflow Improvement - Resource Discovery (04:55-04:59 UTC)</h2>
-
-<p><strong>Problem:</strong></p>
-<ul>
-<li>Trevor asked about garbage service</li>
-<li>I found Trello card name in static snapshot but claimed I didn&#x27;t have API access</li>
-<li>API credentials existed at <code class="inline">/root/.clawdbot/secrets/trello.json</code> the whole time</li>
-<li>Only checked after Trevor asked &quot;what happened to your app access?&quot;</li>
-</ul>
-
-<p><strong>Root Cause:</strong></p>
-<ul>
-<li>Didn&#x27;t proactively check for existing API credentials when memory mentioned them</li>
-<li>Assumed lack of access instead of verifying</li>
-</ul>
-
-<p><strong>Fix:</strong></p>
-<ul class="numbered">
-<li>Created <code class="inline">RESOURCES.md</code> - checklist of available tools, APIs, databases, scripts</li>
-<li>Updated <code class="inline">AGENTS.md</code> to include RESOURCES.md in session startup routine</li>
-<li>New workflow: Before saying &quot;I don&#x27;t have access&quot;, check:</li>
-<li><code class="inline">/root/.clawdbot/secrets/</code> for credentials</li>
-<li><code class="inline">*.db</code> for databases</li>
-<li><code class="inline">scripts/</code> and <code class="inline">lib/</code> for tooling</li>
-<li>Then ask user if truly missing</li>
-</ul>
-
-<p><strong>Lesson:</strong></p>
-<p>When memory mentions external services → verify access exists before claiming it doesn&#x27;t</p>
-
-<p><strong>Result:</strong></p>
-<ul>
-<li>Successfully pulled Addy Disposal info from Trello</li>
-<li>Updated card with corrected pickup schedule (every other Friday/Saturday)</li>
-</ul>
-
-
-
-<hr>
-
-<h1 id="daily-summary---2026-01-30">Daily Summary - 2026-01-30</h1>
+<h1 id="daily-summary---2026-02-01">Daily Summary - 2026-02-01</h1>
 
 <h2 id="statistics">Statistics</h2>
 <ul>
-<li>Total messages: 264</li>
-<li>User messages: 124</li>
-<li>Assistant messages: 140</li>
-<li>Sessions: 4</li>
+<li>Total messages: 617</li>
+<li>User messages: 313</li>
+<li>Assistant messages: 304</li>
+<li>Sessions: 11</li>
 </ul>
 
 <h2 id="conversations">Conversations</h2>
 
-<h3 id="session-7951b2f7-10ff-42c6-8">Session: 7951b2f7-10ff-42c6-8...</h3>
-<p>Time: 00:02 - 23:40 | Messages: 180</p>
+<h3 id="session-6edfd28b-d3cc-4998-9">Session: 6edfd28b-d3cc-4998-9...</h3>
+<p>Time: 00:00 - 23:39 | Messages: 402</p>
 
-<p><strong>Started with:</strong> [Audio] User text: [Signal Trevor B. id:+16059415269 +40s 2026-01-30 00:02 UTC] &lt;media:audio&gt; Transcript: Sounds good. Start building that out.</p>
-<p>[message_id: 1769731357687]...</p>
-
-
-<h3 id="session-62795a31-9458-4a65-b">Session: 62795a31-9458-4a65-b...</h3>
-<p>Time: 00:28 - 03:56 | Messages: 13</p>
-
-<p><strong>Started with:</strong> Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK....</p>
+<p><strong>Started with:</strong> System: [2026-02-01 00:00:00 UTC] Check TODO_FOR_TREVOR.md and send a brief reminder about any outstanding items that haven&#x27;t been addressed. Keep it short and useful - just the top 1-2 actionable ite...</p>
 
 
-<h3 id="session-ad1e6548-f598-4233-a">Session: ad1e6548-f598-4233-a...</h3>
-<p>Time: 04:26 - 23:30 | Messages: 66</p>
+<h3 id="session-7b13fc89-65c4-4ff2-b">Session: 7b13fc89-65c4-4ff2-b...</h3>
+<p>Time: 00:10 - 16:29 | Messages: 117</p>
 
-<p><strong>Started with:</strong> Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK....</p>
+<p><strong>Started with:</strong> [Signal Trevor B. id:+16059415269 +39m 2026-02-01 00:10 UTC] You never did tell me about your updates on moltbook</p>
+<p>[message_id: 1769904641907]...</p>
 
 
-<h3 id="session-0b32610b-4b3c-4f4c-9">Session: 0b32610b-4b3c-4f4c-9...</h3>
-<p>Time: 05:08 - 16:01 | Messages: 5</p>
+<h3 id="session-4a319c46-8641-4257-b">Session: 4a319c46-8641-4257-b...</h3>
+<p>Time: 01:33 - 01:33 | Messages: 1</p>
 
-<p><strong>Started with:</strong> [Signal Test id:+16059514653 +21s 2026-01-30 05:08 UTC] https://countrysidemerc.com/?fbclid=IwdGRzaAPkfQ9jbGNrA-R89mV4dG4DYWVtAjExAHNydGMGYXBwX2lkDDM1MDY4NTUzMTcyOAABHlHO77dCzPT82uK3tjiK5cK7FP9mzneIBv...</p>
+
+<h3 id="session-7f71ec1f-e7a9-413a-8">Session: 7f71ec1f-e7a9-413a-8...</h3>
+<p>Time: 03:39 - 03:45 | Messages: 7</p>
+
+<p><strong>Started with:</strong> ## Overnight Assignment from Trevor</p>
+
+<h3 id="task-1-study-moltbook">Task 1: Study Moltbook</h3>
+<ul>
+<li>Use browser automation (NODE_PATH=/usr/lib/node_modules puppeteer) to browse moltbook.com</li>
+<li>Analyze top posts: what gets upvotes, what...</li>
+</ul>
+
+
+<h3 id="session-fb4e2967-359a-4f55-9">Session: fb4e2967-359a-4f55-9...</h3>
+<p>Time: 03:54 - 03:55 | Messages: 3</p>
+
+<p><strong>Started with:</strong> ## Overnight Task: Rewrite wrestling-systems</p>
+
+<h3 id="background">Background</h3>
+<p>Trevor&#x27;s wrestling-systems repo was reviewed and found to have issues:</p>
+<ul>
+<li>Security: 3/10 (Firebase private key committed in firebase-key.jso...</li>
+</ul>
+
+
+<h3 id="session-6d8eb7df-f80d-4fe5-a">Session: 6d8eb7df-f80d-4fe5-a...</h3>
+<p>Time: 15:30 - 15:31 | Messages: 5</p>
+
+
+<h3 id="session-2319c1b8-ce52-4169-b">Session: 2319c1b8-ce52-4169-b...</h3>
+<p>Time: 16:36 - 23:40 | Messages: 73</p>
+
+<p><strong>Started with:</strong> A new session was started via /new or /reset. Say hi briefly (1-2 sentences) and ask what the user wants to do next. If the runtime model differs from default_model in the system prompt, mention the d...</p>
+
+
+<h3 id="session-19aedde7-47c7-41bf-8">Session: 19aedde7-47c7-41bf-8...</h3>
+<p>Time: 17:30 - 17:31 | Messages: 2</p>
+
+
+<h3 id="session-37e6cbb1-51df-490a-9">Session: 37e6cbb1-51df-490a-9...</h3>
+<p>Time: 19:30 - 19:31 | Messages: 5</p>
+
+
+<h3 id="session-10d77f2d-139f-41e4-a">Session: 10d77f2d-139f-41e4-a...</h3>
+<p>Time: 21:32 - 21:32 | Messages: 1</p>
+
+
+<h3 id="session-0d81cde3-4289-4132-b">Session: 0d81cde3-4289-4132-b...</h3>
+<p>Time: 23:31 - 23:31 | Messages: 1</p>
 
 
             </div>

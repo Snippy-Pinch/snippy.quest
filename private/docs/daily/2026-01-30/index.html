@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily: 2026-02-15 | Snippy Private</title>
+    <title>Daily: 2026-01-30 | Snippy Private</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
         
@@ -267,35 +267,98 @@
 <body>
     <div class="top-bar">
         <span class="logo">🦀 snippy.quest/private</span>
-        <span class="timestamp">Updated 2026-02-15 11:35 CST</span>
+        <span class="timestamp">Updated 2026-02-15 11:37 CST</span>
     </div>
     <nav>
-        <a href="index.html" class="nav-link ">🧠 Memory</a>
-<a href="taskqueue.html" class="nav-link ">📋 Task Queue</a>
-<a href="daily.html" class="nav-link active">📅 Daily Logs</a>
+        <a href="/private/docs/" class="nav-link ">🧠 Memory</a>
+<a href="/private/docs/taskqueue/" class="nav-link ">📋 Task Queue</a>
+<a href="/private/docs/daily/" class="nav-link active">📅 Daily Logs</a>
 
     </nav>
     <div class="container">
         
-            <h1 class="page-title">📅 2026-02-15</h1>
-            <p class="page-desc"><a href="daily.html">← Back to Daily Logs</a></p>
+            <h1 class="page-title">📅 2026-01-30</h1>
+            <p class="page-desc"><a href="/private/docs/daily/">← Back to Daily Logs</a></p>
             <div class="content">
-                <h1 id="2026-02-15-session-log-sunday">2026-02-15 Session Log (Sunday)</h1>
+                
+<hr>
 
-<h2 id="morning-brief-800-am">Morning Brief (8:00 AM)</h2>
+<h2 id="workflow-improvement---resource-discovery-0455-0459-utc">Workflow Improvement - Resource Discovery (04:55-04:59 UTC)</h2>
+
+<p><strong>Problem:</strong></p>
 <ul>
-<li>Sent Trevor morning brief via Signal: weather (26°F clear), HCV Travel deadline reminder (book by 2/20), Sunday Sync tonight at 8pm, yesterday&#x27;s highlights</li>
-<li>Sent Iyoko todo reminder via Signal: 9 open tasks + 1 for-Trevor item (mortgage info)</li>
-<li>HCV Travel cron fired again — included in morning brief rather than separate message</li>
+<li>Trevor asked about garbage service</li>
+<li>I found Trello card name in static snapshot but claimed I didn&#x27;t have API access</li>
+<li>API credentials existed at <code class="inline">/root/.clawdbot/secrets/trello.json</code> the whole time</li>
+<li>Only checked after Trevor asked &quot;what happened to your app access?&quot;</li>
 </ul>
 
-<h2 id="background-work-930-am">Background Work (9:30 AM)</h2>
+<p><strong>Root Cause:</strong></p>
 <ul>
-<li><strong>Dashboard refresh:</strong> Updated both private dashboards with live data</li>
-<li>Status page: pushed to snippy.quest/private/status/ (4,513 msgs, 152 active todos, 18-day streak)</li>
-<li>Analytics: pushed to snippy.quest/private/analytics/ (week-over-week ↓17%, peak hour 9am, Sat busiest)</li>
-<li><strong>Stats snapshot:</strong> 4,513 messages over 18 days, 265.5/day avg, 156.1/day 7-day velocity</li>
+<li>Didn&#x27;t proactively check for existing API credentials when memory mentioned them</li>
+<li>Assumed lack of access instead of verifying</li>
 </ul>
+
+<p><strong>Fix:</strong></p>
+<ul class="numbered">
+<li>Created <code class="inline">RESOURCES.md</code> - checklist of available tools, APIs, databases, scripts</li>
+<li>Updated <code class="inline">AGENTS.md</code> to include RESOURCES.md in session startup routine</li>
+<li>New workflow: Before saying &quot;I don&#x27;t have access&quot;, check:</li>
+<li><code class="inline">/root/.clawdbot/secrets/</code> for credentials</li>
+<li><code class="inline">*.db</code> for databases</li>
+<li><code class="inline">scripts/</code> and <code class="inline">lib/</code> for tooling</li>
+<li>Then ask user if truly missing</li>
+</ul>
+
+<p><strong>Lesson:</strong></p>
+<p>When memory mentions external services → verify access exists before claiming it doesn&#x27;t</p>
+
+<p><strong>Result:</strong></p>
+<ul>
+<li>Successfully pulled Addy Disposal info from Trello</li>
+<li>Updated card with corrected pickup schedule (every other Friday/Saturday)</li>
+</ul>
+
+
+
+<hr>
+
+<h1 id="daily-summary---2026-01-30">Daily Summary - 2026-01-30</h1>
+
+<h2 id="statistics">Statistics</h2>
+<ul>
+<li>Total messages: 264</li>
+<li>User messages: 124</li>
+<li>Assistant messages: 140</li>
+<li>Sessions: 4</li>
+</ul>
+
+<h2 id="conversations">Conversations</h2>
+
+<h3 id="session-7951b2f7-10ff-42c6-8">Session: 7951b2f7-10ff-42c6-8...</h3>
+<p>Time: 00:02 - 23:40 | Messages: 180</p>
+
+<p><strong>Started with:</strong> [Audio] User text: [Signal Trevor B. id:+16059415269 +40s 2026-01-30 00:02 UTC] &lt;media:audio&gt; Transcript: Sounds good. Start building that out.</p>
+<p>[message_id: 1769731357687]...</p>
+
+
+<h3 id="session-62795a31-9458-4a65-b">Session: 62795a31-9458-4a65-b...</h3>
+<p>Time: 00:28 - 03:56 | Messages: 13</p>
+
+<p><strong>Started with:</strong> Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK....</p>
+
+
+<h3 id="session-ad1e6548-f598-4233-a">Session: ad1e6548-f598-4233-a...</h3>
+<p>Time: 04:26 - 23:30 | Messages: 66</p>
+
+<p><strong>Started with:</strong> Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK....</p>
+
+
+<h3 id="session-0b32610b-4b3c-4f4c-9">Session: 0b32610b-4b3c-4f4c-9...</h3>
+<p>Time: 05:08 - 16:01 | Messages: 5</p>
+
+<p><strong>Started with:</strong> [Signal Test id:+16059514653 +21s 2026-01-30 05:08 UTC] https://countrysidemerc.com/?fbclid=IwdGRzaAPkfQ9jbGNrA-R89mV4dG4DYWVtAjExAHNydGMGYXBwX2lkDDM1MDY4NTUzMTcyOAABHlHO77dCzPT82uK3tjiK5cK7FP9mzneIBv...</p>
+
 
             </div>
         
