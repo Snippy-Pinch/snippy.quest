@@ -498,6 +498,30 @@
             finally { fab.classList.remove('syncing'); }
         }
 
+        // Auto-refresh: poll for webhook changes every 10s
+        let lastChangeTs = 0;
+        setInterval(async () => {
+            try {
+                const r = await fetch('/api/tasks/lastchange');
+                if (!r.ok) return;
+                const data = await r.json();
+                if (data.ts && data.ts > lastChangeTs && lastChangeTs > 0) {
+                    // Data changed via webhook — reload smart view
+                    document.getElementById('statusText').textContent = 'New data detected, refreshing...';
+                    const sr = await fetch('/api/tasks/smart');
+                    if (sr.ok) {
+                        const fresh = await sr.json();
+                        if (!fresh.error) {
+                            renderData(fresh);
+                            showToast('Auto-updated ✓', false);
+                            document.getElementById('statusText').textContent = 'Live · auto-updated';
+                        }
+                    }
+                }
+                if (data.ts) lastChangeTs = data.ts;
+            } catch {}
+        }, 10000);
+
         init();
     </script>
 </body>
