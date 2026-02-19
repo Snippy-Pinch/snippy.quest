@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Today's Tasks | Thursday</title>
+    <title>Today's Tasks | Live</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         :root {
             --bg: #0a0a1a;
             --surface: #111127;
@@ -15,6 +15,7 @@
             --primary: #00d4aa;
             --accent: #ff6b6b;
             --warn: #f59e0b;
+            --purple: #a78bfa;
             --text: #e4e4e7;
             --muted: #7a8a9a;
         }
@@ -33,6 +34,19 @@
             padding: 40px 20px 80px;
         }
 
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--primary); }
+
         .header {
             text-align: center;
             margin-bottom: 2.5rem;
@@ -50,23 +64,35 @@
         }
 
         .header .summary {
-            margin-top: 1rem;
+            margin-top: 0.75rem;
             font-size: 0.95rem;
             color: var(--primary);
         }
 
-        .back-link {
+        .live-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-            transition: color 0.2s;
+            font-size: 0.75rem;
+            color: var(--primary);
+            background: rgba(0, 212, 170, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-top: 0.75rem;
         }
 
-        .back-link:hover { color: var(--primary); }
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
 
         .section {
             margin-bottom: 2rem;
@@ -80,10 +106,10 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .overdue-section h2 { color: var(--accent); border-bottom-color: rgba(255, 107, 107, 0.3); }
-        .today-section h2 { color: var(--primary); border-bottom-color: rgba(0, 212, 170, 0.3); }
-        .upcoming-section h2 { color: var(--warn); border-bottom-color: rgba(245, 158, 11, 0.3); }
-        .priority-section h2 { color: #a78bfa; border-bottom-color: rgba(167, 139, 250, 0.3); }
+        .overdue h2 { color: var(--accent); border-bottom-color: rgba(255, 107, 107, 0.3); }
+        .today-tasks h2 { color: var(--primary); border-bottom-color: rgba(0, 212, 170, 0.3); }
+        .upcoming h2 { color: var(--warn); border-bottom-color: rgba(245, 158, 11, 0.3); }
+        .priority h2 { color: var(--purple); border-bottom-color: rgba(167, 139, 250, 0.3); }
 
         .task-card {
             display: flex;
@@ -127,9 +153,9 @@
             white-space: nowrap;
         }
 
-        .badge.important { background: rgba(255, 107, 107, 0.15); color: var(--accent); }
-        .badge.list { background: rgba(0, 212, 170, 0.1); color: var(--primary); }
-        .badge.date { background: rgba(245, 158, 11, 0.1); color: var(--warn); }
+        .badge-important { background: rgba(255, 107, 107, 0.15); color: var(--accent); }
+        .badge-list { background: rgba(0, 212, 170, 0.1); color: var(--primary); }
+        .badge-date { background: rgba(245, 158, 11, 0.1); color: var(--warn); }
 
         .empty-state {
             text-align: center;
@@ -138,7 +164,34 @@
             font-size: 1.1rem;
         }
 
-        .generated {
+        .loading {
+            text-align: center;
+            padding: 4rem 0;
+            color: var(--muted);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .error-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--accent);
+            background: rgba(255, 107, 107, 0.05);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            border-radius: 10px;
+        }
+
+        .footer-info {
             text-align: center;
             margin-top: 3rem;
             color: var(--muted);
@@ -154,141 +207,105 @@
 <body>
     <div class="container">
         <a href="/private/" class="back-link">← Private Dashboard</a>
-        
+
         <div class="header">
-            <h1>📋 Thursday</h1>
-            <div class="date">February 19, 2026</div>
-            <div class="summary">2 items need attention today</div>
+            <h1 id="pageTitle">📋 Loading...</h1>
+            <div class="date" id="pageDate"></div>
+            <div class="summary" id="pageSummary"></div>
+            <div class="live-badge"><div class="live-dot"></div> Live from database</div>
         </div>
 
-        
-        
-        <div class="section overdue-section">
-            <h2>🔴 Overdue (2)</h2>
-            <div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Switch Phone plan to Mint mobile</div>
-            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Feb 13</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Get Domain Transfered to a register I can use (porkbun/moniker)</div>
-            <div class="task-meta"><span class="badge list">bitterlakelodge.com</span><span class="badge date">Feb 17</span></div>
-        </div>
-    </div>
-        </div>
-        
-        
-        <div class="section upcoming-section">
-            <h2>📅 Coming This Week (4)</h2>
-            <div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Get Coach AAU card</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Tasks</span><span class="badge date">Feb 22</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">After domain trasnfered follow-up with Colin to make sure he can get Turbify CXL'd and his card information removed from it.</div>
-            <div class="task-meta"><span class="badge list">bitterlakelodge.com</span><span class="badge date">Feb 22</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Make sure NS are updated correctly so we're using the cloudflare / github site (see work flow did in Claude for bluecrane.pro)</div>
-            <div class="task-meta"><span class="badge list">bitterlakelodge.com</span><span class="badge date">Feb 22</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Verify bitterlakelodge.com domain transfer completed</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">bitterlakelodge.com</span><span class="badge date">Feb 24</span></div>
-        </div>
-    </div>
-        </div>
-        
-        <div class="section priority-section">
-            <h2>⭐ High Priority (No Date)</h2>
-            <div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Check work Outlook for 'Publish Calendar' option</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Calendar Unification Project</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Inventory all calendar accounts</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Calendar Unification Project</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Cleaning out the porch</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Tasks</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Go through Clothes (organize - donate)</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Tasks</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Clean up kids whiteboards</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Tasks</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Clean up storage closet in Laundry Room</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Tasks</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Declutter Kitchen</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Tasks</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Send mortgage info to Snippy</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Todos for Trevor (managed by Snippy)</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Delete trees from underneath windmill</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Maddox Tasks</span></div>
-        </div>
-    </div>
-<div class="task-card">
-        <div class="task-check">☐</div>
-        <div class="task-content">
-            <div class="task-title">Switch out battery connector new suv</div>
-            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Trevor Tasks</span></div>
-        </div>
-    </div>
+        <div id="content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Fetching tasks...</p>
+            </div>
         </div>
 
-        <div class="generated">Auto-generated at 07:54 AM CT · Updated daily at 6:00 AM</div>
+        <div class="footer-info" id="footerInfo"></div>
     </div>
+
+    <script>
+        const API = 'https://api.snippy.quest/api/tasks';
+
+        function renderTask(task, showDate = false) {
+            const imp = task.important ? '<span class="badge badge-important">❗ Important</span>' : '';
+            const list = task.list ? `<span class="badge badge-list">${esc(task.list)}</span>` : '';
+            const date = showDate && task.due ? `<span class="badge badge-date">${formatDate(task.due)}</span>` : '';
+
+            return `<div class="task-card">
+                <div class="task-check">☐</div>
+                <div class="task-content">
+                    <div class="task-title">${esc(task.title)}</div>
+                    <div class="task-meta">${imp}${list}${date}</div>
+                </div>
+            </div>`;
+        }
+
+        function renderSection(cls, emoji, label, tasks, showDate = false) {
+            if (!tasks || tasks.length === 0) return '';
+            const items = tasks.map(t => renderTask(t, showDate)).join('');
+            return `<div class="section ${cls}">
+                <h2>${emoji} ${label} (${tasks.length})</h2>
+                ${items}
+            </div>`;
+        }
+
+        function esc(s) {
+            const d = document.createElement('div');
+            d.textContent = s;
+            return d.innerHTML;
+        }
+
+        function formatDate(iso) {
+            if (!iso) return '';
+            const d = new Date(iso + 'T00:00:00');
+            return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        async function loadTasks() {
+            try {
+                const r = await fetch(API);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const data = await r.json();
+                if (data.error) throw new Error(data.error);
+
+                // Header
+                document.getElementById('pageTitle').textContent = `📋 ${data.day}`;
+                document.getElementById('pageDate').textContent = new Date(data.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: undefined, year: 'numeric', month: 'long', day: 'numeric' });
+
+                const actionable = (data.overdue?.length || 0) + (data.today?.length || 0);
+                document.getElementById('pageSummary').textContent = `${actionable} item${actionable !== 1 ? 's' : ''} need${actionable === 1 ? 's' : ''} attention · ${data.total_open} total open`;
+
+                // Content
+                let html = '';
+
+                if (actionable === 0 && (!data.upcoming || data.upcoming.length === 0)) {
+                    html += '<div class="empty-state">✨ Nothing urgent. Check priorities below.</div>';
+                }
+
+                html += renderSection('overdue', '🔴', 'Overdue', data.overdue, true);
+                html += renderSection('today-tasks', '📌', 'Due Today', data.today);
+                html += renderSection('upcoming', '📅', 'Coming This Week', data.upcoming, true);
+                html += renderSection('priority', '⭐', 'High Priority', data.priority);
+
+                document.getElementById('content').innerHTML = html;
+
+                // Footer
+                const gen = new Date(data.generated);
+                document.getElementById('footerInfo').textContent = `Data from ${gen.toLocaleTimeString()} · Auto-refreshes every 60s`;
+
+            } catch (e) {
+                document.getElementById('content').innerHTML = `<div class="error-state">⚠️ Failed to load tasks: ${esc(e.message)}<br><small>Retrying in 30s...</small></div>`;
+                setTimeout(loadTasks, 30000);
+                return;
+            }
+
+            // Refresh every 60 seconds
+            setTimeout(loadTasks, 60000);
+        }
+
+        loadTasks();
+    </script>
 </body>
 </html>
