@@ -126,10 +126,73 @@
         .task-card:hover { border-color: var(--primary); }
 
         .task-check {
-            font-size: 1.1rem;
-            color: var(--muted);
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--muted);
+            border-radius: 6px;
             flex-shrink: 0;
             margin-top: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            background: transparent;
+            padding: 0;
+        }
+
+        .task-check:hover {
+            border-color: var(--primary);
+            background: rgba(0, 212, 170, 0.1);
+        }
+
+        .task-check.completing {
+            border-color: var(--primary);
+            background: var(--primary);
+            animation: checkPop 0.3s ease;
+        }
+
+        .task-check.completing::after {
+            content: '✓';
+            color: var(--bg);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .task-card.completed {
+            opacity: 0.4;
+            transform: scale(0.98);
+            transition: all 0.4s ease;
+        }
+
+        .task-card.completed .task-title {
+            text-decoration: line-through;
+        }
+
+        .task-card.removing {
+            opacity: 0;
+            max-height: 0;
+            padding: 0 14px;
+            margin-bottom: 0;
+            overflow: hidden;
+            transition: all 0.5s ease 0.3s;
+        }
+
+        .task-check.error {
+            border-color: var(--accent);
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes checkPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
         }
 
         .task-content { flex: 1; min-width: 0; }
@@ -232,9 +295,10 @@
             const imp = task.important ? '<span class="badge badge-important">❗ Important</span>' : '';
             const list = task.list ? `<span class="badge badge-list">${esc(task.list)}</span>` : '';
             const date = showDate && task.due ? `<span class="badge badge-date">${formatDate(task.due)}</span>` : '';
+            const taskId = task.id ? `data-task-id="${esc(task.id)}"` : '';
 
-            return `<div class="task-card">
-                <div class="task-check">☐</div>
+            return `<div class="task-card" ${taskId}>
+                <button class="task-check" onclick="completeTask(this)" title="Mark complete"></button>
                 <div class="task-content">
                     <div class="task-title">${esc(task.title)}</div>
                     <div class="task-meta">${imp}${list}${date}</div>
@@ -261,6 +325,75 @@
             if (!iso) return '';
             const d = new Date(iso + 'T00:00:00');
             return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        async function completeTask(btn) {
+            const card = btn.closest('.task-card');
+            const taskId = card?.dataset?.taskId;
+
+            if (!taskId) {
+                // No MS Todo ID — can't complete via API
+                btn.classList.add('error');
+                setTimeout(() => btn.classList.remove('error'), 600);
+                return;
+            }
+
+            // Prevent double-click
+            if (btn.classList.contains('completing')) return;
+
+            // Optimistic UI
+            btn.classList.add('completing');
+            card.classList.add('completed');
+
+            try {
+                const r = await fetch('/api/tasks/complete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: taskId })
+                });
+
+                const data = await r.json();
+
+                if (!r.ok || data.error) {
+                    // Revert on failure
+                    btn.classList.remove('completing');
+                    card.classList.remove('completed');
+                    btn.classList.add('error');
+                    setTimeout(() => btn.classList.remove('error'), 600);
+                    console.error('Complete failed:', data.error);
+                    return;
+                }
+
+                // Animate removal
+                setTimeout(() => {
+                    card.classList.add('removing');
+                    // Update counter
+                    const summary = document.getElementById('pageSummary');
+                    if (summary) {
+                        const m = summary.textContent.match(/(\d+) item/);
+                        if (m) {
+                            const n = Math.max(0, parseInt(m[1]) - 1);
+                            summary.textContent = summary.textContent.replace(/\d+ item/, `${n} item`);
+                        }
+                    }
+                    // Remove from DOM after animation
+                    setTimeout(() => {
+                        const section = card.closest('.section');
+                        card.remove();
+                        // Remove section header if empty
+                        if (section && section.querySelectorAll('.task-card').length === 0) {
+                            section.remove();
+                        }
+                    }, 800);
+                }, 500);
+
+            } catch (e) {
+                btn.classList.remove('completing');
+                card.classList.remove('completed');
+                btn.classList.add('error');
+                setTimeout(() => btn.classList.remove('error'), 600);
+                console.error('Complete error:', e);
+            }
         }
 
         async function loadTasks() {
