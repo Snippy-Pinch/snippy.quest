@@ -358,10 +358,8 @@
             card.classList.add('completed');
 
             try {
-                const r = await fetch('/api/tasks/complete', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id: taskId })
+                const r = await fetch(`/api/tasks/complete?id=${encodeURIComponent(taskId)}`, {
+                    method: 'POST'
                 });
 
                 let data;
