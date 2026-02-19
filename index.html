@@ -445,6 +445,46 @@
         }
 
         .page-card:hover .page-arrow { color: var(--primary); }
+
+        /* Dropdown */
+        .pages-dropdown { width: 100%; }
+
+        .pages-dropdown summary {
+            list-style: none;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .pages-dropdown summary::-webkit-details-marker { display: none; }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: color 0.2s;
+        }
+
+        .dropdown-toggle:hover { opacity: 0.8; }
+
+        .toggle-icon {
+            font-size: 0.7em;
+            transition: transform 0.3s;
+        }
+
+        .pages-dropdown[open] .toggle-icon {
+            transform: rotate(90deg);
+        }
+
+        .pages-dropdown .page-grid {
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         
         /* Footer */
         .footer {
@@ -580,7 +620,8 @@
 
     <!-- Page Directory -->
     <div class="directory">
-        <h2 class="section-title">More Pages</h2>
+        <details class="pages-dropdown">
+            <summary class="section-title dropdown-toggle">More Pages <span class="toggle-icon">▸</span></summary>
         <div class="page-grid">
             <a href="/nad-semax/" class="page-card">
                 <span class="page-icon">💊</span>
@@ -735,6 +776,7 @@
                 <span class="page-arrow">→</span>
             </a>
         </div>
+        </details>
     </div>
     
     <!-- Footer -->
