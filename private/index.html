@@ -3,124 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Area - Snippy.Quest</title>
+    <title>Snippy Private 🔒</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a1a;
+            --surface: #111127;
+            --surface2: #1a1a35;
+            --border: #2a2a4a;
+            --primary: #00d4aa;
+            --accent: #ff6b6b;
+            --text: #e4e4e7;
+            --muted: #7a8a9a;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            padding: 60px 40px;
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-        }
-        
-        .lock-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-        }
-        
-        h1 {
-            color: #2d3748;
-            font-size: 32px;
-            margin-bottom: 16px;
-            font-weight: 700;
-        }
-        
-        .subtitle {
-            color: #718096;
-            font-size: 18px;
-            margin-bottom: 40px;
-        }
-        
-        .info-box {
-            background: #f7fafc;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin: 30px 0;
-            text-align: left;
-            border-radius: 4px;
-        }
-        
-        .info-box h3 {
-            color: #2d3748;
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-        
-        .info-box p {
-            color: #4a5568;
             line-height: 1.6;
         }
-        
-        .feature-list {
-            list-style: none;
-            margin: 30px 0;
-            text-align: left;
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 60px 20px;
         }
-        
-        .feature-list li {
-            padding: 12px 0;
-            color: #4a5568;
-            border-bottom: 1px solid #e2e8f0;
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
-        
-        .feature-list li:before {
-            content: "🔐 ";
-            margin-right: 8px;
+
+        .header h1 {
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
         }
-        
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
-            color: #a0aec0;
-            font-size: 14px;
+
+        .header p {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--primary); }
+
+        .page-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .page-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .page-card:hover {
+            border-color: var(--accent);
+            background: var(--surface2);
+            transform: translateX(4px);
+        }
+
+        .page-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            width: 36px;
+            text-align: center;
+        }
+
+        .page-info { flex: 1; }
+
+        .page-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .page-desc {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .page-arrow {
+            color: var(--muted);
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .page-card:hover .page-arrow { color: var(--accent); }
+
+        .security-note {
+            margin-top: 3rem;
+            padding: 16px 20px;
+            background: rgba(255, 107, 107, 0.06);
+            border: 1px solid rgba(255, 107, 107, 0.15);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .security-note p {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 40px 16px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="lock-icon">🔒</div>
-        <h1>Welcome to the Private Area</h1>
-        <p class="subtitle">You've successfully authenticated!</p>
-        
-        <div class="info-box">
-            <h3>🎯 Protected by Cloudflare Access</h3>
-            <p>This page is secured with email authentication. Only authorized email addresses can view this content.</p>
+        <a href="/" class="back-link">← Back to snippy.quest</a>
+
+        <div class="header">
+            <h1>🔒 Private Dashboard</h1>
+            <p>Protected by Cloudflare Access · Email PIN authentication</p>
         </div>
-        
-        <ul class="feature-list">
-            <li>Email-based authentication</li>
-            <li>One-time PIN codes</li>
-            <li>24-hour session duration</li>
-            <li>Zero-trust security</li>
-        </ul>
-        
-        <div class="info-box">
-            <h3>📝 What's Next?</h3>
-            <p>You can add more content to this page or create additional protected pages under <code>/private/</code>. All paths under this directory are protected.</p>
+
+        <div class="page-list">
+            <a href="/private/status/" class="page-card">
+                <span class="page-icon">📊</span>
+                <div class="page-info">
+                    <div class="page-name">System Status</div>
+                    <div class="page-desc">Live system health, uptime, and service monitoring</div>
+                </div>
+                <span class="page-arrow">→</span>
+            </a>
+
+            <a href="/private/analytics/" class="page-card">
+                <span class="page-icon">📈</span>
+                <div class="page-info">
+                    <div class="page-name">Conversation Analytics</div>
+                    <div class="page-desc">Usage trends, token costs, and interaction patterns</div>
+                </div>
+                <span class="page-arrow">→</span>
+            </a>
+
+            <a href="/private/architecture/" class="page-card">
+                <span class="page-icon">🏛️</span>
+                <div class="page-info">
+                    <div class="page-name">Architecture</div>
+                    <div class="page-desc">How Snippy's systems connect and work together</div>
+                </div>
+                <span class="page-arrow">→</span>
+            </a>
+
+            <a href="/private/credentials/" class="page-card">
+                <span class="page-icon">🔑</span>
+                <div class="page-info">
+                    <div class="page-name">Credential Status</div>
+                    <div class="page-desc">API key rotation status and security audit</div>
+                </div>
+                <span class="page-arrow">→</span>
+            </a>
+
+            <a href="/private/docs/" class="page-card">
+                <span class="page-icon">📝</span>
+                <div class="page-info">
+                    <div class="page-name">Memory & Docs</div>
+                    <div class="page-desc">Daily logs, task queue, and internal documentation</div>
+                </div>
+                <span class="page-arrow">→</span>
+            </a>
         </div>
-        
-        <div class="footer">
-            Snippy.Quest Private Area<br>
-            Secured by Cloudflare Zero Trust
+
+        <div class="security-note">
+            <p>🔐 Access restricted via Cloudflare Access · 24-hour sessions · Email PIN verification</p>
         </div>
     </div>
 </body>
