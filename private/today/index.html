@@ -275,7 +275,7 @@
             <h1 id="pageTitle">📋 Loading...</h1>
             <div class="date" id="pageDate"></div>
             <div class="summary" id="pageSummary"></div>
-            <div class="live-badge"><div class="live-dot"></div> Live from database</div>
+            <div class="live-badge" id="liveBadge"><div class="live-dot"></div> <span id="liveStatus">Loading from cache...</span></div>
         </div>
 
         <div id="content">
@@ -406,49 +406,81 @@
             }
         }
 
-        async function loadTasks() {
+        function renderData(data) {
+            document.getElementById('pageTitle').textContent = `📋 ${data.day}`;
+            document.getElementById('pageDate').textContent = new Date(data.date + 'T00:00:00')
+                .toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            const actionable = (data.overdue?.length || 0) + (data.today?.length || 0);
+            document.getElementById('pageSummary').textContent =
+                `${actionable} item${actionable !== 1 ? 's' : ''} need${actionable === 1 ? 's' : ''} attention · ${data.total_open} total open`;
+
+            let html = '';
+            if (actionable === 0 && (!data.upcoming || data.upcoming.length === 0)) {
+                html += '<div class="empty-state">✨ Nothing urgent. Check priorities below.</div>';
+            }
+            html += renderSection('overdue', '🔴', 'Overdue', data.overdue, true);
+            html += renderSection('today-tasks', '📌', 'Due Today', data.today);
+            html += renderSection('upcoming', '📅', 'Coming This Week', data.upcoming, true);
+            html += renderSection('priority', '⭐', 'High Priority', data.priority);
+            document.getElementById('content').innerHTML = html;
+
+            const gen = new Date(data.generated);
+            document.getElementById('footerInfo').textContent =
+                `Data from ${gen.toLocaleTimeString()} · Syncs with MS To Do on load`;
+        }
+
+        async function fetchJSON(url) {
+            const r = await fetch(url);
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            const data = await r.json();
+            if (data.error) throw new Error(data.error);
+            return data;
+        }
+
+        async function init() {
+            const status = document.getElementById('liveStatus');
+
             try {
-                const r = await fetch(API);
-                if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                const data = await r.json();
-                if (data.error) throw new Error(data.error);
+                // Phase 1: instant load from DB cache
+                status.textContent = 'Loading cached...';
+                const cached = await fetchJSON('/api/tasks');
+                renderData(cached);
+                status.textContent = 'Syncing with MS To Do...';
 
-                // Header
-                document.getElementById('pageTitle').textContent = `📋 ${data.day}`;
-                document.getElementById('pageDate').textContent = new Date(data.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: undefined, year: 'numeric', month: 'long', day: 'numeric' });
-
-                const actionable = (data.overdue?.length || 0) + (data.today?.length || 0);
-                document.getElementById('pageSummary').textContent = `${actionable} item${actionable !== 1 ? 's' : ''} need${actionable === 1 ? 's' : ''} attention · ${data.total_open} total open`;
-
-                // Content
-                let html = '';
-
-                if (actionable === 0 && (!data.upcoming || data.upcoming.length === 0)) {
-                    html += '<div class="empty-state">✨ Nothing urgent. Check priorities below.</div>';
+                // Phase 2: background sync from MS Graph
+                try {
+                    const fresh = await fetchJSON('/api/tasks/refresh');
+                    renderData(fresh);
+                    status.textContent = 'Live · synced just now';
+                } catch (e) {
+                    // Sync failed but cached data is showing — not critical
+                    status.textContent = 'Live · sync failed, showing cached';
+                    console.warn('Refresh failed:', e);
                 }
 
-                html += renderSection('overdue', '🔴', 'Overdue', data.overdue, true);
-                html += renderSection('today-tasks', '📌', 'Due Today', data.today);
-                html += renderSection('upcoming', '📅', 'Coming This Week', data.upcoming, true);
-                html += renderSection('priority', '⭐', 'High Priority', data.priority);
-
-                document.getElementById('content').innerHTML = html;
-
-                // Footer
-                const gen = new Date(data.generated);
-                document.getElementById('footerInfo').textContent = `Data from ${gen.toLocaleTimeString()} · Auto-refreshes every 60s`;
-
             } catch (e) {
-                document.getElementById('content').innerHTML = `<div class="error-state">⚠️ Failed to load tasks: ${esc(e.message)}<br><small>Retrying in 30s...</small></div>`;
-                setTimeout(loadTasks, 30000);
+                document.getElementById('content').innerHTML =
+                    `<div class="error-state">⚠️ Failed to load: ${esc(e.message)}<br><small>Retrying in 15s...</small></div>`;
+                status.textContent = 'Offline';
+                setTimeout(init, 15000);
                 return;
             }
 
-            // Refresh every 60 seconds
-            setTimeout(loadTasks, 60000);
+            // Re-sync every 60 seconds
+            setInterval(async () => {
+                try {
+                    status.textContent = 'Refreshing...';
+                    const data = await fetchJSON('/api/tasks/refresh');
+                    renderData(data);
+                    status.textContent = 'Live · synced just now';
+                } catch {
+                    status.textContent = 'Live · last refresh failed';
+                }
+            }, 60000);
         }
 
-        loadTasks();
+        init();
     </script>
 </body>
 </html>
