@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAD+ & Semax — Benefits, Research & Where to Buy</title>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface2: #232734;
+            --accent: #6c63ff;
+            --accent2: #00d4aa;
+            --text: #e4e4e7;
+            --muted: #9ca3af;
+            --border: #2d3248;
+            --warn: #f59e0b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Disclaimer Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.hidden { display: none; }
+
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 560px;
+            width: 100%;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--warn);
+        }
+
+        .modal p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .modal ul {
+            text-align: left;
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin: 0 0 1.5rem 1.5rem;
+        }
+
+        .modal ul li { margin-bottom: 0.5rem; }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-agree {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-agree:hover { background: #5a52e0; transform: translateY(-1px); }
+
+        .btn-decline {
+            background: var(--surface2);
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        .btn-decline:hover { background: var(--border); }
+
+        /* Main Content */
+        .content { display: none; }
+        .content.visible { display: block; }
+
+        header {
+            text-align: center;
+            padding: 5rem 1.5rem 3rem;
+            background: linear-gradient(180deg, #161928 0%, var(--bg) 100%);
+        }
+
+        header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            color: var(--muted);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--muted);
+            margin-bottom: 2.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* Compound Sections */
+        .compound-section {
+            padding: 4rem 0;
+        }
+
+        .compound-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .compound-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .badge-nad { background: linear-gradient(135deg, #6c63ff, #4f46e5); }
+        .badge-semax { background: linear-gradient(135deg, #00d4aa, #059669); }
+
+        .compound-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .compound-header .what {
+            color: var(--muted);
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        /* Benefit Cards */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .benefit-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.75rem;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .benefit-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .benefit-card.semax-card:hover {
+            border-color: var(--accent2);
+        }
+
+        .benefit-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .benefit-card p {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .benefit-card .source {
+            display: inline-block;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        .benefit-card .source:hover { opacity: 1; text-decoration: underline; }
+
+        /* Research Highlight */
+        .research-box {
+            background: var(--surface2);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 10px 10px 0;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .research-box.semax-research { border-left-color: var(--accent2); }
+
+        .research-box strong { color: var(--text); }
+        .research-box p { color: var(--muted); font-size: 0.93rem; }
+
+        /* Purchase Section */
+        .purchase-section {
+            padding: 4rem 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .purchase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .purchase-category h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .purchase-category.semax-purchase h3 {
+            border-bottom-color: var(--accent2);
+        }
+
+        .vendor {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            transition: border-color 0.2s;
+        }
+
+        .vendor:hover { border-color: var(--accent); }
+
+        .vendor-info { flex: 1; }
+
+        .vendor-info a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .vendor-info a:hover { color: var(--accent); }
+
+        .vendor-info .vendor-detail {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .vendor-tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            background: var(--surface2);
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .vendor-tag.popular { background: rgba(108, 99, 255, 0.15); color: var(--accent); }
+        .vendor-tag.tested { background: rgba(0, 212, 170, 0.15); color: var(--accent2); }
+
+        /* Disclaimer Banner */
+        .disclaimer-banner {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .disclaimer-banner p {
+            color: var(--muted);
+            font-size: 0.85rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .modal { padding: 1.75rem; }
+            .modal-buttons { flex-direction: column; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .purchase-grid { grid-template-columns: 1fr; }
+            .compound-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Disclaimer Modal -->
+<div class="modal-overlay" id="disclaimerModal">
+    <div class="modal">
+        <div class="modal-icon">⚕️</div>
+        <h2>Important Disclaimer</h2>
+        <p>Before proceeding, please understand and agree to the following:</p>
+        <ul>
+            <li>The content on this page is for <strong style="color: var(--text);">educational and informational purposes only</strong> and does not constitute medical advice, diagnosis, or treatment.</li>
+            <li>This information is <strong style="color: var(--text);">not a substitute</strong> for professional medical advice from a licensed healthcare provider.</li>
+            <li>Always consult your doctor or qualified health professional before starting any supplement, peptide, or health regimen.</li>
+            <li>Some products referenced may be sold <strong style="color: var(--text);">for research purposes only</strong> and may not be FDA-approved for human consumption.</li>
+            <li>Individual results may vary. The research cited may be preliminary, based on animal models, or limited in scope.</li>
+        </ul>
+        <p style="text-align: center; color: var(--warn); font-weight: 600;">By clicking "I Understand & Agree," you acknowledge that you have read and accept this disclaimer.</p>
+        <div class="modal-buttons">
+            <button class="btn btn-decline" onclick="window.location.href='https://snippy.quest'">Decline</button>
+            <button class="btn btn-agree" onclick="acceptDisclaimer()">I Understand & Agree</button>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="content" id="mainContent">
+    <header>
+        <h1>NAD+ & Semax</h1>
+        <p>An overview of the research-backed benefits of NAD+ supplementation and the Semax peptide, with links to reputable sources.</p>
+    </header>
+
+    <!-- NAD+ Section -->
+    <div class="container">
+        <div class="compound-section">
+            <div class="compound-header">
+                <div class="compound-badge badge-nad">N+</div>
+                <div>
+                    <h2>NAD+ <span style="font-weight: 400; font-size: 1rem; color: var(--muted);">(Nicotinamide Adenine Dinucleotide)</span></h2>
+                    <div class="what">A coenzyme found in every living cell, critical for energy metabolism, DNA repair, and cellular signaling. NAD+ levels naturally decline with age.</div>
+                </div>
+            </div>
+
+            <div class="research-box">
+                <p><strong>Key Research (2025):</strong> A clinical trial at Massachusetts General Hospital found that nicotinamide riboside (NR) at 2,000mg daily showed improvements in fatigue, sleep quality, mood, and executive function in long COVID patients over 24 weeks. A Nestlé Research-led trial demonstrated both NR and NMN effectively increase NAD+ levels within 14 days.</p>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h3>⚡ Cellular Energy Production</h3>
+                    <p>NAD+ is essential for mitochondrial function and ATP production. Boosting NAD+ levels supports energy metabolism at the cellular level, combating age-related fatigue.</p>
+                    <a class="source" href="https://atria.org/education/nad-supplements/" target="_blank">Source: Atria Institute →</a>
+                </div>
+
+                <div class="benefit-card">
+                    <h3>🧬 DNA Repair & Longevity</h3>
+                    <p>NAD+ activates sirtuins (SIRT1-SIRT7), enzymes involved in DNA repair, gene expression, and cellular stress resistance. In Werner syndrome patients, NR supplementation led to ~140% increase in plasma NAD+ and improved arterial stiffness.</p>
+                    <a class="source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12727671/" target="_blank">Source: PubMed Central →</a>
+                </div>
+
+                <div class="benefit-card">
+                    <h3>🧠 Cognitive & Neurological Health</h3>
+                    <p>NAD+ supports brain health through improved mitochondrial function in neurons. Research in ataxia-telangiectasia patients showed improved neuromotor function with NAD+ supplementation.</p>
+                    <a class="source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12727671/" target="_blank">Source: PubMed Central →</a>
+                </div>
+
+                <div class="benefit-card">
+                    <h3>💤 Sleep & Mood</h3>
+                    <p>The MGH long COVID trial found participants on NR reported improvements in sleep quality and mood. NAD+ plays a role in circadian rhythm regulation through sirtuin-mediated pathways.</p>
+                    <a class="source" href="https://www.sciencedaily.com/releases/2025/12/251211100629.htm" target="_blank">Source: ScienceDaily →</a>
+                </div>
+
+                <div class="benefit-card">
+                    <h3>🦠 Gut Health</h3>
+                    <p>Both NR and NMN promote beneficial gut bacteria by converting into nicotinic acid in the gut. A 2025 Nestlé-led clinical trial showed sustained increases in systemic NAD+ levels and improved microbial metabolism.</p>
+                    <a class="source" href="https://www.nutritioninsight.com/news/nestle-nad-boosters-nr-nmn-longevity-aging-suppelments.html" target="_blank">Source: Nutrition Insight →</a>
+                </div>
+
+                <div class="benefit-card">
+                    <h3>❤️ Cardiovascular Support</h3>
+                    <p>Animal research and early human studies suggest NAD+ precursors may improve insulin sensitivity and cardiovascular markers. Werner syndrome patients showed improved cardio-ankle vascular index scores.</p>
+                    <a class="source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12727671/" target="_blank">Source: PubMed Central →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Semax Section -->
+        <div class="compound-section">
+            <div class="compound-header">
+                <div class="compound-badge badge-semax">Sx</div>
+                <div>
+                    <h2>Semax <span style="font-weight: 400; font-size: 1rem; color: var(--muted);">(Synthetic ACTH 4-10 Analog)</span></h2>
+                    <div class="what">A synthetic peptide developed in Russia, derived from adrenocorticotropic hormone (ACTH). Primarily researched for cognitive enhancement and neuroprotection. Administered as a nasal spray.</div>
+                </div>
+            </div>
+
+            <div class="research-box semax-research">
+                <p><strong>Key Research:</strong> Semax increases BDNF (Brain-Derived Neurotrophic Factor) expression, modulates dopamine and serotonin systems, and provides neuroprotection. In Alzheimer's mouse models (APP/PS1), intranasal Semax restored cognitive function and reduced amyloid plaques in the cortex and hippocampus. Used clinically in Russia for stroke recovery.</p>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-card semax-card">
+                    <h3>🎯 Focus & Attention</h3>
+                    <p>Semax enhances concentration, working memory, and processing speed via dopamine modulation in the prefrontal cortex and improved cerebral blood flow. Effects can be noticeable within hours to days.</p>
+                    <a class="source" href="https://www.bhrcenter.com/peptides/semax/" target="_blank" style="color: var(--accent2);">Source: BHR Center →</a>
+                </div>
+
+                <div class="benefit-card semax-card">
+                    <h3>🧠 Memory & Learning</h3>
+                    <p>By upregulating BDNF, Semax supports synaptic plasticity, neuronal survival, and memory formation. Studies show improved performance in novel object recognition and spatial memory tests.</p>
+                    <a class="source" href="https://pubmed.ncbi.nlm.nih.gov/16996037/" target="_blank" style="color: var(--accent2);">Source: PubMed →</a>
+                </div>
+
+                <div class="benefit-card semax-card">
+                    <h3>🛡️ Neuroprotection</h3>
+                    <p>Semax reduces oxidative stress, inflammation, and ischemic damage in brain tissue. It has been used clinically in Russia for stroke neuroprotection, promoting neuronal health and resilience against cognitive decline.</p>
+                    <a class="source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3987924/" target="_blank" style="color: var(--accent2);">Source: PubMed Central →</a>
+                </div>
+
+                <div class="benefit-card semax-card">
+                    <h3>🔄 Neuroplasticity</h3>
+                    <p>Through BDNF and nerve growth factor upregulation, Semax promotes the brain's ability to form new neural connections. This underlies its benefits for learning, adaptation, and recovery from neurological injury.</p>
+                    <a class="source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12755871/" target="_blank" style="color: var(--accent2);">Source: PubMed Central →</a>
+                </div>
+
+                <div class="benefit-card semax-card">
+                    <h3>😊 Mood & Motivation</h3>
+                    <p>Semax modulates both dopamine and serotonin systems, contributing to improved mood, motivation, and emotional balance — without the stimulant-like side effects associated with traditional cognitive enhancers.</p>
+                    <a class="source" href="https://tydes.is/semax-peptide-dopamine-cognitive-benefits-research/" target="_blank" style="color: var(--accent2);">Source: Tydes Research →</a>
+                </div>
+
+                <div class="benefit-card semax-card">
+                    <h3>🧪 Alzheimer's Research</h3>
+                    <p>In APP/PS1 Alzheimer's mouse models, intranasal Semax restored cognitive functions in behavioral tests and reduced amyloid inclusions in the cortex and hippocampus — suggesting potential therapeutic applications.</p>
+                    <a class="source" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12755871/" target="_blank" style="color: var(--accent2);">Source: PubMed Central (2025) →</a>
+                </div>
+            </div>
+
+            <div class="research-box semax-research">
+                <p><strong>N-Acetyl Semax (NASA):</strong> A modified version of Semax with higher bioavailability and potentially stronger effects. The acetylated form may cross the blood-brain barrier more efficiently, though comparative human studies are limited.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Purchase Section -->
+    <div class="purchase-section">
+        <div class="container">
+            <h2 class="section-title">Where to Purchase</h2>
+            <p class="section-subtitle">Reputable vendors with third-party testing and certificates of analysis.</p>
+
+            <div class="purchase-grid">
+                <div class="purchase-category">
+                    <h3>NAD+ Supplements (NMN / NR)</h3>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://omre.co/" target="_blank">Omre — NMN + Resveratrol</a>
+                            <div class="vendor-detail">500mg NMN + Resveratrol + BioPerine · ~$2.00/serving</div>
+                        </div>
+                        <span class="vendor-tag popular">Top Rated</span>
+                    </div>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://www.truniagen.com/" target="_blank">Tru Niagen — Nicotinamide Riboside</a>
+                            <div class="vendor-detail">Patented NR (Niagen®) · Clinically proven to boost NAD+ ~50%</div>
+                        </div>
+                        <span class="vendor-tag tested">Clinically Proven</span>
+                    </div>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://www.prohealthlongevity.com/" target="_blank">ProHealth — NMN Pro Powder</a>
+                            <div class="vendor-detail">1,000mg NMN per serving · Powder form · ~$1.96/serving</div>
+                        </div>
+                        <span class="vendor-tag tested">3rd Party Tested</span>
+                    </div>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://www.thorne.com/products/dp/niacel-400" target="_blank">Thorne — NiaCel 400</a>
+                            <div class="vendor-detail">400mg NR · Known for absorption and quality · Fan favorite</div>
+                        </div>
+                        <span class="vendor-tag popular">Trusted Brand</span>
+                    </div>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://www.partiqlar.com/" target="_blank">PartiQlar — Pure NR</a>
+                            <div class="vendor-detail">500mg NR · Budget-friendly at ~$0.91/serving</div>
+                        </div>
+                        <span class="vendor-tag">Best Value</span>
+                    </div>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://www.livemomentous.com/" target="_blank">Momentous — Longevity NAD+</a>
+                            <div class="vendor-detail">Premium quality NMN · NSF Certified for Sport</div>
+                        </div>
+                        <span class="vendor-tag tested">NSF Certified</span>
+                    </div>
+                </div>
+
+                <div class="purchase-category semax-purchase">
+                    <h3>Semax Peptide (Nasal Spray)</h3>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://www.peptides.org/buy-semax/" target="_blank">PureRawz</a>
+                            <div class="vendor-detail">Rigorous 3rd-party testing · Large selection · Phone/chat support</div>
+                        </div>
+                        <span class="vendor-tag tested">3rd Party Tested</span>
+                    </div>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://limitlesslifenootropics.com/product/semax-10ml-nasal-spray-30mg/" target="_blank">Limitless Biotech</a>
+                            <div class="vendor-detail">USA-manufactured · Independent testing for endotoxins & sterility</div>
+                        </div>
+                        <span class="vendor-tag popular">USA Made</span>
+                    </div>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://ironmountainlabz.com/product/semax-nasal-spray/" target="_blank">Iron Mountain Labz</a>
+                            <div class="vendor-detail">99% purity · HPLC testing · COA verification</div>
+                        </div>
+                        <span class="vendor-tag tested">99% Purity</span>
+                    </div>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://purebiolabs.com/products/semax-nasal-spray" target="_blank">Pure Bio Labs</a>
+                            <div class="vendor-detail">50mg spray formulation · USP-grade ingredients</div>
+                        </div>
+                        <span class="vendor-tag">USP Grade</span>
+                    </div>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://behemothlabz.com/product/semax-nasal-spray/" target="_blank">Behemoth Labz</a>
+                            <div class="vendor-detail">USA-made · 3rd-party purity testing · Fast shipping</div>
+                        </div>
+                        <span class="vendor-tag">Fast Shipping</span>
+                    </div>
+
+                    <div class="vendor">
+                        <div class="vendor-info">
+                            <a href="https://peptide-works.com/semax/" target="_blank">Peptide Works</a>
+                            <div class="vendor-detail">15ml & 30ml glass bottles · 99% purity</div>
+                        </div>
+                        <span class="vendor-tag tested">99% Purity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Disclaimer -->
+    <div class="disclaimer-banner">
+        <p>⚠️ <strong>Disclaimer:</strong> This page is for educational and informational purposes only. It is not medical advice. Semax peptide products are sold for research purposes only and are not FDA-approved for human use. NAD+ supplements are not intended to diagnose, treat, cure, or prevent any disease. Always consult a qualified healthcare professional before beginning any supplement regimen. Individual results may vary. Last updated February 2026.</p>
+    </div>
+</div>
+
+<script>
+    function acceptDisclaimer() {
+        document.getElementById('disclaimerModal').classList.add('hidden');
+        document.getElementById('mainContent').classList.add('visible');
+        sessionStorage.setItem('disclaimerAccepted', 'true');
+    }
+
+    // Check if already accepted this session
+    if (sessionStorage.getItem('disclaimerAccepted') === 'true') {
+        document.getElementById('disclaimerModal').classList.add('hidden');
+        document.getElementById('mainContent').classList.add('visible');
+    }
+</script>
+
+</body>
+</html>
