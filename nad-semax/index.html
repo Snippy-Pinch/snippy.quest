@@ -31,13 +31,15 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.92);
             backdrop-filter: blur(8px);
             z-index: 1000;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            padding: 1rem;
+            padding: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .modal-overlay.hidden { display: none; }
@@ -45,55 +47,90 @@
         .modal {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 0;
             max-width: 560px;
             width: 100%;
-            padding: 2.5rem;
+            padding: 2rem 1.5rem;
             text-align: center;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @media (min-width: 641px) {
+            .modal-overlay {
+                align-items: center;
+                padding: 2rem;
+            }
+            .modal {
+                border-radius: 16px;
+                min-height: unset;
+                padding: 2.5rem;
+            }
         }
 
         .modal-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .modal h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
             color: var(--warn);
         }
 
         .modal p {
             color: var(--muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
             text-align: left;
         }
 
         .modal ul {
             text-align: left;
             color: var(--muted);
-            font-size: 0.9rem;
-            margin: 0 0 1.5rem 1.5rem;
+            font-size: 0.85rem;
+            margin: 0 0 1.25rem 1.25rem;
         }
 
         .modal ul li { margin-bottom: 0.5rem; }
 
         .modal-buttons {
             display: flex;
-            gap: 1rem;
+            flex-direction: column-reverse;
+            gap: 0.75rem;
             justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        @media (min-width: 641px) {
+            .modal-buttons {
+                flex-direction: row;
+            }
+            .modal-icon { font-size: 3rem; margin-bottom: 1rem; }
+            .modal h2 { font-size: 1.5rem; }
+            .modal p { font-size: 0.95rem; }
+            .modal ul { font-size: 0.9rem; }
         }
 
         .btn {
-            padding: 0.75rem 2rem;
+            padding: 0.9rem 2rem;
             border-radius: 10px;
             border: none;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            width: 100%;
+        }
+
+        @media (min-width: 641px) {
+            .btn { width: auto; padding: 0.75rem 2rem; }
         }
 
         .btn-agree {
@@ -347,8 +384,6 @@
 
         /* Responsive */
         @media (max-width: 640px) {
-            .modal { padding: 1.75rem; }
-            .modal-buttons { flex-direction: column; }
             .benefits-grid { grid-template-columns: 1fr; }
             .purchase-grid { grid-template-columns: 1fr; }
             .compound-header { flex-direction: column; align-items: flex-start; }
