@@ -3,186 +3,572 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What to Do Today | Friday, Feb 6</title>
+    <title>Today's Tasks | Wednesday</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        :root {
+            --bg: #0a0a1a;
+            --surface: #111127;
+            --surface2: #1a1a35;
+            --border: #2a2a4a;
+            --primary: #00d4aa;
+            --accent: #ff6b6b;
+            --warn: #f59e0b;
+            --text: #e4e4e7;
+            --muted: #7a8a9a;
+        }
+
         body {
-            font-family: 'Monaco', 'Courier New', monospace;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            padding: 30px 20px;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: rgba(26, 26, 46, 0.8);
-            border-radius: 12px;
-            border: 2px solid #00d4aa;
-        }
-        
-        h1 {
-            font-size: 2.5em;
-            color: #00d4aa;
-            margin-bottom: 10px;
-        }
-        
-        .date {
-            font-size: 1.2em;
-            color: #e01b24;
-            margin-bottom: 5px;
-        }
-        
-        .context {
-            color: #888;
-            font-size: 0.9em;
-        }
-        
-        .section {
-            background: rgba(26, 26, 46, 0.9);
-            padding: 30px;
-            border-radius: 12px;
-            border-left: 5px solid #00d4aa;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-        }
-        
-        .section h2 {
-            color: #ffb347;
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .priority-high {
-            border-left-color: #e01b24;
-        }
-        
-        .priority-high h2 {
-            color: #ff6b6b;
-        }
-        
-        .task-list {
-            list-style: none;
-        }
-        
-        .task-list li {
-            padding: 15px;
-            margin: 10px 0;
-            background: rgba(0, 212, 170, 0.05);
-            border-left: 3px solid #00d4aa;
-            border-radius: 4px;
             line-height: 1.6;
         }
-        
-        .task-list li strong {
-            color: #00d4aa;
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
         }
-        
-        .priority-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            margin-left: 10px;
-            background: #e01b24;
-            color: #fff;
-        }
-        
-        .friday-note {
-            background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
-            padding: 20px;
-            border-radius: 8px;
-            color: #fff;
-            margin-top: 30px;
-            border-left: 5px solid #d4a373;
-        }
-        
-        .friday-note p {
-            font-style: italic;
-        }
-        
-        .footer {
+
+        .header {
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(0, 212, 170, 0.3);
-            color: #666;
-            font-size: 0.9em;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .header .date {
+            color: var(--muted);
+            font-size: 1.1rem;
+        }
+
+        .header .summary {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: var(--primary);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--primary); }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .overdue-section h2 { color: var(--accent); border-bottom-color: rgba(255, 107, 107, 0.3); }
+        .today-section h2 { color: var(--primary); border-bottom-color: rgba(0, 212, 170, 0.3); }
+        .upcoming-section h2 { color: var(--warn); border-bottom-color: rgba(245, 158, 11, 0.3); }
+        .priority-section h2 { color: #a78bfa; border-bottom-color: rgba(167, 139, 250, 0.3); }
+
+        .task-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .task-card:hover { border-color: var(--primary); }
+
+        .task-check {
+            font-size: 1.1rem;
+            color: var(--muted);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .task-content { flex: 1; min-width: 0; }
+
+        .task-title {
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .task-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .badge {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .badge.important { background: rgba(255, 107, 107, 0.15); color: var(--accent); }
+        .badge.list { background: rgba(0, 212, 170, 0.1); color: var(--primary); }
+        .badge.date { background: rgba(245, 158, 11, 0.1); color: var(--warn); }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--muted);
+            font-size: 1.1rem;
+        }
+
+        .generated {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 30px 16px 60px; }
+            .header h1 { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>What to Do Today</h1>
-            <div class="date">Friday, February 6, 2026</div>
-            <div class="context">Central Time • End of week</div>
-        </header>
+        <a href="/private/" class="back-link">← Private Dashboard</a>
         
-        <div class="section priority-high">
-            <h2>🎯 Top Priority</h2>
-            <div class="task-list">
-                <li>
-                    <strong>Schedule chiropractor appointment</strong><br>
-                    West side of Sioux Falls. Options researched:<br>
-                    • Sioux Spine & Sport (605-362-1230)<br>
-                    • Westside Chiropractic Center (817 S Marion Rd)<br>
-                    • Johnson Chiropractic (605-336-2010)
-                </li>
-            </div>
+        <div class="header">
+            <h1>📋 Wednesday</h1>
+            <div class="date">February 18, 2026</div>
+            <div class="summary">42 items need attention today</div>
+        </div>
+
+        
+        
+        <div class="section overdue-section">
+            <h2>🔴 Overdue (42)</h2>
+            <div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">View your Microsoft 365 Business Basic invoice</div>
+            <div class="task-meta"><span class="badge list">Flagged Emails</span><span class="badge date">Dec 07</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">get boat started</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 17</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Buy Gray Car (Impala 2007) Battery</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 22</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">QR codes on bait boxes</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Dig out driveway culvert</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Remove large stones end of driveway</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Fix steamer. Need glue or plastic adhesive</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Steering pump gray car</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Chainsaw leak fix</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">QR codes on bait boxes</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Dig out driveway culvert</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Remove large stones end of driveway</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Fix steamer. Need glue or plastic adhesive</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Steering pump gray car</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 26</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Switch my phone to Mint Mobile</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 30</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Switch my phone to Mint Mobile</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Jul 30</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Create fishing website</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Aug 02</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Check oil on truck</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Aug 02</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Create fishing website</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Aug 02</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Pre-season tourney review</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Aug 19</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Pre-season tourney review</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Aug 19</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Fix Amazon account</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Aug 20</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Fix Amazon account</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Aug 20</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Red Truck Issuse</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Aug 23</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Red Truck Issuse</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Aug 23</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Video for kids to take notes on</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Sep 03</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Create home roadmap</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Sep 03</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Video for kids to take notes on</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Sep 03</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Create home roadmap</div>
+            <div class="task-meta"><span class="badge list">Trevor Tasks</span><span class="badge date">Sep 03</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Deer tags for kids</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Sep 28</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Deer tags for kids</div>
+            <div class="task-meta"><span class="badge list">Trevor Tasks</span><span class="badge date">Sep 28</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Get more gas for truck</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Oct 01</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Low content book related to wrestling systems</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Nov 23</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Low content book related to wrestling systems</div>
+            <div class="task-meta"><span class="badge list">Trevor Tasks</span><span class="badge date">Nov 23</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Cry shirts for Oliver and Maddox</div>
+            <div class="task-meta"><span class="badge list">Tasks</span><span class="badge date">Dec 16</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Cry shirts for Oliver and Maddox</div>
+            <div class="task-meta"><span class="badge list">Trevor Tasks</span><span class="badge date">Dec 16</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Backup phone media to free up storage</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Trevor Todo by Snippy</span><span class="badge date">Feb 02</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Move personal data from work laptop to home storage</div>
+            <div class="task-meta"><span class="badge list">Trevor Todo by Snippy</span><span class="badge date">Feb 03</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Fix Snippy Google Calendar OAuth (read/write)</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Trevor Todo by Snippy</span><span class="badge date">Feb 14</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Fw: Trevor Bainter phone</div>
+            <div class="task-meta"><span class="badge list">Flagged Emails</span><span class="badge date">Feb 16</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Get Domain Transfered to a register I can use (porkbun/moniker)</div>
+            <div class="task-meta"><span class="badge list">bitterlakelodge.com</span><span class="badge date">Feb 17</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Pick up milk at Humboldt (Countryside Mercantile)</div>
+            <div class="task-meta"><span class="badge list">Trevor Todo by Snippy</span><span class="badge date">Feb 17</span></div>
+        </div>
+    </div>
         </div>
         
-        <div class="section">
-            <h2>📋 Active Todos (20 total)</h2>
-            <div class="task-list">
-                <li><strong>Set up scraper VM</strong> — Wrestling data collection with VPN rotation</li>
-                <li><strong>Add workout songs to Jellyfin</strong> — Motivational playlist for the kids</li>
-                <li><strong>Messaging channel for kids</strong> — Direct line to reach Snippy</li>
-                <li><strong>DNS/hosting access</strong> — Already done! (Cloudflare + snippy.quest configured)</li>
-            </div>
+        
+        <div class="section upcoming-section">
+            <h2>📅 Coming This Week (4)</h2>
+            <div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Get Coach AAU card</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Tasks</span><span class="badge date">Feb 22</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">After domain trasnfered follow-up with Colin to make sure he can get Turbify CXL'd and his card information removed from it.</div>
+            <div class="task-meta"><span class="badge list">bitterlakelodge.com</span><span class="badge date">Feb 22</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Make sure NS are updated correctly so we're using the cloudflare / github site (see work flow did in Claude for bluecrane.pro)</div>
+            <div class="task-meta"><span class="badge list">bitterlakelodge.com</span><span class="badge date">Feb 22</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Verify bitterlakelodge.com domain transfer completed</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">bitterlakelodge.com</span><span class="badge date">Feb 24</span></div>
+        </div>
+    </div>
         </div>
         
-        <div class="section">
-            <h2>💡 Friday Recommendations</h2>
-            <div class="task-list">
-                <li>
-                    <strong>Close out the week:</strong> Wrap up any urgent work items before the weekend
-                </li>
-                <li>
-                    <strong>Review wrestling bracket updates</strong> if Maddox has any tournaments coming up
-                </li>
-                <li>
-                    <strong>Check with Iyoko</strong> on weekend plans or anything she needs
-                </li>
-                <li>
-                    <strong>Prep for next week:</strong> Quick scan of Monday's calendar
-                </li>
-            </div>
+        <div class="section priority-section">
+            <h2>⭐ High Priority (No Date)</h2>
+            <div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Check work Outlook for 'Publish Calendar' option</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Calendar Unification Project</span></div>
         </div>
-        
-        <div class="friday-note">
-            <p><strong>🦀 Snippy's Take:</strong> It's Friday. The chiro appointment is the only thing with actual urgency (your body will thank you). Everything else can either be delegated to me or scheduled for next week. Don't let the todo list steal your weekend headspace. Close the laptop at a reasonable hour.</p>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Inventory all calendar accounts</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Calendar Unification Project</span></div>
         </div>
-        
-        <div class="footer">
-            <p>Generated by <a href="https://snippy.quest" style="color: #00d4aa;">Snippy</a> 🦀</p>
-            <p style="margin-top: 5px;">Updated: Friday, Feb 6 @ 7:36 AM CST</p>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Cleaning out the porch</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Tasks</span></div>
         </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Go through Clothes (organize - donate)</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Tasks</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Clean up kids whiteboards</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Tasks</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Clean up storage closet in Laundry Room</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Tasks</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Declutter Kitchen</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Tasks</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Send mortgage info to Snippy</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Iyoko Todos for Trevor (managed by Snippy)</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Delete trees from underneath windmill</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Maddox Tasks</span></div>
+        </div>
+    </div>
+<div class="task-card">
+        <div class="task-check">☐</div>
+        <div class="task-content">
+            <div class="task-title">Switch out battery connector new suv</div>
+            <div class="task-meta"><span class="badge important">❗ Important</span><span class="badge list">Trevor Tasks</span></div>
+        </div>
+    </div>
+        </div>
+
+        <div class="generated">Auto-generated at 08:14 PM CT · Updated daily at 6:00 AM</div>
     </div>
 </body>
 </html>
