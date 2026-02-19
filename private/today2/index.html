@@ -500,14 +500,14 @@
 
         // Auto-refresh: poll for webhook changes every 10s
         let lastChangeTs = 0;
-        setInterval(async () => {
+
+        async function checkForUpdates() {
             try {
                 const r = await fetch('/api/tasks/lastchange');
                 if (!r.ok) return;
                 const data = await r.json();
                 if (data.ts && data.ts > lastChangeTs && lastChangeTs > 0) {
-                    // Data changed via webhook — reload smart view
-                    document.getElementById('statusText').textContent = 'New data detected, refreshing...';
+                    document.getElementById('statusText').textContent = 'New data detected...';
                     const sr = await fetch('/api/tasks/smart');
                     if (sr.ok) {
                         const fresh = await sr.json();
@@ -520,9 +520,20 @@
                 }
                 if (data.ts) lastChangeTs = data.ts;
             } catch {}
-        }, 10000);
+        }
 
-        init();
+        async function start() {
+            await init();
+            // Set baseline timestamp
+            try {
+                const r = await fetch('/api/tasks/lastchange');
+                if (r.ok) { const d = await r.json(); if (d.ts) lastChangeTs = d.ts; }
+            } catch {}
+            // Start polling
+            setInterval(checkForUpdates, 10000);
+        }
+
+        start();
     </script>
 </body>
 </html>
