@@ -48,34 +48,12 @@
         }
         .back-link:hover { color: var(--primary); }
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .subtitle {
-            color: var(--muted);
-            font-size: 1.05rem;
-            margin-bottom: 3rem;
-        }
-
-        h2 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin: 3rem 0 1rem;
-            color: var(--primary);
-        }
-
-        h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin: 2rem 0 0.75rem;
-        }
-
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .subtitle { color: var(--muted); font-size: 1.05rem; margin-bottom: 3rem; }
+        h2 { font-size: 1.4rem; font-weight: 700; margin: 3rem 0 1rem; color: var(--primary); }
+        h3 { font-size: 1.1rem; font-weight: 600; margin: 2rem 0 0.75rem; }
         p { margin-bottom: 1rem; color: var(--text); }
 
-        /* Flow Diagram */
         .flow {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -93,17 +71,9 @@
             margin-bottom: 1.5rem;
         }
 
-        .flow-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
+        .flow-steps { display: flex; flex-direction: column; gap: 0; }
 
-        .flow-step {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-        }
+        .flow-step { display: flex; align-items: flex-start; gap: 16px; }
 
         .flow-line {
             display: flex;
@@ -114,25 +84,14 @@
         }
 
         .flow-dot {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.85rem;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
         }
 
-        .flow-connector {
-            width: 3px;
-            height: 40px;
-            background: var(--border);
-        }
-
+        .flow-connector { width: 3px; height: 40px; background: var(--border); }
         .flow-connector.success { background: var(--primary); }
-        .flow-connector.fail { background: var(--accent); }
 
         .dot-blue { background: rgba(96, 165, 250, 0.2); color: var(--blue); border: 2px solid var(--blue); }
         .dot-purple { background: rgba(167, 139, 250, 0.2); color: var(--purple); border: 2px solid var(--purple); }
@@ -141,23 +100,10 @@
         .dot-pink { background: rgba(244, 114, 182, 0.2); color: var(--pink); border: 2px solid var(--pink); }
         .dot-red { background: rgba(255, 107, 107, 0.2); color: var(--accent); border: 2px solid var(--accent); }
 
-        .flow-content {
-            padding: 8px 0 24px;
-            flex: 1;
-        }
+        .flow-content { padding: 8px 0 24px; flex: 1; }
+        .flow-label { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+        .flow-desc { font-size: 0.87rem; color: var(--muted); }
 
-        .flow-label {
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 4px;
-        }
-
-        .flow-desc {
-            font-size: 0.87rem;
-            color: var(--muted);
-        }
-
-        /* Architecture Diagram */
         .arch-diagram {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -167,21 +113,13 @@
         }
 
         .arch-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin: 8px 0;
-            flex-wrap: wrap;
+            display: flex; align-items: center; justify-content: center;
+            gap: 12px; margin: 8px 0; flex-wrap: wrap;
         }
 
         .arch-box {
-            padding: 12px 18px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-align: center;
-            min-width: 120px;
+            padding: 12px 18px; border-radius: 10px;
+            font-size: 0.85rem; font-weight: 600; text-align: center; min-width: 120px;
         }
 
         .arch-box.phone { background: rgba(96, 165, 250, 0.15); border: 2px solid var(--blue); color: var(--blue); }
@@ -191,169 +129,112 @@
         .arch-box.server { background: rgba(0, 212, 170, 0.15); border: 2px solid var(--primary); color: var(--primary); }
         .arch-box.db { background: rgba(0, 212, 170, 0.25); border: 2px solid var(--primary); color: var(--primary); }
         .arch-box.github { background: rgba(255, 255, 255, 0.08); border: 2px solid #666; color: #999; }
-        .arch-box.blocked { background: rgba(255, 107, 107, 0.15); border: 2px dashed var(--accent); color: var(--accent); }
+        .arch-box.ms { background: rgba(96, 165, 250, 0.15); border: 2px solid var(--blue); color: var(--blue); }
 
-        .arch-arrow {
-            font-size: 1.2rem;
-            color: var(--muted);
-        }
+        .arch-arrow { font-size: 1.2rem; color: var(--muted); }
+        .arch-label { text-align: center; font-size: 0.75rem; color: var(--muted); margin: 2px 0 12px; }
+        .arch-divider { border: none; border-top: 1px dashed var(--border); margin: 20px 0; }
+        .arch-section-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 12px; }
 
-        .arch-label {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--muted);
-            margin: 2px 0 12px;
-        }
-
-        .arch-divider {
-            border: none;
-            border-top: 1px dashed var(--border);
-            margin: 20px 0;
-        }
-
-        .arch-section-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--muted);
-            margin-bottom: 12px;
-        }
-
-        /* Security Table */
         .sec-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.9rem;
+            width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem;
         }
-
         .sec-table th {
-            text-align: left;
-            padding: 10px 12px;
-            background: var(--surface2);
-            color: var(--muted);
-            font-weight: 600;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            text-align: left; padding: 10px 12px; background: var(--surface2);
+            color: var(--muted); font-weight: 600; font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
-
-        .sec-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border);
-        }
-
+        .sec-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
         .sec-table tr:last-child td { border-bottom: none; }
 
         .badge-pass {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: rgba(0, 212, 170, 0.15);
-            color: var(--primary);
+            display: inline-block; padding: 2px 10px; border-radius: 6px;
+            font-size: 0.8rem; font-weight: 600;
+            background: rgba(0, 212, 170, 0.15); color: var(--primary);
         }
-
         .badge-fail {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: rgba(255, 107, 107, 0.15);
-            color: var(--accent);
+            display: inline-block; padding: 2px 10px; border-radius: 6px;
+            font-size: 0.8rem; font-weight: 600;
+            background: rgba(255, 107, 107, 0.15); color: var(--accent);
         }
 
-        /* Component Cards */
         .components {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 12px;
-            margin: 1.5rem 0;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px; margin: 1.5rem 0;
         }
 
         .comp-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px;
         }
-
-        .comp-card h4 {
-            font-size: 0.95rem;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .comp-card p {
-            font-size: 0.83rem;
-            color: var(--muted);
-            margin: 0;
-        }
-
+        .comp-card h4 { font-size: 0.95rem; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .comp-card p { font-size: 0.83rem; color: var(--muted); margin: 0; }
         .comp-card .comp-detail {
-            font-size: 0.78rem;
-            color: var(--border);
+            font-size: 0.78rem; color: var(--border);
             font-family: 'SF Mono', Monaco, monospace;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid var(--border);
+            margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);
         }
 
-        /* Key insight boxes */
         .insight {
             background: var(--surface2);
             border-left: 3px solid var(--primary);
             border-radius: 0 10px 10px 0;
-            padding: 14px 18px;
-            margin: 1.5rem 0;
+            padding: 14px 18px; margin: 1.5rem 0;
         }
-
         .insight.warn { border-left-color: var(--warn); }
-
         .insight strong { color: var(--text); }
         .insight p { color: var(--muted); font-size: 0.9rem; margin: 0; }
 
-        /* Secret locations */
-        .secret-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-            margin: 1rem 0;
-        }
-
+        .secret-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 1rem 0; }
         .secret-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.88rem;
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: 8px; font-size: 0.88rem;
         }
-
         .secret-row .icon { font-size: 1.1rem; flex-shrink: 0; }
 
         code {
             font-family: 'SF Mono', Monaco, 'Courier New', monospace;
             background: rgba(0, 212, 170, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.85em;
-            color: var(--primary);
+            padding: 2px 6px; border-radius: 4px; font-size: 0.85em; color: var(--primary);
+        }
+
+        .feature-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px; margin: 1.5rem 0;
+        }
+        .feature-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px; text-align: center;
+        }
+        .feature-card .emoji { font-size: 2rem; margin-bottom: 8px; }
+        .feature-card h4 { font-size: 0.9rem; margin-bottom: 4px; }
+        .feature-card p { font-size: 0.8rem; color: var(--muted); margin: 0; }
+
+        .perf-bar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: 8px;
+            margin-bottom: 8px; font-size: 0.88rem;
+        }
+        .perf-bar .label { flex: 1; }
+        .perf-bar .time {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-weight: 700; font-size: 0.95rem;
+        }
+        .perf-bar .time.fast { color: var(--primary); }
+        .perf-bar .time.medium { color: var(--warn); }
+        .perf-bar .bar-track {
+            width: 100px; height: 6px; background: var(--surface2);
+            border-radius: 3px; overflow: hidden;
+        }
+        .perf-bar .bar-fill {
+            height: 100%; border-radius: 3px;
         }
 
         .footer-info {
-            text-align: center;
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            color: var(--muted);
-            font-size: 0.8rem;
+            text-align: center; margin-top: 4rem; padding-top: 2rem;
+            border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem;
         }
 
         @media (max-width: 640px) {
@@ -361,7 +242,7 @@
             h1 { font-size: 1.6rem; }
             .arch-row { flex-direction: column; }
             .arch-arrow { transform: rotate(90deg); }
-            .components { grid-template-columns: 1fr; }
+            .components, .feature-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -370,11 +251,60 @@
         <a href="/private/" class="back-link">← Private Dashboard</a>
 
         <h1>🏗️ How the Live Dashboard Works</h1>
-        <p class="subtitle">The full architecture behind <code>/private/today</code> — from your browser to the database and back.</p>
+        <p class="subtitle">The full architecture behind <code>/private/today</code> — from your browser to Microsoft To Do and back.</p>
 
-        <!-- Overview -->
-        <h2>🗺️ The Big Picture</h2>
-        <p>When you open the Today page, your browser makes a request that passes through <strong>5 systems</strong> before returning your task data. Each layer adds security or functionality.</p>
+        <!-- Features -->
+        <h2>✨ What It Does</h2>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="emoji">📋</div>
+                <h4>Live Task View</h4>
+                <p>Overdue, today, this week, high priority, and backlog — all categorized automatically</p>
+            </div>
+            <div class="feature-card">
+                <div class="emoji">✅</div>
+                <h4>One-Click Complete</h4>
+                <p>Check off tasks right from the page — syncs to MS To Do in under 1 second</p>
+            </div>
+            <div class="feature-card">
+                <div class="emoji">🔄</div>
+                <h4>Two-Phase Loading</h4>
+                <p>Instant display from cache, then background sync with MS To Do for fresh data</p>
+            </div>
+            <div class="feature-card">
+                <div class="emoji">🔘</div>
+                <h4>Manual Sync Button</h4>
+                <p>Floating refresh button — tap anytime to pull latest from Microsoft</p>
+            </div>
+        </div>
+
+        <!-- Performance -->
+        <h2>⚡ Performance</h2>
+
+        <div class="perf-bar">
+            <span class="label">Page load (from DB cache)</span>
+            <div class="bar-track"><div class="bar-fill" style="width:3%;background:var(--primary)"></div></div>
+            <span class="time fast">~20ms</span>
+        </div>
+        <div class="perf-bar">
+            <span class="label">Task completion (cached list)</span>
+            <div class="bar-track"><div class="bar-fill" style="width:10%;background:var(--primary)"></div></div>
+            <span class="time fast">~0.8s</span>
+        </div>
+        <div class="perf-bar">
+            <span class="label">Full MS Graph sync (background)</span>
+            <div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--warn)"></div></div>
+            <span class="time medium">~7s</span>
+        </div>
+
+        <div class="insight">
+            <p><strong>Why is completion so fast?</strong> Each task's list ID is cached in PostgreSQL during sync. When you check off a task, the API makes a single MS Graph call instead of searching all 16 lists. First-time completions (no cache) fall back to brute-force search.</p>
+        </div>
+
+        <!-- Big Picture -->
+        <h2>🗺️ Architecture Overview</h2>
+        <p>A request passes through <strong>5 systems</strong>. Each layer adds security or functionality.</p>
 
         <div class="arch-diagram">
             <div class="arch-section-label">📱 Your Device</div>
@@ -390,11 +320,11 @@
                 <div class="arch-arrow">→</div>
                 <div class="arch-box github">📄 GitHub Pages<br><small>Static HTML/JS</small></div>
             </div>
-            <div class="arch-label">Page loads ↑ · JS fetches /api/tasks ↓</div>
+            <div class="arch-label">Page loads ↑ · JS calls /api/* ↓</div>
             <div class="arch-row">
-                <div class="arch-box worker">⚡ CF Worker<br><small>JWT Validation + API Key Injection</small></div>
+                <div class="arch-box worker">⚡ CF Worker<br><small>JWT + API Key Injection</small></div>
             </div>
-            <div class="arch-label">↓ Adds secret API key (encrypted in Worker)</div>
+            <div class="arch-label">↓ Adds API key · ⚠️ Strips POST body (known limitation)</div>
 
             <hr class="arch-divider">
             <div class="arch-section-label">🔐 Cloudflare Tunnel (Encrypted)</div>
@@ -406,18 +336,22 @@
             <hr class="arch-divider">
             <div class="arch-section-label">🖥️ Snippy's Server (LXC Container)</div>
             <div class="arch-row">
-                <div class="arch-box server">🐍 API Server<br><small>Port 8787</small></div>
-                <div class="arch-arrow">→</div>
-                <div class="arch-box db">🐘 PostgreSQL<br><small>Task Data</small></div>
+                <div class="arch-box server">🐍 Threaded API<br><small>Port 8787</small></div>
+                <div class="arch-arrow">↔</div>
+                <div class="arch-box db">🐘 PostgreSQL<br><small>Task Cache + Analytics</small></div>
             </div>
-            <div class="arch-label">↑ JSON response flows back through the same chain</div>
+            <div class="arch-label">↕ Reads/writes tasks</div>
+            <div class="arch-row">
+                <div class="arch-box ms">📊 MS Graph API<br><small>Microsoft To Do</small></div>
+            </div>
+            <div class="arch-label">↑ Sync + complete tasks via OAuth token</div>
         </div>
 
-        <!-- Step by Step Flow -->
-        <h2>🔄 Step-by-Step: What Happens When You Load the Page</h2>
+        <!-- Data Flow -->
+        <h2>🔄 Data Flow: Two-Phase Loading</h2>
 
         <div class="flow">
-            <div class="flow-title">Authentication + Data Flow</div>
+            <div class="flow-title">What Happens When You Open the Page</div>
             <div class="flow-steps">
 
                 <div class="flow-step">
@@ -426,8 +360,50 @@
                         <div class="flow-connector success"></div>
                     </div>
                     <div class="flow-content">
-                        <div class="flow-label">You visit snippy.quest/private/today</div>
-                        <div class="flow-desc">Your browser sends the request. Cloudflare Access checks: "Is this person authenticated?" If you haven't logged in recently, you get an email PIN page. Only your two email addresses are allowed. Once verified, Cloudflare sets a <strong>CF_Authorization cookie</strong> — a signed JWT token.</div>
+                        <div class="flow-label">Instant load from database cache (~20ms)</div>
+                        <div class="flow-desc">Page fetches <code>GET /api/tasks</code>. The API queries PostgreSQL and returns categorized tasks immediately. You see your tasks in under a second. Status badge shows "Loading cached..."</div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-line">
+                        <div class="flow-dot dot-yellow">2</div>
+                        <div class="flow-connector success"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="flow-label">Background sync with MS To Do (~7s)</div>
+                        <div class="flow-desc">JavaScript silently calls <code>GET /api/tasks/refresh</code>. The API runs a full sync — iterates all 16 MS To Do lists via MS Graph API, upserts into PostgreSQL, then returns fresh data. Badge shows "Syncing with MS To Do..."</div>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-line">
+                        <div class="flow-dot dot-green">3</div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="flow-label">Page updates seamlessly</div>
+                        <div class="flow-desc">Fresh data replaces cached data in-place. Any tasks added in MS To Do since last sync appear instantly. Badge shows "Live · synced just now". Hit the floating 🔄 button anytime for another sync.</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Task Completion Flow -->
+        <h2>✅ How Task Completion Works</h2>
+
+        <div class="flow">
+            <div class="flow-title">What Happens When You Click a Checkbox</div>
+            <div class="flow-steps">
+
+                <div class="flow-step">
+                    <div class="flow-line">
+                        <div class="flow-dot dot-green">1</div>
+                        <div class="flow-connector success"></div>
+                    </div>
+                    <div class="flow-content">
+                        <div class="flow-label">Optimistic UI update (instant)</div>
+                        <div class="flow-desc">Checkbox fills green with a ✓. Task card gets a strikethrough. This happens immediately before the API call — makes it feel instant.</div>
                     </div>
                 </div>
 
@@ -437,69 +413,45 @@
                         <div class="flow-connector success"></div>
                     </div>
                     <div class="flow-content">
-                        <div class="flow-label">The page HTML/JS loads from GitHub Pages</div>
-                        <div class="flow-desc">The static page is served from a public GitHub repo. It contains the layout, styling, and JavaScript — but <strong>zero secrets</strong>. The JavaScript makes a fetch request to <code>/api/tasks</code>.</div>
+                        <div class="flow-label">API call with cached list lookup (~0.8s)</div>
+                        <div class="flow-desc">Browser sends <code>POST /api/tasks/complete?id=...</code> (task ID in query string because the CF Worker strips POST bodies). The API looks up the task's <strong>cached list_id</strong> from PostgreSQL, then makes a single PATCH to MS Graph. Without the cache, it would need to search all 16 lists (5-10s).</div>
                     </div>
                 </div>
 
                 <div class="flow-step">
                     <div class="flow-line">
-                        <div class="flow-dot dot-yellow">3</div>
+                        <div class="flow-dot dot-blue">3</div>
                         <div class="flow-connector success"></div>
                     </div>
                     <div class="flow-content">
-                        <div class="flow-label">Browser fetches /api/tasks (same domain = cookie sent automatically)</div>
-                        <div class="flow-desc">Because <code>/api</code> is on the same domain as <code>/private</code>, your browser automatically includes the CF_Authorization cookie. No extra login needed.</div>
+                        <div class="flow-label">Database + MS To Do updated simultaneously</div>
+                        <div class="flow-desc">MS Graph marks the task completed in To Do. PostgreSQL records completion time, calculates actual hours since creation, and marks the task done.</div>
                     </div>
                 </div>
 
                 <div class="flow-step">
                     <div class="flow-line">
-                        <div class="flow-dot dot-purple">4</div>
-                        <div class="flow-connector success"></div>
+                        <div class="flow-dot dot-green">4</div>
                     </div>
                     <div class="flow-content">
-                        <div class="flow-label">Cloudflare Worker intercepts and validates your JWT</div>
-                        <div class="flow-desc">The Worker extracts your cookie and performs <strong>cryptographic verification</strong>:
-                            <br>✅ <strong>Signature</strong> — Verifies Cloudflare actually signed this token (RSA-256)
-                            <br>✅ <strong>Audience</strong> — Confirms it's for this specific app, not someone else's
-                            <br>✅ <strong>Expiration</strong> — Checks the token hasn't expired
-                            <br>If any check fails → 403 Unauthorized. Request dies here.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flow-step">
-                    <div class="flow-line">
-                        <div class="flow-dot dot-pink">5</div>
-                        <div class="flow-connector success"></div>
-                    </div>
-                    <div class="flow-content">
-                        <div class="flow-label">Worker adds the secret API key and forwards to backend</div>
-                        <div class="flow-desc">The API key is stored as an <strong>encrypted Worker secret</strong> — never in the browser, never in source code. The Worker injects it into the request header and forwards through the Cloudflare Tunnel.</div>
-                    </div>
-                </div>
-
-                <div class="flow-step">
-                    <div class="flow-line">
-                        <div class="flow-dot dot-green">6</div>
-                    </div>
-                    <div class="flow-content">
-                        <div class="flow-label">API server queries PostgreSQL and returns your tasks</div>
-                        <div class="flow-desc">The Python API server on Snippy's LXC verifies the API key, queries the PostgreSQL database for your tasks, categorizes them (overdue, today, upcoming, priority), and returns JSON. The response flows back through the tunnel → Worker → your browser → rendered on screen.</div>
+                        <div class="flow-label">Toast confirmation + animated removal</div>
+                        <div class="flow-desc">Green toast: "✓ Task Name completed". Card fades out and slides away. Counter updates. If the API fails, the checkbox reverts with a red shake animation and error toast.</div>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- What Keeps It Secure -->
-        <h2>🛡️ What Keeps It Secure</h2>
+        <div class="insight warn">
+            <p><strong>Why query params instead of POST body?</strong> The Cloudflare Worker proxies API requests but strips the POST body (sends <code>Content-Length: 0</code>). Discovered during development — the workaround is sending the task ID as a URL query parameter. GET requests and response bodies work fine.</p>
+        </div>
 
-        <p>Three independent layers of security. An attacker would need to break <strong>all three</strong> to access your data.</p>
+        <!-- Security -->
+        <h2>🛡️ Security Layers</h2>
+        <p>Three independent layers. An attacker needs to break <strong>all three</strong>.</p>
 
         <div class="flow">
-            <div class="flow-title">Security Layers</div>
+            <div class="flow-title">Defense in Depth</div>
             <div class="flow-steps">
                 <div class="flow-step">
                     <div class="flow-line">
@@ -508,7 +460,7 @@
                     </div>
                     <div class="flow-content">
                         <div class="flow-label">Cloudflare Access (Gate to /private)</div>
-                        <div class="flow-desc">Email-based authentication. Only <code>linux.trevor@gmail.com</code> and <code>trevor@bainter.xyz</code> can get in. Requires access to the actual email inbox to receive the PIN code. Sessions last 30 days.</div>
+                        <div class="flow-desc">Email PIN authentication. Only 2 email addresses allowed. Requires actual inbox access. Sessions last 30 days.</div>
                     </div>
                 </div>
 
@@ -519,7 +471,7 @@
                     </div>
                     <div class="flow-content">
                         <div class="flow-label">JWT Cryptographic Verification (Worker)</div>
-                        <div class="flow-desc">The Worker doesn't just check if a cookie exists — it mathematically verifies the JWT signature using Cloudflare's public RSA keys. A forged or tampered cookie fails instantly. This is the same technology used by banks and government systems.</div>
+                        <div class="flow-desc">RSA-256 signature verification. Checks audience, expiration, and issuer. Forged or expired tokens are rejected instantly. Same technology used by banks.</div>
                     </div>
                 </div>
 
@@ -529,58 +481,45 @@
                     </div>
                     <div class="flow-content">
                         <div class="flow-label">API Key on Backend</div>
-                        <div class="flow-desc">Even if someone bypasses everything above, the backend API server requires a secret key in every request. This key only exists in two places: encrypted in the Cloudflare Worker and in the server's secrets file. Never in your browser, never in source code.</div>
+                        <div class="flow-desc">Secret key stored as encrypted Worker secret and server-side file. Never in the browser, never in source code. Required on every API request.</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Attack scenarios -->
-        <h2>🧪 Attack Scenarios</h2>
-        <p>What happens when someone tries to break in:</p>
-
         <table class="sec-table">
             <thead>
-                <tr>
-                    <th>Attack</th>
-                    <th>What Happens</th>
-                    <th>Result</th>
-                </tr>
+                <tr><th>Attack</th><th>What Happens</th><th>Result</th></tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>Visit snippy.quest/api/tasks directly</td>
+                    <td>Visit /api/tasks directly</td>
                     <td>No CF_Authorization cookie → Worker rejects</td>
                     <td><span class="badge-fail">❌ Blocked</span></td>
                 </tr>
                 <tr>
-                    <td>Send a fake cookie</td>
-                    <td>JWT signature check fails (can't forge Cloudflare's RSA signature)</td>
+                    <td>Forge a JWT cookie</td>
+                    <td>RSA signature check fails</td>
                     <td><span class="badge-fail">❌ Blocked</span></td>
                 </tr>
                 <tr>
-                    <td>Use an expired cookie</td>
+                    <td>Use an expired session</td>
                     <td>JWT expiration check fails</td>
                     <td><span class="badge-fail">❌ Blocked</span></td>
                 </tr>
                 <tr>
-                    <td>Steal a cookie from a different CF Access app</td>
-                    <td>Audience (aud) check fails — wrong app ID</td>
-                    <td><span class="badge-fail">❌ Blocked</span></td>
-                </tr>
-                <tr>
                     <td>Hit api.snippy.quest directly</td>
-                    <td>No API key in header → backend rejects</td>
+                    <td>No API key → backend rejects</td>
                     <td><span class="badge-fail">❌ Blocked</span></td>
                 </tr>
                 <tr>
-                    <td>Read the GitHub repo source code</td>
-                    <td>No secrets in the repo — API key is in Worker secret, not source</td>
+                    <td>Read the GitHub source code</td>
+                    <td>No secrets in repo — all in Worker secrets + server</td>
                     <td><span class="badge-fail">❌ Nothing to find</span></td>
                 </tr>
                 <tr>
                     <td>Authenticated user with valid session</td>
-                    <td>CF Access ✅ → JWT valid ✅ → Worker adds key ✅ → Data returned</td>
+                    <td>CF Access ✅ → JWT ✅ → API Key ✅ → Data returned</td>
                     <td><span class="badge-pass">✅ Allowed</span></td>
                 </tr>
             </tbody>
@@ -592,115 +531,147 @@
         <div class="components">
             <div class="comp-card">
                 <h4>📄 GitHub Pages</h4>
-                <p>Hosts the static HTML, CSS, and JavaScript. Public repo, but contains zero secrets.</p>
-                <div class="comp-detail">snippy-pinch.github.io → snippy.quest</div>
+                <p>Static HTML/CSS/JS. Public repo, zero secrets. Interactive checkboxes, toast notifications, floating sync button.</p>
+                <div class="comp-detail">Snippy-Pinch/snippy.quest</div>
             </div>
             <div class="comp-card">
                 <h4>🔒 Cloudflare Access</h4>
-                <p>Email PIN authentication. Controls who can view /private/ pages. Sets the JWT cookie.</p>
-                <div class="comp-detail">30-day sessions · 2 allowed emails</div>
+                <p>Email PIN auth for /private/*. Sets JWT cookie. 30-day sessions.</p>
+                <div class="comp-detail">2 allowed emails</div>
             </div>
             <div class="comp-card">
                 <h4>⚡ Cloudflare Worker</h4>
-                <p>Intercepts /api/* requests. Validates JWT, injects API key, proxies to backend.</p>
-                <div class="comp-detail">snippy-api-proxy · RS256 JWT verification</div>
+                <p>Validates JWT, injects API key, proxies to tunnel. ⚠️ Strips POST body.</p>
+                <div class="comp-detail">snippy-api-proxy · RS256</div>
             </div>
             <div class="comp-card">
                 <h4>🚇 Cloudflare Tunnel</h4>
-                <p>Encrypted connection from Cloudflare's edge to Snippy's server. No open ports.</p>
+                <p>Encrypted connection to server. No open ports exposed to the internet.</p>
                 <div class="comp-detail">api.snippy.quest → 127.0.0.1:8787</div>
             </div>
             <div class="comp-card">
-                <h4>🐍 Todo API Server</h4>
-                <p>Python HTTP server on port 8787. Validates API key, queries database, returns JSON.</p>
+                <h4>🐍 Threaded API Server</h4>
+                <p>Python ThreadingHTTPServer. Handles concurrent requests — sync won't block completions.</p>
                 <div class="comp-detail">systemd: snippy-todo-api</div>
             </div>
             <div class="comp-card">
                 <h4>🐘 PostgreSQL</h4>
-                <p>Database with all task data. Synced from Microsoft To Do every 30 minutes via heartbeat.</p>
-                <div class="comp-detail">10.16.50.71 · clawdbot DB</div>
+                <p>Task cache with analytics. Stores list_id for fast completions, tracks hours and history.</p>
+                <div class="comp-detail">LXC 702 · 10.16.50.71</div>
+            </div>
+            <div class="comp-card">
+                <h4>📊 MS Graph API</h4>
+                <p>Microsoft To Do backend. 16 lists, ~150 tasks. OAuth token auto-refreshed on heartbeat.</p>
+                <div class="comp-detail">graph.microsoft.com/v1.0</div>
+            </div>
+            <div class="comp-card">
+                <h4>🔁 Sync Engine</h4>
+                <p>Full sync on page load + heartbeat. Creates, updates, completes, detects deletions. Deduplication built in.</p>
+                <div class="comp-detail">sync_todos_full.py</div>
             </div>
         </div>
 
-        <!-- Where Secrets Live -->
+        <!-- Secrets -->
         <h2>🔑 Where Secrets Live</h2>
-        <p>Every secret is stored encrypted. Nothing is in source code or visible publicly.</p>
-
         <div class="secret-grid">
             <div class="secret-row">
                 <span class="icon">🔐</span>
                 <div>
-                    <strong>API Key</strong> — Cloudflare Worker encrypted secret + server secrets file
-                    <br><small style="color: var(--muted);">Never in browser, never in GitHub repo</small>
+                    <strong>API Key</strong> — CF Worker encrypted secret + server secrets file
+                    <br><small style="color: var(--muted);">Never in browser or GitHub repo</small>
                 </div>
             </div>
             <div class="secret-row">
                 <span class="icon">🔐</span>
                 <div>
-                    <strong>Tunnel Token</strong> — Server secrets file, loaded by systemd on boot
+                    <strong>MS365 OAuth Token</strong> — Server /tmp, auto-refreshed every heartbeat
+                    <br><small style="color: var(--muted);">Used for MS Graph API calls (sync + complete)</small>
+                </div>
+            </div>
+            <div class="secret-row">
+                <span class="icon">🔐</span>
+                <div>
+                    <strong>Tunnel Token</strong> — Server secrets file, loaded by systemd
                     <br><small style="color: var(--muted);">/root/.clawdbot/secrets/cloudflare_tunnel.json</small>
                 </div>
             </div>
             <div class="secret-row">
                 <span class="icon">🔐</span>
                 <div>
-                    <strong>JWT Signing Keys</strong> — Cloudflare's private RSA keys (we only have the public keys for verification)
-                    <br><small style="color: var(--muted);">Managed entirely by Cloudflare, rotated automatically</small>
+                    <strong>Database Credentials</strong> — Server secrets file
+                    <br><small style="color: var(--muted);">/root/.clawdbot/secrets/postgres.json</small>
                 </div>
             </div>
             <div class="secret-row">
                 <span class="icon">🔐</span>
                 <div>
-                    <strong>Database Credentials</strong> — Server secrets file, read by API server
-                    <br><small style="color: var(--muted);">/root/.clawdbot/secrets/postgres.json</small>
+                    <strong>JWT Signing Keys</strong> — Cloudflare's private RSA keys (we only verify with public keys)
+                    <br><small style="color: var(--muted);">Managed and rotated by Cloudflare automatically</small>
                 </div>
             </div>
         </div>
 
-        <!-- Data Freshness -->
-        <h2>🔄 How Task Data Stays Fresh</h2>
+        <!-- Known Limitations -->
+        <h2>⚠️ Known Limitations</h2>
 
-        <div class="flow">
-            <div class="flow-title">Data Sync Pipeline</div>
-            <div class="flow-steps">
-                <div class="flow-step">
-                    <div class="flow-line">
-                        <div class="flow-dot dot-blue">1</div>
-                        <div class="flow-connector success"></div>
-                    </div>
-                    <div class="flow-content">
-                        <div class="flow-label">Microsoft To Do (Source of Truth)</div>
-                        <div class="flow-desc">You add, complete, or modify tasks in the MS To Do app. 16 lists, ~150 tasks.</div>
-                    </div>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-line">
-                        <div class="flow-dot dot-yellow">2</div>
-                        <div class="flow-connector success"></div>
-                    </div>
-                    <div class="flow-content">
-                        <div class="flow-label">Heartbeat Sync (Every 30 Minutes)</div>
-                        <div class="flow-desc">Snippy's heartbeat runs <code>sync_todos_full.py</code> which pulls all tasks from MS Graph API and syncs them into PostgreSQL. Creates, updates, and marks completed tasks.</div>
-                    </div>
-                </div>
-                <div class="flow-step">
-                    <div class="flow-line">
-                        <div class="flow-dot dot-green">3</div>
-                    </div>
-                    <div class="flow-content">
-                        <div class="flow-label">Dashboard Auto-Refreshes (Every 60 Seconds)</div>
-                        <div class="flow-desc">The page JavaScript re-fetches from the API every 60 seconds. You always see near-real-time data without refreshing the page.</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <table class="sec-table">
+            <thead>
+                <tr><th>Limitation</th><th>Impact</th><th>Workaround</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CF Worker strips POST body</td>
+                    <td>Can't send JSON in POST requests</td>
+                    <td>Task ID sent as query parameter</td>
+                </tr>
+                <tr>
+                    <td>Background sync takes ~7s</td>
+                    <td>New tasks from MS To Do aren't instant</td>
+                    <td>Two-phase load: cached first, fresh after</td>
+                </tr>
+                <tr>
+                    <td>No undo for completions</td>
+                    <td>Checked tasks can't be unchecked from the page</td>
+                    <td>Reopen in MS To Do app directly</td>
+                </tr>
+                <tr>
+                    <td>MS365 token can expire</td>
+                    <td>Sync + completion break silently</td>
+                    <td>Auto-refresh on heartbeat (~30 min)</td>
+                </tr>
+                <tr>
+                    <td>No real-time push</td>
+                    <td>Changes from other devices need manual sync</td>
+                    <td>Floating 🔄 button for on-demand refresh</td>
+                </tr>
+                <tr>
+                    <td>Single MS365 account</td>
+                    <td>Only Trevor's tasks visible</td>
+                    <td>Shared lists work through his account</td>
+                </tr>
+            </tbody>
+        </table>
 
-        <div class="insight">
-            <p><strong>Why the database instead of MS Graph API directly?</strong> Speed and reliability. The database responds in milliseconds. MS Graph API can be slow or rate-limited. The database also gives us analytics, history tracking, and search capabilities that Microsoft doesn't offer.</p>
-        </div>
+        <!-- Task Sections -->
+        <h2>📊 Task Categories</h2>
+        <p>Tasks are automatically sorted into sections based on due date and importance:</p>
+
+        <table class="sec-table">
+            <thead>
+                <tr><th>Section</th><th>Criteria</th><th>Display</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>🔴 Overdue</td><td>Due date in the past</td><td>Shows due date</td></tr>
+                <tr><td>📌 Due Today</td><td>Due date is today</td><td>No date shown</td></tr>
+                <tr><td>📅 This Week</td><td>Due within 7 days</td><td>Shows due date</td></tr>
+                <tr><td>⭐ High Priority</td><td>Marked "important" in MS To Do (any date or no date)</td><td>Top 15 shown</td></tr>
+                <tr><td>📦 Backlog</td><td>No due date, normal priority</td><td>Top 20 shown</td></tr>
+            </tbody>
+        </table>
 
         <div class="footer-info">
-            Built by Snippy 🦀 · Architecture documented February 19, 2026
+            Built by Snippy 🦀 · Last updated February 19, 2026
+            <br>v2: Interactive completions, two-phase loading, threaded API, cached list lookups
         </div>
     </div>
 </body>
