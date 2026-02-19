@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog | Snippy Private</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a1a; --surface: #111127; --surface2: #1a1a35;
+            --border: #2a2a4a; --primary: #00d4aa; --accent: #ff6b6b;
+            --warn: #f59e0b; --purple: #a78bfa; --blue: #60a5fa;
+            --text: #e4e4e7; --muted: #7a8a9a;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; line-height: 1.7;
+        }
+        .container { max-width: 750px; margin: 0 auto; padding: 40px 20px 80px; }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--muted); text-decoration: none; font-size: 0.9rem;
+            margin-bottom: 2rem; transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--primary); }
+        h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 3rem; }
+
+        .entry { margin-bottom: 2.5rem; }
+        .entry-date {
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--primary); font-weight: 600; margin-bottom: 0.5rem;
+        }
+        .entry h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .entry ul { padding-left: 1.2rem; margin-bottom: 0.5rem; }
+        .entry li { margin-bottom: 0.4rem; font-size: 0.92rem; color: var(--text); }
+        .entry li code {
+            font-family: 'SF Mono', Monaco, monospace;
+            background: rgba(0,212,170,0.1); padding: 1px 5px;
+            border-radius: 4px; font-size: 0.82em; color: var(--primary);
+        }
+
+        .tag {
+            display: inline-block; font-size: 0.68rem; font-weight: 600;
+            padding: 2px 8px; border-radius: 6px; margin-right: 4px;
+            vertical-align: middle;
+        }
+        .tag-new { background: rgba(0,212,170,0.15); color: var(--primary); }
+        .tag-fix { background: rgba(255,107,107,0.15); color: var(--accent); }
+        .tag-improve { background: rgba(167,139,250,0.15); color: var(--purple); }
+        .tag-infra { background: rgba(96,165,250,0.15); color: var(--blue); }
+
+        .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+        .footer-info {
+            text-align: center; margin-top: 4rem; padding-top: 2rem;
+            border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/private/" class="back-link">← Dashboard</a>
+
+        <h1>📝 Changelog</h1>
+        <p class="subtitle">What Snippy's been building.</p>
+
+        <div class="entry">
+            <div class="entry-date">February 19, 2026</div>
+            <h2>Smart Todo Dashboard & MS To Do Integration</h2>
+            <ul>
+                <li><span class="tag tag-new">NEW</span> <code>/private/today2</code> — AI-triaged daily game plan. Shows focused tasks that fit your available time (1.5hr weekday, 4hr weekend) with next actions, time estimates, and context badges.</li>
+                <li><span class="tag tag-new">NEW</span> One-click task completion — check off tasks from the page, syncs to MS To Do in ~0.8s using cached list lookups.</li>
+                <li><span class="tag tag-new">NEW</span> MS Graph webhooks — all 16 todo lists push changes in real-time. No more manual sync. Tasks appear within ~15-25s of adding them in MS To Do.</li>
+                <li><span class="tag tag-new">NEW</span> Auto-refresh — page polls every 15s and updates automatically when webhook data arrives.</li>
+                <li><span class="tag tag-new">NEW</span> Two-phase loading — instant render from DB cache, then background sync with MS Graph for fresh data.</li>
+                <li><span class="tag tag-new">NEW</span> Floating action buttons — 🔄 sync MS To Do, 🧠 force AI re-analysis.</li>
+                <li><span class="tag tag-improve">IMPROVE</span> Threaded API server — sync no longer blocks task completions.</li>
+                <li><span class="tag tag-improve">IMPROVE</span> Cached <code>list_id</code> in PostgreSQL — completions went from 5-10s to ~0.8s.</li>
+                <li><span class="tag tag-improve">IMPROVE</span> Hard triage rules — tasks due today/overdue always appear in focus regardless of LLM opinion.</li>
+                <li><span class="tag tag-fix">FIX</span> CF Worker strips POST body — moved task ID to query parameter.</li>
+                <li><span class="tag tag-fix">FIX</span> Tunnel crash loop — systemd quoting issue fixed, moved to shell script launcher.</li>
+                <li><span class="tag tag-fix">FIX</span> Deduplicated 20 tasks in MS To Do + database (9 actual MS dupes deleted).</li>
+                <li><span class="tag tag-infra">INFRA</span> Webhook subscription auto-renewal cron (daily 6am).</li>
+                <li><span class="tag tag-infra">INFRA</span> Rescheduled 18 summer-overdue tasks to April 2026.</li>
+            </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="entry">
+            <div class="entry-date">February 19, 2026 (earlier)</div>
+            <h2>Todo Dashboard v1</h2>
+            <ul>
+                <li><span class="tag tag-new">NEW</span> <code>/private/today</code> — live task view from PostgreSQL. Overdue, today, upcoming, priority, backlog sections.</li>
+                <li><span class="tag tag-new">NEW</span> <code>/private/how-it-works</code> — full architecture documentation for the todo system.</li>
+                <li><span class="tag tag-new">NEW</span> Todo API server on port 8787 (<code>snippy-todo-api</code> systemd service).</li>
+                <li><span class="tag tag-infra">INFRA</span> Cloudflare Tunnel + Worker + Access for secure API proxying.</li>
+            </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="entry">
+            <div class="entry-date">February 18, 2026</div>
+            <h2>Moltbook & Communication</h2>
+            <ul>
+                <li><span class="tag tag-new">NEW</span> Moltbook suspension lifted (3 days early). API changes: posts require <code>submolt_name</code>.</li>
+                <li><span class="tag tag-improve">IMPROVE</span> Morning brief delivery via <code>morning_brief.py</code> — data-driven, no manual composition.</li>
+                <li><span class="tag tag-fix">FIX</span> Anthropic API 500 errors no longer leak raw to Signal.</li>
+            </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="entry">
+            <div class="entry-date">February 17, 2026</div>
+            <h2>Database & Maintenance</h2>
+            <ul>
+                <li><span class="tag tag-new">NEW</span> <code>db_maintenance.py</code> — VACUUM ANALYZE, dead tuple cleanup, index health. Cron: Wednesday 03:00.</li>
+                <li><span class="tag tag-new">NEW</span> <code>cron_health.py</code> — automated cron log auditor.</li>
+                <li><span class="tag tag-improve">IMPROVE</span> System crons audited — 11 entries total, all documented.</li>
+            </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="entry">
+            <div class="entry-date">February 15, 2026</div>
+            <h2>Sunday Sync & Iyoko Reminders</h2>
+            <ul>
+                <li><span class="tag tag-new">NEW</span> Iyoko todo reminders via Signal (warm/playful tone).</li>
+                <li><span class="tag tag-improve">IMPROVE</span> Sunday digest rewritten — PostgreSQL direct, Open-Meteo weather, no MS365 API hangs.</li>
+            </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="entry">
+            <div class="entry-date">February 12-14, 2026</div>
+            <h2>Weather, Domains & Embeddings</h2>
+            <ul>
+                <li><span class="tag tag-new">NEW</span> Weather-aware todo scheduler — outdoor task recommendations based on forecast.</li>
+                <li><span class="tag tag-new">NEW</span> Domain management via Porkbun API.</li>
+                <li><span class="tag tag-improve">IMPROVE</span> Migrated to <code>gemini-embedding-001</code> + <code>google-genai</code> SDK.</li>
+                <li><span class="tag tag-infra">INFRA</span> Model upgrade to Claude Opus 4.6.</li>
+            </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="entry">
+            <div class="entry-date">February 8-10, 2026</div>
+            <h2>Security Audit</h2>
+            <ul>
+                <li><span class="tag tag-fix">FIX</span> Fixed 19 hardcoded credentials across 15 files.</li>
+                <li><span class="tag tag-new">NEW</span> Credential rotation tool: <code>rotate_credential.py</code>.</li>
+                <li><span class="tag tag-infra">INFRA</span> Full audit documented: <code>docs/SECURITY_AUDIT_2026_FEB.md</code>.</li>
+            </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="entry">
+            <div class="entry-date">February 4, 2026</div>
+            <h2>Discord Integration</h2>
+            <ul>
+                <li><span class="tag tag-new">NEW</span> Bainter Family Discord server — #general (kids), #snippy-dad (Trevor), #snippy-maddox, #snippy-sakura.</li>
+                <li><span class="tag tag-new">NEW</span> Cross-channel messaging between Signal and Discord.</li>
+                <li><span class="tag tag-new">NEW</span> Kid info request approval flow (kid asks → Trevor approves via Signal).</li>
+            </ul>
+        </div>
+
+        <hr class="divider">
+
+        <div class="entry">
+            <div class="entry-date">January 29-31, 2026</div>
+            <h2>Born 🦀</h2>
+            <ul>
+                <li><span class="tag tag-new">NEW</span> Snippy created (Jan 29). Named by family vote (Jan 31) — Snippy won 3-2-1.</li>
+                <li><span class="tag tag-new">NEW</span> PostgreSQL setup, conversation capture, todo tracking, ElevenLabs TTS.</li>
+                <li><span class="tag tag-fix">FIX</span> Context overflow at 200k tokens — trimmed project files 87%, enabled pruning.</li>
+                <li><span class="tag tag-fix">FIX</span> 60M token burn from 5-min heartbeat — moved to batched checks.</li>
+            </ul>
+        </div>
+
+        <div class="footer-info">
+            Maintained by Snippy 🦀 · Auto-updated when things get built
+        </div>
+    </div>
+</body>
+</html>
