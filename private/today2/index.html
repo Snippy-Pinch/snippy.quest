@@ -452,9 +452,10 @@
                 const data = await r.json();
                 if (data.error) throw new Error(data.error);
                 renderData(data);
+                lastGenerated = data.generated || '';
                 status.textContent = data.from_cache
-                    ? `Cached (${Math.floor(data.cache_age/60)}m old) · Tap 🧠 to re-analyze`
-                    : 'Fresh AI analysis';
+                    ? `Cached (${Math.floor(data.cache_age/60)}m old) · auto-refreshes when data changes`
+                    : 'Fresh AI analysis · auto-refreshes when data changes';
             } catch(e) {
                 document.getElementById('content').innerHTML =
                     `<div style="text-align:center;padding:2rem;color:var(--accent)">⚠️ ${esc(e.message)}<br><small>Retrying in 10s...</small></div>`;
@@ -498,39 +499,26 @@
             finally { fab.classList.remove('syncing'); }
         }
 
-        // Auto-refresh: poll for webhook changes every 10s
-        let lastChangeTs = 0;
-
-        async function checkForUpdates() {
-            try {
-                const r = await fetch('/api/tasks/lastchange');
-                if (!r.ok) return;
-                const data = await r.json();
-                if (data.ts && data.ts > lastChangeTs && lastChangeTs > 0) {
-                    document.getElementById('statusText').textContent = 'New data detected...';
-                    const sr = await fetch('/api/tasks/smart');
-                    if (sr.ok) {
-                        const fresh = await sr.json();
-                        if (!fresh.error) {
-                            renderData(fresh);
-                            showToast('Auto-updated ✓', false);
-                            document.getElementById('statusText').textContent = 'Live · auto-updated';
-                        }
-                    }
-                }
-                if (data.ts) lastChangeTs = data.ts;
-            } catch {}
-        }
+        let lastGenerated = '';
 
         async function start() {
             await init();
-            // Set baseline timestamp
-            try {
-                const r = await fetch('/api/tasks/lastchange');
-                if (r.ok) { const d = await r.json(); if (d.ts) lastChangeTs = d.ts; }
-            } catch {}
-            // Start polling
-            setInterval(checkForUpdates, 10000);
+            // Auto-refresh every 15s — smart endpoint is cached so it's fast
+            // When webhook updates the cache, next poll picks it up
+            setInterval(async () => {
+                try {
+                    const r = await fetch('/api/tasks/smart');
+                    if (!r.ok) return;
+                    const data = await r.json();
+                    if (data.error) return;
+                    if (lastGenerated && data.generated !== lastGenerated) {
+                        renderData(data);
+                        showToast('Auto-updated ✓', false);
+                        document.getElementById('statusText').textContent = 'Live · auto-updated';
+                    }
+                    lastGenerated = data.generated;
+                } catch {}
+            }, 15000);
         }
 
         start();
