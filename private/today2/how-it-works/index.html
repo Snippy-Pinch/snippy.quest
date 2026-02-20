@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works — Today v2 | Snippy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a1a; --surface: #111127; --surface2: #1a1a35;
+            --border: #2a2a4a; --primary: #00d4aa; --accent: #ff6b6b;
+            --warn: #f59e0b; --purple: #a78bfa; --blue: #60a5fa;
+            --text: #e4e4e7; --muted: #7a8a9a;
+            --work: #3b82f6; --personal: #8b5cf6; --free: #10b981;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; line-height: 1.7;
+        }
+        .container { max-width: 760px; margin: 0 auto; padding: 32px 20px 80px; }
+
+        .back-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--muted); text-decoration: none; font-size: 0.9rem;
+            margin-bottom: 1.5rem; transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
+
+        h2 {
+            font-size: 1.3rem; font-weight: 700; margin: 2.5rem 0 0.75rem;
+            color: var(--primary); display: flex; align-items: center; gap: 10px;
+        }
+        h2 .num {
+            font-size: 0.75rem; background: var(--primary); color: var(--bg);
+            width: 24px; height: 24px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; flex-shrink: 0;
+        }
+        h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: var(--text); }
+
+        p { margin-bottom: 1rem; color: var(--muted); font-size: 0.95rem; }
+        p strong { color: var(--text); }
+
+        .arch-diagram {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 14px; padding: 24px; margin: 1.5rem 0; overflow-x: auto;
+        }
+        .arch-row {
+            display: flex; align-items: center; gap: 8px;
+            flex-wrap: wrap; margin: 10px 0; justify-content: center;
+        }
+        .arch-box {
+            padding: 10px 16px; border-radius: 10px; font-size: 0.82rem;
+            font-weight: 600; text-align: center; white-space: nowrap;
+        }
+        .arch-box.user { background: rgba(167,139,250,0.15); color: var(--purple); border: 1px solid rgba(167,139,250,0.3); }
+        .arch-box.frontend { background: rgba(0,212,170,0.1); color: var(--primary); border: 1px solid rgba(0,212,170,0.3); }
+        .arch-box.tunnel { background: rgba(96,165,250,0.1); color: var(--blue); border: 1px solid rgba(96,165,250,0.3); }
+        .arch-box.api { background: rgba(245,158,11,0.1); color: var(--warn); border: 1px solid rgba(245,158,11,0.3); }
+        .arch-box.db { background: rgba(255,107,107,0.1); color: var(--accent); border: 1px solid rgba(255,107,107,0.3); }
+        .arch-box.ext { background: rgba(255,255,255,0.04); color: var(--muted); border: 1px solid var(--border); }
+        .arch-arrow { color: var(--muted); font-size: 1.2rem; flex-shrink: 0; }
+
+        .code-block {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 10px; padding: 16px; margin: 1rem 0;
+            overflow-x: auto; font-size: 0.82rem;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: var(--primary); line-height: 1.6;
+        }
+        .code-block .comment { color: var(--muted); }
+        .code-block .path { color: var(--warn); }
+        .code-block .value { color: var(--purple); }
+
+        code {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            background: rgba(0,212,170,0.1); padding: 2px 6px;
+            border-radius: 4px; font-size: 0.85em; color: var(--primary);
+        }
+
+        .flow-step {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px 18px; margin: 10px 0;
+            display: flex; gap: 14px; align-items: flex-start;
+        }
+        .flow-step .step-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+        .flow-step .step-body { flex: 1; }
+        .flow-step .step-title { font-weight: 600; font-size: 0.92rem; margin-bottom: 4px; color: var(--text); }
+        .flow-step .step-desc { font-size: 0.85rem; color: var(--muted); }
+
+        .endpoint-table {
+            width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem;
+        }
+        .endpoint-table th {
+            text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border);
+            color: var(--primary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .endpoint-table td {
+            padding: 10px 12px; border-bottom: 1px solid var(--border);
+            color: var(--muted); vertical-align: top;
+        }
+        .method { font-weight: 700; }
+        .method.get { color: var(--primary); }
+        .method.post { color: var(--warn); }
+
+        .callout {
+            border-radius: 10px; padding: 14px 16px; margin: 1rem 0; font-size: 0.88rem;
+        }
+        .callout.info { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.2); color: var(--blue); }
+        .callout.warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); color: var(--warn); }
+        .callout.tip { background: rgba(0,212,170,0.06); border: 1px solid rgba(0,212,170,0.2); color: var(--primary); }
+        .callout strong { color: inherit; }
+
+        .file-tree {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 10px; padding: 16px; margin: 1rem 0;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.82rem; line-height: 1.8; color: var(--muted);
+        }
+        .file-tree .dir { color: var(--blue); }
+        .file-tree .file { color: var(--text); }
+        .file-tree .desc { color: var(--muted); font-style: italic; }
+        .file-tree .new-tag { color: var(--primary); font-weight: 600; font-style: normal; }
+
+        ul { margin: 0.5rem 0 1rem 1.5rem; }
+        li { margin: 4px 0; color: var(--muted); font-size: 0.92rem; }
+        li strong { color: var(--text); }
+
+        .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+        .vs-table {
+            width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem;
+        }
+        .vs-table th {
+            text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border);
+            font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .vs-table th:nth-child(1) { color: var(--muted); }
+        .vs-table th:nth-child(2) { color: var(--warn); }
+        .vs-table th:nth-child(3) { color: var(--primary); }
+        .vs-table td {
+            padding: 8px 12px; border-bottom: 1px solid var(--border);
+            color: var(--muted); vertical-align: top;
+        }
+
+        .footer { text-align: center; padding: 2rem 0; color: var(--muted); font-size: 0.78rem; opacity: 0.5; }
+
+        @media (max-width: 600px) {
+            .container { padding: 24px 16px 60px; }
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.15rem; }
+            .arch-row { gap: 4px; }
+            .arch-box { padding: 8px 10px; font-size: 0.75rem; }
+            .arch-arrow { font-size: 1rem; }
+            .code-block { font-size: 0.76rem; padding: 12px; }
+            .endpoint-table, .vs-table { font-size: 0.78rem; }
+            .endpoint-table th, .endpoint-table td, .vs-table th, .vs-table td { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/private/today2/" class="back-link">← Back to Today v2</a>
+
+        <h1>🔧 How It Works — v2</h1>
+        <p class="subtitle">Schedule + Tasks combined. Calendar-aware daily planning powered by MS365 + AI.</p>
+
+        <!-- WHAT'S NEW -->
+        <h2><span class="num">1</span> What's New in v2</h2>
+        <p>Today v2 merges two data streams into a single view: your <strong>calendar schedule</strong> (from MS365 Outlook) and your <strong>AI-prioritized tasks</strong> (from MS To Do). The original Today dashboard only had tasks.</p>
+
+        <table class="vs-table">
+            <thead><tr><th>Feature</th><th>v1 (Today)</th><th>v2 (Today2)</th></tr></thead>
+            <tbody>
+                <tr><td>Tasks</td><td>✅ Full AI triage</td><td>✅ Same AI triage</td></tr>
+                <tr><td>Calendar</td><td>❌ None</td><td>✅ Full day timeline</td></tr>
+                <tr><td>Up Next</td><td>❌</td><td>✅ Next event + countdown</td></tr>
+                <tr><td>Free Windows</td><td>❌</td><td>✅ Shows available slots</td></tr>
+                <tr><td>Work Hours</td><td>❌</td><td>✅ Badge + detection</td></tr>
+                <tr><td>Day Navigation</td><td>❌</td><td>✅ Browse past/future days</td></tr>
+                <tr><td>Tabs</td><td>Single view</td><td>Combined / Schedule / Tasks</td></tr>
+                <tr><td>Task Completion</td><td>✅ Live</td><td>✅ Same</td></tr>
+            </tbody>
+        </table>
+
+        <hr class="divider">
+
+        <!-- ARCHITECTURE -->
+        <h2><span class="num">2</span> Architecture</h2>
+        <p>Two parallel data pipelines feed the frontend. Both use the same API server and Cloudflare tunnel.</p>
+
+        <div class="arch-diagram">
+            <div class="arch-row" style="margin-bottom:16px">
+                <div style="font-size:0.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;width:100%;text-align:center">Schedule Pipeline</div>
+            </div>
+            <div class="arch-row">
+                <div class="arch-box ext">MS365 Calendars (10)</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box api">/api/schedule</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box frontend">Timeline + Up Next</div>
+            </div>
+            <div class="arch-row" style="margin:20px 0 16px">
+                <div style="font-size:0.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;width:100%;text-align:center">Task Pipeline</div>
+            </div>
+            <div class="arch-row">
+                <div class="arch-box ext">MS To Do (16 lists)</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box db">PostgreSQL</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box ext">Perplexity AI</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box api">/api/tasks/smart</div>
+            </div>
+            <div class="arch-row" style="margin:20px 0 16px">
+                <div style="font-size:0.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;width:100%;text-align:center">Shared Infrastructure</div>
+            </div>
+            <div class="arch-row">
+                <div class="arch-box user">👤 Browser</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box frontend">snippy.quest (GitHub Pages)</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box tunnel">Cloudflare Tunnel</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box api">API :8787</div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- SCHEDULE PIPELINE -->
+        <h2><span class="num">3</span> Schedule Pipeline (New)</h2>
+        <p>The schedule endpoint pulls events from <strong>10 MS365 calendars</strong> in real-time via the MS Graph API. No caching — always live.</p>
+
+        <h3>Calendars</h3>
+        <ul>
+            <li><strong>Trevor Bainter</strong> — Work calendar (any event = busy)</li>
+            <li><strong>Trevor Google</strong> — Personal/family synced from Google</li>
+            <li><strong>T&I Family Google</strong> — Shared family calendar</li>
+            <li><strong>Maddox, Sakura, Laiken, Toshi</strong> — Kid-specific calendars</li>
+            <li><strong>Calendar</strong> — Default MS365 calendar</li>
+            <li><strong>Birthdays, US Holidays</strong> — Reference calendars</li>
+        </ul>
+
+        <h3>Processing</h3>
+        <div class="flow-step">
+            <div class="step-icon">📡</div>
+            <div class="step-body">
+                <div class="step-title">Fetch events for target date</div>
+                <div class="step-desc">Queries each calendar's <code>calendarView</code> endpoint with <code>America/Chicago</code> timezone preference. Up to 50 events per calendar.</div>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-icon">🔀</div>
+            <div class="step-body">
+                <div class="step-title">Deduplicate</div>
+                <div class="step-desc">Events that appear on multiple calendars (e.g., Maddox wrestling shows on both Maddox + Trevor Google) are collapsed to one entry by matching subject + start + end.</div>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-icon">🏷️</div>
+            <div class="step-body">
+                <div class="step-title">Categorize</div>
+                <div class="step-desc"><strong>Work</strong> (Trevor Bainter calendar) vs <strong>Personal</strong> (everything else) vs <strong>All-Day</strong>. Work events are further split by <code>showAs</code>: busy (solid) vs free (dashed).</div>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-icon">🟢</div>
+            <div class="step-body">
+                <div class="step-title">Calculate free windows</div>
+                <div class="step-desc">Uses <code>work_schedule.py</code> to find gaps: before work, between work and evening activities. Factors in work hours, activity calendars, and sunset time.</div>
+            </div>
+        </div>
+
+        <div class="callout info">
+            <strong>Live data:</strong> The schedule endpoint makes 10 API calls to MS Graph on each request (one per calendar). No cache — always current. Typical response time: 1-3 seconds.
+        </div>
+
+        <hr class="divider">
+
+        <!-- TASK PIPELINE -->
+        <h2><span class="num">4</span> Task Pipeline (Same as v1)</h2>
+        <p>Tasks follow the same flow as the original Today dashboard. See <a href="/private/today/how-it-works/" style="color:var(--primary)">Today v1 How It Works</a> for full details.</p>
+
+        <div class="flow-step">
+            <div class="step-icon">📱</div>
+            <div class="step-body">
+                <div class="step-title">MS To Do → Webhooks → PostgreSQL → AI → Dashboard</div>
+                <div class="step-desc">16 webhook subscriptions fire on changes. <code>sync_todos_full.py</code> syncs to PostgreSQL. <code>enrich_tasks.py</code> feeds tasks to Perplexity Sonar for AI triage. Results cached 30 minutes.</div>
+            </div>
+        </div>
+
+        <h3>AI Triage Sections</h3>
+        <ul>
+            <li><strong>🎯 Today's Focus</strong> — 3-5 tasks fitting available time, with actions + time estimates</li>
+            <li><strong>📅 This Week</strong> — Batched related tasks + others due this week</li>
+            <li><strong>⏸ Can Wait</strong> — No urgent deadline</li>
+            <li><strong>📦 Backlog</strong> — Everything else, grouped by list</li>
+        </ul>
+
+        <div class="callout tip">
+            <strong>Day awareness:</strong> The AI knows if it's a weekday (~90 min available) or weekend (~4 hours). Tasks due today or overdue are forced into Today's Focus regardless of the AI's opinion.
+        </div>
+
+        <hr class="divider">
+
+        <!-- API ENDPOINTS -->
+        <h2><span class="num">5</span> API Endpoints</h2>
+
+        <table class="endpoint-table">
+            <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/schedule</code></td>
+                    <td>Calendar events for today. Add <code>?date=YYYY-MM-DD</code> for other days. Returns work_events, personal_events, all_day, free_windows, work_hours. <strong class="new-tag" style="color:var(--primary)">NEW</strong></td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/tasks/smart</code></td>
+                    <td>AI-enriched task view (cached 30m). Add <code>?force</code> to regenerate.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/tasks/refresh</code></td>
+                    <td>Trigger MS365 → PostgreSQL sync, return raw task data.</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/tasks/complete</code></td>
+                    <td>Complete a task in MS To Do + DB. Pass <code>?id=MS_TODO_ID</code>.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/tasks</code></td>
+                    <td>Raw task list from PostgreSQL (no AI enrichment).</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/health</code></td>
+                    <td>Health check.</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/webhook</code></td>
+                    <td>MS Graph subscription validation.</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/webhook</code></td>
+                    <td>MS Graph change notifications → triggers background sync + cache invalidation.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout tip">
+            <strong>Auth:</strong> All endpoints (except health + webhook) require <code>X-API-Key</code> header. The Cloudflare tunnel handles routing; the API binds to <code>127.0.0.1</code> only.
+        </div>
+
+        <hr class="divider">
+
+        <!-- UI VIEWS -->
+        <h2><span class="num">6</span> UI Views</h2>
+
+        <h3>📋 Combined Tab (Default)</h3>
+        <p>The primary view. Shows a <strong>compact schedule summary</strong> at the top — all-day banners, "Up Next" card with countdown, and free window chips — followed by the <strong>full task view</strong> with all four sections (focus, week, wait, backlog).</p>
+        <p>The timeline is hidden in combined mode to save space. Switch to the Schedule tab for the full timeline.</p>
+
+        <h3>📅 Schedule Tab</h3>
+        <p>Full timeline view with <strong>color-coded event blocks</strong>:</p>
+        <ul>
+            <li><span style="color:var(--work)">■</span> <strong>Work (busy)</strong> — solid blue border</li>
+            <li><span style="color:var(--work);opacity:0.6">┊</span> <strong>Work (free/tentative)</strong> — dashed blue, dimmed</li>
+            <li><span style="color:var(--personal)">■</span> <strong>Personal</strong> — purple (wrestling, travel, family)</li>
+            <li><span style="color:var(--lunch)">■</span> <strong>Lunch</strong> — amber</li>
+        </ul>
+        <p>Includes a red <strong>NOW marker</strong> (today only) and <strong>day navigation</strong> buttons to browse past/future dates.</p>
+
+        <h3>✅ Tasks Tab</h3>
+        <p>Identical to the v1 Today dashboard — full task view with all sections, no schedule.</p>
+
+        <hr class="divider">
+
+        <!-- FRONTEND BEHAVIOR -->
+        <h2><span class="num">7</span> Frontend Behavior</h2>
+
+        <h3>Data Loading</h3>
+        <p>On page load, both <code>/api/schedule</code> and <code>/api/tasks/smart</code> are fetched in <strong>parallel</strong> via <code>Promise.all</code>. The page renders as soon as both return.</p>
+
+        <h3>Auto-Refresh</h3>
+        <ul>
+            <li><strong>Every 30 seconds:</strong> Polls both endpoints. Schedule always re-renders (current_time updates). Tasks only re-render if the generation timestamp changed (cache was invalidated by webhook or manual refresh).</li>
+            <li><strong>Webhook-driven:</strong> When you change a task in MS To Do, the webhook fires → syncs to DB → invalidates AI cache → next poll picks up the new data.</li>
+        </ul>
+
+        <h3>Manual Controls</h3>
+        <ul>
+            <li><strong>🧠 Re-analyze:</strong> Syncs MS To Do + forces fresh AI analysis + reloads schedule. ~15-30 seconds.</li>
+            <li><strong>🔄 Sync:</strong> Quick MS To Do sync + reload. Uses cached AI if available.</li>
+        </ul>
+
+        <h3>Task Completion</h3>
+        <p>Tapping a checkbox sends <code>POST /api/tasks/complete</code> → updates MS To Do via MS Graph + marks completed in PostgreSQL. UI animates optimistically (fade + shrink). Reverts on error.</p>
+
+        <hr class="divider">
+
+        <!-- FILE MAP -->
+        <h2><span class="num">8</span> File Map</h2>
+
+        <div class="file-tree">
+            <span class="dir">scripts/</span><br>
+            &nbsp;&nbsp;├── <span class="file">todo_api.py</span> <span class="desc">— API server (530+ lines, threaded HTTP)</span><br>
+            &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;<span class="new-tag">+ /api/schedule endpoint (NEW)</span><br>
+            &nbsp;&nbsp;├── <span class="file">enrich_tasks.py</span> <span class="desc">— AI enrichment via Perplexity Sonar</span><br>
+            &nbsp;&nbsp;├── <span class="file">sync_todos_full.py</span> <span class="desc">— Full MS365 → PostgreSQL sync</span><br>
+            &nbsp;&nbsp;├── <span class="file">manage_webhooks.py</span> <span class="desc">— MS Graph webhook lifecycle</span><br>
+            &nbsp;&nbsp;└── <span class="file">start_tunnel.sh</span> <span class="desc">— Cloudflare tunnel launcher</span><br>
+            <br>
+            <span class="dir">lib/</span><br>
+            &nbsp;&nbsp;└── <span class="file">work_schedule.py</span> <span class="desc">— Calendar helper: events, work hours, free windows</span> <span class="new-tag">← powers /api/schedule</span><br>
+            <br>
+            <span class="dir">systemd services</span><br>
+            &nbsp;&nbsp;├── <span class="file">snippy-todo-api.service</span> <span class="desc">— API on :8787 (auto-restart)</span><br>
+            &nbsp;&nbsp;└── <span class="file">snippy-tunnel.service</span> <span class="desc">— Cloudflare tunnel (auto-restart)</span><br>
+            <br>
+            <span class="dir">frontend</span><br>
+            &nbsp;&nbsp;├── <span class="file">/private/today/</span> <span class="desc">— v1 (tasks only)</span><br>
+            &nbsp;&nbsp;├── <span class="file">/private/today2/</span> <span class="desc">— v2 (schedule + tasks)</span> <span class="new-tag">NEW</span><br>
+            &nbsp;&nbsp;├── <span class="file">/private/today/how-it-works/</span> <span class="desc">— v1 docs</span><br>
+            &nbsp;&nbsp;└── <span class="file">/private/today2/how-it-works/</span> <span class="desc">— this page</span> <span class="new-tag">NEW</span><br>
+            <br>
+            <span class="dir">secrets/</span><br>
+            &nbsp;&nbsp;├── <span class="file">cloudflare_tunnel.json</span> <span class="desc">— Tunnel token + API key</span><br>
+            &nbsp;&nbsp;├── <span class="file">perplexity.json</span> <span class="desc">— Perplexity API key</span><br>
+            &nbsp;&nbsp;└── <span class="file">postgres.json</span> <span class="desc">— DB credentials</span><br>
+            <br>
+            <span class="dir">cache</span><br>
+            &nbsp;&nbsp;├── <span class="file">/tmp/ms365_token.json</span> <span class="desc">— MS Graph access token</span><br>
+            &nbsp;&nbsp;└── <span class="file">/tmp/enriched_tasks.json</span> <span class="desc">— AI cache (30 min TTL)</span>
+        </div>
+
+        <hr class="divider">
+
+        <!-- SECURITY -->
+        <h2><span class="num">9</span> Security</h2>
+        <ul>
+            <li><strong>Cloudflare Access:</strong> <code>/private/</code> paths require email PIN authentication (24-hour sessions).</li>
+            <li><strong>API Key:</strong> All API endpoints (except health/webhook) require <code>X-API-Key</code> header.</li>
+            <li><strong>Localhost binding:</strong> API on <code>127.0.0.1:8787</code> — only reachable via tunnel.</li>
+            <li><strong>CORS:</strong> Restricted to <code>https://snippy.quest</code> origin.</li>
+            <li><strong>Calendar data:</strong> Event subjects are visible. Work calendar ticket IDs (e.g., T17260) are shown but contain no sensitive detail — just titles.</li>
+        </ul>
+
+        <hr class="divider">
+
+        <!-- KNOWN LIMITS -->
+        <h2><span class="num">10</span> Known Limitations</h2>
+        <ul>
+            <li><strong>Schedule not cached:</strong> Each load makes ~10 MS Graph API calls. Fast but adds 1-3s latency. Could cache with short TTL if needed.</li>
+            <li><strong>Free windows are approximate:</strong> Uses earliest work event → latest work event as bounds. Doesn't account for gaps between work meetings (yet).</li>
+            <li><strong>No task ↔ free window matching:</strong> The AI triage doesn't know about your calendar. It suggests tasks for "today" but doesn't slot them into specific free windows. Future improvement.</li>
+            <li><strong>Day navigation (Schedule tab only):</strong> Browsing other dates only affects the Schedule tab, not the Tasks tab (tasks are always today).</li>
+        </ul>
+
+        <div class="callout warn">
+            <strong>Future ideas:</strong> Slot tasks into free windows. Add week view. Calendar event creation from dashboard. Integrate weather for outdoor tasks.
+        </div>
+
+        <hr class="divider">
+
+        <div class="footer">
+            Built by Snippy 🦀 · February 2026
+        </div>
+    </div>
+</body>
+</html>
