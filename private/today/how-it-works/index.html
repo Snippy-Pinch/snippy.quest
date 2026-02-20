@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works — Today Dashboard | Snippy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a1a; --surface: #111127; --surface2: #1a1a35;
+            --border: #2a2a4a; --primary: #00d4aa; --accent: #ff6b6b;
+            --warn: #f59e0b; --purple: #a78bfa; --blue: #60a5fa;
+            --text: #e4e4e7; --muted: #7a8a9a;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg); color: var(--text);
+            min-height: 100vh; line-height: 1.7;
+        }
+        .container { max-width: 760px; margin: 0 auto; padding: 32px 20px 80px; }
+
+        .back-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--muted); text-decoration: none; font-size: 0.9rem;
+            margin-bottom: 1.5rem; transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        h1 {
+            font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;
+        }
+        .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
+
+        h2 {
+            font-size: 1.3rem; font-weight: 700; margin: 2.5rem 0 0.75rem;
+            color: var(--primary); display: flex; align-items: center; gap: 10px;
+        }
+        h2 .num {
+            font-size: 0.75rem; background: var(--primary); color: var(--bg);
+            width: 24px; height: 24px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; flex-shrink: 0;
+        }
+
+        h3 {
+            font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem;
+            color: var(--text);
+        }
+
+        p { margin-bottom: 1rem; color: var(--muted); font-size: 0.95rem; }
+        p strong { color: var(--text); }
+
+        /* Architecture Diagram */
+        .arch-diagram {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 14px; padding: 24px; margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+        .arch-row {
+            display: flex; align-items: center; gap: 8px;
+            flex-wrap: wrap; margin: 10px 0;
+            justify-content: center;
+        }
+        .arch-box {
+            padding: 10px 16px; border-radius: 10px; font-size: 0.82rem;
+            font-weight: 600; text-align: center; white-space: nowrap;
+        }
+        .arch-box.user { background: rgba(167,139,250,0.15); color: var(--purple); border: 1px solid rgba(167,139,250,0.3); }
+        .arch-box.frontend { background: rgba(0,212,170,0.1); color: var(--primary); border: 1px solid rgba(0,212,170,0.3); }
+        .arch-box.tunnel { background: rgba(96,165,250,0.1); color: var(--blue); border: 1px solid rgba(96,165,250,0.3); }
+        .arch-box.api { background: rgba(245,158,11,0.1); color: var(--warn); border: 1px solid rgba(245,158,11,0.3); }
+        .arch-box.db { background: rgba(255,107,107,0.1); color: var(--accent); border: 1px solid rgba(255,107,107,0.3); }
+        .arch-box.ext { background: rgba(255,255,255,0.04); color: var(--muted); border: 1px solid var(--border); }
+        .arch-arrow { color: var(--muted); font-size: 1.2rem; flex-shrink: 0; }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 10px; padding: 16px; margin: 1rem 0;
+            overflow-x: auto; font-size: 0.82rem;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: var(--primary); line-height: 1.6;
+        }
+        .code-block .comment { color: var(--muted); }
+        .code-block .path { color: var(--warn); }
+        .code-block .value { color: var(--purple); }
+
+        code {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            background: rgba(0,212,170,0.1); padding: 2px 6px;
+            border-radius: 4px; font-size: 0.85em; color: var(--primary);
+        }
+
+        /* Flow cards */
+        .flow-step {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px 18px; margin: 10px 0;
+            display: flex; gap: 14px; align-items: flex-start;
+        }
+        .flow-step .step-icon {
+            font-size: 1.4rem; flex-shrink: 0; margin-top: 2px;
+        }
+        .flow-step .step-body { flex: 1; }
+        .flow-step .step-title { font-weight: 600; font-size: 0.92rem; margin-bottom: 4px; color: var(--text); }
+        .flow-step .step-desc { font-size: 0.85rem; color: var(--muted); }
+
+        /* Endpoint table */
+        .endpoint-table {
+            width: 100%; border-collapse: collapse; margin: 1rem 0;
+            font-size: 0.85rem;
+        }
+        .endpoint-table th {
+            text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border);
+            color: var(--primary); font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .endpoint-table td {
+            padding: 10px 12px; border-bottom: 1px solid var(--border);
+            color: var(--muted); vertical-align: top;
+        }
+        .endpoint-table code { font-size: 0.8em; }
+        .method { font-weight: 700; }
+        .method.get { color: var(--primary); }
+        .method.post { color: var(--warn); }
+
+        /* Info callouts */
+        .callout {
+            border-radius: 10px; padding: 14px 16px; margin: 1rem 0;
+            font-size: 0.88rem;
+        }
+        .callout.info { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.2); color: var(--blue); }
+        .callout.warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); color: var(--warn); }
+        .callout.tip { background: rgba(0,212,170,0.06); border: 1px solid rgba(0,212,170,0.2); color: var(--primary); }
+        .callout strong { color: inherit; }
+
+        /* File tree */
+        .file-tree {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 10px; padding: 16px; margin: 1rem 0;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.82rem; line-height: 1.8; color: var(--muted);
+        }
+        .file-tree .dir { color: var(--blue); }
+        .file-tree .file { color: var(--text); }
+        .file-tree .desc { color: var(--muted); font-style: italic; }
+
+        ul { margin: 0.5rem 0 1rem 1.5rem; }
+        li { margin: 4px 0; color: var(--muted); font-size: 0.92rem; }
+        li strong { color: var(--text); }
+
+        .divider {
+            border: none; border-top: 1px solid var(--border);
+            margin: 2.5rem 0;
+        }
+
+        .footer {
+            text-align: center; padding: 2rem 0; color: var(--muted);
+            font-size: 0.78rem; opacity: 0.5;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 24px 16px 60px; }
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.15rem; }
+            .arch-row { gap: 4px; }
+            .arch-box { padding: 8px 10px; font-size: 0.75rem; }
+            .arch-arrow { font-size: 1rem; }
+            .code-block { font-size: 0.76rem; padding: 12px; }
+            .endpoint-table { font-size: 0.78rem; }
+            .endpoint-table th, .endpoint-table td { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/private/today/" class="back-link">← Back to Today</a>
+
+        <h1>🔧 How It Works</h1>
+        <p class="subtitle">The architecture behind the Today dashboard — from Microsoft To Do to your screen.</p>
+
+        <!-- ARCHITECTURE OVERVIEW -->
+        <h2><span class="num">1</span> Architecture Overview</h2>
+        <p>The dashboard is a <strong>static HTML page</strong> hosted on GitHub Pages that talks to a <strong>local API server</strong> exposed via a Cloudflare tunnel. Tasks live in <strong>Microsoft To Do</strong>, sync to <strong>PostgreSQL</strong>, and get enriched by <strong>AI</strong> before hitting your screen.</p>
+
+        <div class="arch-diagram">
+            <div class="arch-row">
+                <div class="arch-box user">👤 You</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box frontend">snippy.quest/private/today</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box tunnel">Cloudflare Tunnel</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box api">Todo API :8787</div>
+            </div>
+            <div class="arch-row">
+                <div class="arch-box api">Todo API</div>
+                <span class="arch-arrow">↔</span>
+                <div class="arch-box db">PostgreSQL</div>
+                <span class="arch-arrow">↔</span>
+                <div class="arch-box ext">MS Graph API</div>
+            </div>
+            <div class="arch-row">
+                <div class="arch-box api">Todo API</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box ext">Perplexity AI (Sonar)</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box frontend">Enriched JSON</div>
+            </div>
+            <div class="arch-row">
+                <div class="arch-box ext">MS Graph Webhooks</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box tunnel">api.snippy.quest</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-box api">Auto-sync + Re-enrich</div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- DATA FLOW -->
+        <h2><span class="num">2</span> Data Flow</h2>
+        <p>Here's the journey a task takes from your phone to the dashboard:</p>
+
+        <div class="flow-step">
+            <div class="step-icon">📱</div>
+            <div class="step-body">
+                <div class="step-title">Microsoft To Do</div>
+                <div class="step-desc">Tasks are created/updated in MS To Do across 16 lists. This is the source of truth.</div>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-icon">🔔</div>
+            <div class="step-body">
+                <div class="step-title">MS Graph Webhooks</div>
+                <div class="step-desc">16 webhook subscriptions (one per list) fire on any create/update/delete. Subscriptions renew every 2 days via cron. Notifications hit <code>api.snippy.quest/api/webhook</code>.</div>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-icon">🔄</div>
+            <div class="step-body">
+                <div class="step-title">Sync to PostgreSQL</div>
+                <div class="step-desc">On webhook or heartbeat, <code>sync_todos_full.py</code> pulls all tasks from MS Graph and upserts into the <code>todo_tracking</code> table. Throttled to once per 15 seconds.</div>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-icon">🧠</div>
+            <div class="step-body">
+                <div class="step-title">AI Enrichment</div>
+                <div class="step-desc"><code>enrich_tasks.py</code> feeds tasks to Perplexity Sonar, which triages them into today_focus / this_week / can_wait / backlog with actions, time estimates, and context. Cached for 30 minutes.</div>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-icon">📊</div>
+            <div class="step-body">
+                <div class="step-title">Dashboard Renders</div>
+                <div class="step-desc">The static HTML page polls <code>/api/tasks/smart</code> every 15 seconds. If the cache generation timestamp changes, it auto-refreshes the view.</div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- COMPONENTS -->
+        <h2><span class="num">3</span> Components</h2>
+
+        <h3>Frontend — Static HTML</h3>
+        <p>A single <code>index.html</code> hosted on <strong>GitHub Pages</strong> at <code>Snippy-Pinch/snippy.quest</code>. No build step, no framework — just vanilla HTML/CSS/JS. Protected by <strong>Cloudflare Access</strong> (email PIN, 24-hour sessions).</p>
+
+        <h3>Todo API Server</h3>
+        <p>A <strong>threaded Python HTTP server</strong> running on port 8787. Handles task reads, syncs, completions, webhook notifications, and AI enrichment requests. Runs as a systemd service.</p>
+
+        <div class="code-block">
+            <span class="comment"># Service</span><br>
+            <span class="path">snippy-todo-api.service</span> → <span class="value">python3 scripts/todo_api.py</span><br>
+            <span class="comment"># Port</span><br>
+            <span class="value">127.0.0.1:8787</span> <span class="comment">(localhost only, tunnel exposes it)</span>
+        </div>
+
+        <h3>Cloudflare Tunnel</h3>
+        <p>A <strong>cloudflared tunnel</strong> maps <code>api.snippy.quest</code> → <code>localhost:8787</code>. This lets the static frontend and MS Graph webhooks reach the API server without exposing ports.</p>
+
+        <div class="code-block">
+            <span class="comment"># Service</span><br>
+            <span class="path">snippy-tunnel.service</span> → <span class="value">cloudflared tunnel run</span><br>
+            <span class="comment"># Route</span><br>
+            <span class="value">api.snippy.quest</span> → <span class="value">http://localhost:8787</span>
+        </div>
+
+        <h3>PostgreSQL</h3>
+        <p>Tasks are stored in the <code>todo_tracking</code> table (LXC 702, <code>postgres-01</code> at 10.16.50.71). Key columns: title, list_name, due_date, ms_status, ms_todo_id, list_id, importance, notes.</p>
+
+        <h3>AI Enrichment Engine</h3>
+        <p><code>enrich_tasks.py</code> uses <strong>Perplexity Sonar</strong> to analyze all open tasks and produce a structured daily plan. It considers:</p>
+        <ul>
+            <li><strong>Day type:</strong> Weekday (~90 min available) vs Weekend (~4 hours)</li>
+            <li><strong>Urgency:</strong> Overdue and due-today tasks are forced into today_focus</li>
+            <li><strong>Batching:</strong> Related tasks get grouped (e.g., errands, computer tasks)</li>
+            <li><strong>Context:</strong> Tags like 🏠 Home, 💻 Computer, 🚗 Errand, 📞 Phone Call</li>
+            <li><strong>Time budget:</strong> Today's focus must fit within available minutes</li>
+        </ul>
+
+        <div class="callout info">
+            <strong>Cache:</strong> AI results are cached to <code>/tmp/enriched_tasks.json</code> for 30 minutes. The 🧠 button forces a fresh analysis. Webhooks also invalidate the cache on task changes.
+        </div>
+
+        <hr class="divider">
+
+        <!-- API ENDPOINTS -->
+        <h2><span class="num">4</span> API Endpoints</h2>
+
+        <table class="endpoint-table">
+            <thead>
+                <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/tasks</code></td>
+                    <td>Raw task list from PostgreSQL — overdue, today, upcoming, priority, backlog sections</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/tasks/smart</code></td>
+                    <td>AI-enriched task view (cached). Add <code>?force</code> to regenerate</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/tasks/refresh</code></td>
+                    <td>Trigger MS365 sync, return fresh raw data</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/tasks/complete</code></td>
+                    <td>Complete a task in MS To Do + DB. Pass <code>?id=MS_TODO_ID</code></td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/health</code></td>
+                    <td>Health check — returns <code>{"status": "ok"}</code></td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/api/webhook</code></td>
+                    <td>MS Graph subscription validation (echoes validation token)</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/api/webhook</code></td>
+                    <td>MS Graph change notifications — triggers background sync + cache invalidation</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout tip">
+            <strong>Auth:</strong> All endpoints except <code>/api/health</code> and <code>/api/webhook</code> require an <code>X-API-Key</code> header. The frontend sends this via the Cloudflare tunnel (tunneled requests are pre-authenticated).
+        </div>
+
+        <hr class="divider">
+
+        <!-- FILE MAP -->
+        <h2><span class="num">5</span> File Map</h2>
+
+        <div class="file-tree">
+            <span class="dir">scripts/</span><br>
+            &nbsp;&nbsp;├── <span class="file">todo_api.py</span> <span class="desc">— API server (469 lines, threaded HTTP)</span><br>
+            &nbsp;&nbsp;├── <span class="file">enrich_tasks.py</span> <span class="desc">— AI enrichment via Perplexity Sonar</span><br>
+            &nbsp;&nbsp;├── <span class="file">sync_todos_full.py</span> <span class="desc">— Full MS365 → PostgreSQL sync</span><br>
+            &nbsp;&nbsp;├── <span class="file">manage_webhooks.py</span> <span class="desc">— MS Graph webhook lifecycle</span><br>
+            &nbsp;&nbsp;└── <span class="file">start_tunnel.sh</span> <span class="desc">— Cloudflare tunnel launcher</span><br>
+            <br>
+            <span class="dir">systemd services</span><br>
+            &nbsp;&nbsp;├── <span class="file">snippy-todo-api.service</span> <span class="desc">— API on :8787 (auto-restart)</span><br>
+            &nbsp;&nbsp;└── <span class="file">snippy-tunnel.service</span> <span class="desc">— Cloudflare tunnel (auto-restart)</span><br>
+            <br>
+            <span class="dir">secrets/</span><br>
+            &nbsp;&nbsp;├── <span class="file">cloudflare_tunnel.json</span> <span class="desc">— Tunnel token + API key</span><br>
+            &nbsp;&nbsp;├── <span class="file">perplexity.json</span> <span class="desc">— Perplexity API key</span><br>
+            &nbsp;&nbsp;└── <span class="file">postgres.json</span> <span class="desc">— DB credentials</span><br>
+            <br>
+            <span class="dir">cache</span><br>
+            &nbsp;&nbsp;├── <span class="file">/tmp/ms365_token.json</span> <span class="desc">— MS Graph access token (refreshed by heartbeat)</span><br>
+            &nbsp;&nbsp;└── <span class="file">/tmp/enriched_tasks.json</span> <span class="desc">— AI cache (30 min TTL)</span>
+        </div>
+
+        <hr class="divider">
+
+        <!-- REAL-TIME SYNC -->
+        <h2><span class="num">6</span> Real-Time Sync</h2>
+
+        <h3>Webhook Subscriptions</h3>
+        <p><strong>16 active subscriptions</strong> — one per MS To Do list. Each watches for created, updated, and deleted tasks. Subscriptions expire after ~3 days, so a cron runs <code>manage_webhooks.py</code> every 2 days to renew them.</p>
+
+        <h3>Sync Flow on Change</h3>
+        <div class="flow-step">
+            <div class="step-icon">1️⃣</div>
+            <div class="step-body">
+                <div class="step-title">MS Graph fires webhook → api.snippy.quest/api/webhook</div>
+                <div class="step-desc">API responds 202 immediately (MS Graph requires fast response).</div>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-icon">2️⃣</div>
+            <div class="step-body">
+                <div class="step-title">Background thread starts sync</div>
+                <div class="step-desc">Throttled to once per 10 seconds. Runs <code>sync_todos_full.py</code> to pull all tasks fresh from MS Graph.</div>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-icon">3️⃣</div>
+            <div class="step-body">
+                <div class="step-title">Cache invalidated</div>
+                <div class="step-desc">Deletes <code>/tmp/enriched_tasks.json</code>, then runs <code>enrich_tasks.py --force</code> to pre-generate fresh AI analysis.</div>
+            </div>
+        </div>
+        <div class="flow-step">
+            <div class="step-icon">4️⃣</div>
+            <div class="step-body">
+                <div class="step-title">Dashboard auto-updates</div>
+                <div class="step-desc">Frontend polls <code>/api/tasks/smart</code> every 15 seconds. When it sees a new generation timestamp, it re-renders.</div>
+            </div>
+        </div>
+
+        <div class="callout warn">
+            <strong>Latency:</strong> Webhook → sync → enrich → poll = roughly 15-45 seconds from task change to dashboard update. The bottleneck is the AI enrichment step (~10-20 seconds).
+        </div>
+
+        <hr class="divider">
+
+        <!-- TASK COMPLETION -->
+        <h2><span class="num">7</span> Task Completion</h2>
+        <p>Checking off a task on the dashboard triggers a <strong>two-phase write</strong>:</p>
+        <ul>
+            <li><strong>MS Graph PATCH:</strong> Updates the task status to "completed" in Microsoft To Do. Uses a cached <code>list_id</code> for speed — falls back to brute-force list scanning if the cache misses.</li>
+            <li><strong>PostgreSQL UPDATE:</strong> Sets <code>completed_at</code>, <code>ms_status = 'completed'</code>, and calculates <code>actual_hours</code> from creation to completion.</li>
+        </ul>
+        <p>The UI optimistically marks the task done and fades it out. If the API call fails, it shakes and reverts.</p>
+
+        <hr class="divider">
+
+        <!-- SECURITY -->
+        <h2><span class="num">8</span> Security</h2>
+        <ul>
+            <li><strong>Cloudflare Access:</strong> The <code>/private/</code> path is behind email-PIN authentication (24-hour sessions).</li>
+            <li><strong>API Key:</strong> All API endpoints (except health/webhook) require <code>X-API-Key</code> header.</li>
+            <li><strong>Localhost Only:</strong> The API server binds to <code>127.0.0.1:8787</code> — only reachable via the Cloudflare tunnel.</li>
+            <li><strong>CORS:</strong> Restricted to <code>https://snippy.quest</code> origin only.</li>
+            <li><strong>Webhook Validation:</strong> MS Graph subscription creation requires echoing a validation token (prevents unauthorized subscriptions).</li>
+        </ul>
+
+        <hr class="divider">
+
+        <!-- DASHBOARD UI -->
+        <h2><span class="num">9</span> Dashboard Sections</h2>
+        <ul>
+            <li><strong>🎯 Today's Focus:</strong> 3-5 tasks that fit within available time. Large cards with actions, time estimates, context tags, and tips.</li>
+            <li><strong>📅 This Week:</strong> Collapsible. Tasks grouped into batches (related errands, computer tasks, etc.) plus unbatched items.</li>
+            <li><strong>⏸ Can Wait:</strong> Collapsible. Tasks with no urgent deadline — minimal one-line display.</li>
+            <li><strong>📦 Backlog:</strong> Collapsible. Everything else, grouped by list name.</li>
+        </ul>
+        <p>The <strong>time bar</strong> shows estimated today_focus time vs available time. Green = room to spare, yellow = tight, red = overscheduled.</p>
+
+        <div class="callout tip">
+            <strong>Controls:</strong> 🧠 = force AI re-analysis from scratch. 🔄 = sync MS To Do data without re-analyzing. Both are floating action buttons in the bottom right.
+        </div>
+
+        <hr class="divider">
+
+        <div class="footer">
+            Built by Snippy 🦀 · Last updated February 2026
+        </div>
+    </div>
+</body>
+</html>
