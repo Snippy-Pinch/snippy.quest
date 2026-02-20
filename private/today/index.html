@@ -376,7 +376,7 @@
                     <button class="collapse-toggle" onclick="toggleSection('waitContent')">▼</button></div>`;
                 html += '<div id="waitContent" class="collapsed">';
                 html += data.can_wait.map(t =>
-                    `<div class="wait-item" ${t.id?`data-task-id="${esc(t.id)}"`:''}">
+                    `<div class="wait-item" ${t.id?`data-task-id="${esc(t.id)}"`:''}>
                         <button class="card-check" onclick="completeTask(this)" title="Complete"></button>
                         <span>${esc(t.title)}</span>
                     </div>`
@@ -393,7 +393,7 @@
                 for (const group of data.backlog) {
                     html += `<div class="backlog-list-name">${esc(group.name)}</div>`;
                     html += group.tasks.map(t =>
-                        `<div class="wait-item" ${t.id?`data-task-id="${esc(t.id)}"`:''}">
+                        `<div class="wait-item" ${t.id?`data-task-id="${esc(t.id)}"`:''}>
                             <button class="card-check" onclick="completeTask(this)" title="Complete"></button>
                             <span>${esc(t.title)}</span>
                         </div>`
