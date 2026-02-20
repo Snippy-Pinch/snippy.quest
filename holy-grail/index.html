@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monty Python and the Holy Grail — The Greatest Fighting Scenes</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Uncial+Antiqua&family=Cinzel:wght@400;700;900&display=swap');
+
+        :root {
+            --parchment: #f4e4c1;
+            --parchment-dark: #d4c4a1;
+            --ink: #2c1810;
+            --blood: #8b0000;
+            --gold: #c9a94e;
+            --gold-bright: #ffd700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--ink);
+            color: var(--ink);
+            font-family: 'Cinzel', serif;
+            overflow-x: hidden;
+        }
+
+        /* Parchment Header */
+        .hero {
+            background: linear-gradient(180deg, var(--ink) 0%, #1a0f08 100%);
+            text-align: center;
+            padding: 60px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M0 0h100v100H0z' fill='none'/%3E%3Cpath d='M20 20l60 60M80 20L20 80' stroke='%23c9a94e' stroke-width='0.3' opacity='0.1'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .hero h1 {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(201, 169, 78, 0.4), 2px 2px 0 #1a0f08;
+            position: relative;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .hero .subtitle {
+            font-family: 'MedievalSharp', cursive;
+            font-size: clamp(1rem, 3vw, 1.8rem);
+            color: var(--parchment-dark);
+            letter-spacing: 3px;
+            position: relative;
+            opacity: 0.8;
+        }
+
+        .hero .year {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            color: var(--gold);
+            opacity: 0.6;
+            margin-top: 15px;
+            position: relative;
+            letter-spacing: 5px;
+        }
+
+        .divider {
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 20px auto;
+            position: relative;
+        }
+
+        /* Intro */
+        .intro {
+            background: var(--parchment);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .intro-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--ink);
+        }
+
+        .intro-content p {
+            margin-bottom: 15px;
+        }
+
+        .intro-content .quote {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.4rem;
+            color: var(--blood);
+            font-style: italic;
+            margin: 25px 0;
+        }
+
+        /* Scene Cards */
+        .scenes {
+            background: var(--ink);
+            padding: 40px 20px;
+        }
+
+        .scene {
+            max-width: 1100px;
+            margin: 0 auto 60px;
+            background: var(--parchment);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 80px rgba(44, 24, 16, 0.1);
+            position: relative;
+        }
+
+        .scene::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--blood), var(--gold), var(--blood));
+        }
+
+        .scene-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            align-items: stretch;
+        }
+
+        .scene:nth-child(even) .scene-inner {
+            direction: rtl;
+        }
+
+        .scene:nth-child(even) .scene-inner > * {
+            direction: ltr;
+        }
+
+        .scene-image {
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .scene-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .scene:hover .scene-image img {
+            transform: scale(1.05);
+        }
+
+        .scene-text {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .scene-number {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: 3rem;
+            color: var(--gold);
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .scene h2 {
+            font-family: 'Uncial Antiqua', cursive;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            color: var(--blood);
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .scene .famous-quote {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.3rem;
+            color: var(--blood);
+            border-left: 3px solid var(--gold);
+            padding-left: 15px;
+            margin: 15px 0;
+            font-style: italic;
+        }
+
+        .scene p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #3d2b1f;
+            margin-bottom: 12px;
+        }
+
+        .scene .fun-fact {
+            background: rgba(201, 169, 78, 0.15);
+            border: 1px solid var(--gold);
+            border-radius: 3px;
+            padding: 12px 15px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #5a3e2b;
+        }
+
+        .scene .fun-fact strong {
+            color: var(--blood);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .scene-inner {
+                grid-template-columns: 1fr;
+            }
+            .scene:nth-child(even) .scene-inner {
+                direction: ltr;
+            }
+            .scene-image {
+                min-height: 250px;
+            }
+            .scene-text {
+                padding: 25px;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--ink);
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--parchment-dark);
+            font-size: 0.85rem;
+            opacity: 0.6;
+        }
+
+        .footer .coconut {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.1rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        /* Scroll animations */
+        .scene {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .scene.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <h1>Monty Python<br>&amp; The Holy Grail</h1>
+    <div class="divider"></div>
+    <p class="subtitle">A Chronicle of the Greatest Fighting Scenes</p>
+    <p class="year">— ANNO DOMINI MCMLXXV —</p>
+</header>
+
+<section class="intro">
+    <div class="intro-content">
+        <p>In 1975, the comedy troupe Monty Python unleashed upon the world a film so absurd, so gloriously unhinged, that it would become the definitive parody of Arthurian legend. Shot on a budget of roughly £229,000 (about $400,000), the film replaced horses with coconut shells, epic battles with ludicrous arguments, and heroic quests with sheer nonsense.</p>
+        <p class="quote">"Listen. Strange women lying in ponds distributing swords is no basis for a system of government."</p>
+        <p>What follows is a scholarly examination of the film's greatest combat encounters — each one a masterclass in comedic timing, absurdist logic, and the noble art of not dying when you clearly should.</p>
+    </div>
+</section>
+
+<section class="scenes">
+
+    <!-- BLACK KNIGHT -->
+    <article class="scene">
+        <div class="scene-inner">
+            <div class="scene-image">
+                <img src="images/black-knight.png" alt="The Black Knight" loading="lazy">
+            </div>
+            <div class="scene-text">
+                <div class="scene-number">I</div>
+                <h2>The Black Knight</h2>
+                <p class="famous-quote">"'Tis but a scratch!"</p>
+                <p>King Arthur encounters a mysterious knight clad entirely in black armor who guards a small bridge over a stream. After politely asking to pass and being refused, Arthur engages in combat — systematically dismembering the knight limb by limb.</p>
+                <p>The brilliance lies in the Black Knight's absolute refusal to acknowledge defeat. Each severed limb is dismissed with escalating denial: "Tis but a scratch," "I've had worse," "It's just a flesh wound." Even reduced to a torso on the ground, he threatens to bite Arthur's legs off and calls after him, declaring the fight a draw.</p>
+                <p>John Cleese's performance is legendary — the mounting absurdity of his defiance against all observable reality makes this arguably the most iconic scene in comedy film history.</p>
+                <div class="fun-fact"><strong>Fun Fact:</strong> The "dismemberment" was achieved by having Cleese wear a black outfit with fake limbs attached. Each "severed" limb was a breakaway prop, while his real limbs were hidden behind his body or tucked into the costume.</div>
+            </div>
+        </div>
+    </article>
+
+    <!-- KILLER RABBIT -->
+    <article class="scene">
+        <div class="scene-inner">
+            <div class="scene-image">
+                <img src="images/killer-rabbit.png" alt="The Killer Rabbit of Caerbannog" loading="lazy">
+            </div>
+            <div class="scene-text">
+                <div class="scene-number">II</div>
+                <h2>The Killer Rabbit of Caerbannog</h2>
+                <p class="famous-quote">"That's the most foul, cruel, and bad-tempered rodent you ever set eyes on!"</p>
+                <p>After being warned by Tim the Enchanter about a terrible beast guarding the Cave of Caerbannog, Arthur and his knights discover that the fearsome creature is... a small white rabbit. They laugh. They should not have laughed.</p>
+                <p>The rabbit launches itself at Sir Bors's throat with lethal precision, decapitating him in a spray of arterial blood. Panic ensues as the tiny beast tears through the knights like a furry wood chipper. Sir Gawain, Sir Ector, and several others fall before Arthur orders a retreat — from a bunny.</p>
+                <p>The scene perfectly subverts the classic "fearsome guardian" trope. Tim's increasingly frantic warnings ("Look at the bones!") make the eventual carnage both surprising and inevitable. The only solution? The Holy Hand Grenade of Antioch.</p>
+                <div class="fun-fact"><strong>Fun Fact:</strong> The rabbit was a real white rabbit puppet covered in fake blood. The "attacks" were achieved by essentially throwing the puppet at the actors, who did their own dramatic death falls.</div>
+            </div>
+        </div>
+    </article>
+
+    <!-- FRENCH TAUNTERS -->
+    <article class="scene">
+        <div class="scene-inner">
+            <div class="scene-image">
+                <img src="images/french-taunters.png" alt="The French Taunters" loading="lazy">
+            </div>
+            <div class="scene-text">
+                <div class="scene-number">III</div>
+                <h2>The French Taunters</h2>
+                <p class="famous-quote">"I fart in your general direction! Your mother was a hamster and your father smelt of elderberries!"</p>
+                <p>Arthur's quest for the Grail brings him to a castle already occupied by the French. Rather than fight with swords, the French soldiers wage warfare through the most devastating weapon known to medieval diplomacy: relentless, creative insults.</p>
+                <p>The Frenchman (John Cleese again, naturally) delivers a barrage of absurd taunts from the castle walls with an outrageous accent, escalating from "I don't want to talk to you no more" to launching farm animals via catapult — including a full cow — at the bewildered English knights below.</p>
+                <p>Arthur's attempts at diplomatic reasoning are met with raspberry-blowing, chicken impersonations, and increasingly bizarre insults. The scene returns at the film's climax when the French somehow appear at Castle Aaaarrrrggh to thwart the quest one final time.</p>
+                <div class="fun-fact"><strong>Fun Fact:</strong> The cow was a wooden prop. The scene was shot at Doune Castle in Scotland, which has since become a major tourist attraction specifically because of the film. The castle gift shop sells coconut halves.</div>
+            </div>
+        </div>
+    </article>
+
+    <!-- KNIGHTS WHO SAY NI -->
+    <article class="scene">
+        <div class="scene-inner">
+            <div class="scene-image">
+                <img src="images/knights-ni.png" alt="The Knights Who Say Ni" loading="lazy">
+            </div>
+            <div class="scene-text">
+                <div class="scene-number">IV</div>
+                <h2>The Knights Who Say Ni</h2>
+                <p class="famous-quote">"We are the Knights Who Say... NI!"</p>
+                <p>Deep in a dark forest, Arthur and his knights encounter the dreaded Knights Who Say Ni — towering, antler-helmeted warriors whose weapon of choice is not a sword, but a single word so terrible that grown men crumble before it.</p>
+                <p>The word is "Ni." Spoken forcefully, it causes physical agony and psychological torment. The knights demand tribute: a shrubbery. Not just any shrubbery — a nice one. And not too expensive. Arthur must also cut down the mightiest tree in the forest with... a herring.</p>
+                <p>When the knights later rebrand as "The Knights Who Say Ekke Ekke Ekke Ekke Ptang Zoo Boing," they develop a fatal weakness: they cannot stand hearing the word "it." Their battle power is entirely linguistic, making this perhaps history's first combat scene fought entirely through vocabulary.</p>
+                <div class="fun-fact"><strong>Fun Fact:</strong> Michael Palin played the leader of the Knights Who Say Ni. The giant knight effect was achieved with a combination of camera angles and the actors standing on hidden platforms to appear enormously tall.</div>
+            </div>
+        </div>
+    </article>
+
+    <!-- BRIDGE OF DEATH -->
+    <article class="scene">
+        <div class="scene-inner">
+            <div class="scene-image">
+                <img src="images/bridge-death.png" alt="The Bridge of Death" loading="lazy">
+            </div>
+            <div class="scene-text">
+                <div class="scene-number">V</div>
+                <h2>The Bridge of Death</h2>
+                <p class="famous-quote">"What... is the airspeed velocity of an unladen swallow?"</p>
+                <p>To cross the Bridge of Death — a rickety structure spanning a bottomless gorge — each knight must answer three questions posed by the old man from Scene 24 (the bridge keeper). Get one wrong, and you're launched screaming into the Gorge of Eternal Peril.</p>
+                <p>Sir Lancelot breezes through with easy questions ("What is your favourite colour?" "Blue." "Right, off you go."). Sir Robin is not so fortunate: stumped by "What is the capital of Assyria?", he's catapulted into oblivion mid-protestation.</p>
+                <p>Sir Galahad falls to the dreaded swallow question, and even Arthur — who cleverly turns the question back on the bridge keeper ("African or European?") — causes the old man himself to be launched into the gorge for not knowing the answer. It's natural selection via pub quiz.</p>
+                <div class="fun-fact"><strong>Fun Fact:</strong> The "bottomless gorge" was actually the Gorge of Lairig Eilde near Glen Coe, Scotland. The launching effect was done by simply having actors jump while the camera cut away. The airspeed velocity of an unladen European swallow is roughly 24 mph (11 m/s).</div>
+            </div>
+        </div>
+    </article>
+
+    <!-- HOLY HAND GRENADE -->
+    <article class="scene">
+        <div class="scene-inner">
+            <div class="scene-image">
+                <img src="images/holy-hand-grenade.png" alt="The Holy Hand Grenade of Antioch" loading="lazy">
+            </div>
+            <div class="scene-text">
+                <div class="scene-number">VI</div>
+                <h2>The Holy Hand Grenade of Antioch</h2>
+                <p class="famous-quote">"And the Lord spake, saying, 'First shalt thou take out the Holy Pin.' Then shalt thou count to three. No more. No less."</p>
+                <p>After the devastating rabbit attack, Brother Maynard consults the Book of Armaments and reveals the existence of the Holy Hand Grenade of Antioch — a sacred weapon of divine destruction, presented like a coronation orb complete with cross and golden filigree.</p>
+                <p>What follows is a masterpiece of bureaucratic warfare. The instructions for the grenade read like ecclesiastical tax code: pull the pin, count to three (not five, not two "excepting that thou then proceed to three"), and lob it at the foe. Arthur counts "One... two... FIVE!" "Three, sir!" "THREE!"</p>
+                <p>The grenade detonates in a satisfying explosion, vanquishing the killer rabbit and proving that even in the Arthurian age, reading the manual is essential to survival.</p>
+                <div class="fun-fact"><strong>Fun Fact:</strong> The Holy Hand Grenade is a parody of the Sovereign's Orb, part of the British Crown Jewels. The "Book of Armaments" reading is a pitch-perfect parody of Monastic scripture recitation, right down to the congregation's "Amen" responses.</div>
+            </div>
+        </div>
+    </article>
+
+</section>
+
+<footer class="footer">
+    <p class="coconut">🥥 &nbsp; Are you suggesting coconuts migrate? &nbsp; 🥥</p>
+    <p>Monty Python and the Holy Grail (1975) · Directed by Terry Gilliam &amp; Terry Jones</p>
+    <p style="margin-top:8px;">Images generated by AI · Built by <a href="https://snippy.quest" style="color:var(--gold);">Snippy</a> 🦀</p>
+</footer>
+
+<script>
+    // Scroll reveal
+    const scenes = document.querySelectorAll('.scene');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    scenes.forEach(scene => observer.observe(scene));
+
+    // Trigger visible for scenes already in viewport
+    window.addEventListener('load', () => {
+        scenes.forEach(scene => {
+            const rect = scene.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+                scene.classList.add('visible');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
