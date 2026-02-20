@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Today — Schedule View | Snippy</title>
+    <title>Today — Schedule + Tasks | Snippy</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -17,9 +17,9 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--bg); color: var(--text);
-            min-height: 100vh; line-height: 1.5;
+            min-height: 100vh; line-height: 1.6;
         }
-        .container { max-width: 760px; margin: 0 auto; padding: 24px 16px 100px; }
+        .container { max-width: 760px; margin: 0 auto; padding: 24px 16px 120px; }
 
         .back-link {
             display: inline-flex; align-items: center; gap: 6px;
@@ -29,490 +29,701 @@
         .back-link:hover { color: var(--primary); }
 
         /* Header */
-        .header { margin-bottom: 1.5rem; }
+        .header { margin-bottom: 1rem; }
         .header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 2px; }
         .header .date-str { color: var(--muted); font-size: 0.95rem; }
-        .header .work-badge {
-            display: inline-block; margin-top: 6px; font-size: 0.78rem;
-            padding: 3px 10px; border-radius: 20px;
+        .work-badge {
+            display: inline-block; font-size: 0.75rem;
+            padding: 2px 10px; border-radius: 20px;
             background: rgba(59,130,246,0.12); color: var(--work);
             border: 1px solid rgba(59,130,246,0.25);
         }
-        .header .off-badge {
+        .off-badge {
             background: rgba(16,185,129,0.12); color: var(--free);
             border: 1px solid rgba(16,185,129,0.25);
         }
 
-        /* All-day banner */
+        /* Tab bar */
+        .tab-bar {
+            display: flex; gap: 2px; margin-bottom: 1rem;
+            background: var(--surface); border-radius: 10px; padding: 3px;
+            border: 1px solid var(--border);
+        }
+        .tab-btn {
+            flex: 1; padding: 8px 12px; border: none; border-radius: 8px;
+            background: transparent; color: var(--muted); font-size: 0.82rem;
+            font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .tab-btn.active { background: var(--surface2); color: var(--primary); }
+        .tab-btn:hover:not(.active) { color: var(--text); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* =========== SCHEDULE PANEL =========== */
         .all-day-bar {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 10px; padding: 10px 14px; margin-bottom: 1rem;
-            display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+            border-radius: 10px; padding: 8px 12px; margin-bottom: 0.75rem;
+            display: flex; gap: 6px; align-items: center; flex-wrap: wrap;
         }
         .all-day-tag {
-            font-size: 0.78rem; padding: 3px 10px; border-radius: 6px;
+            font-size: 0.75rem; padding: 2px 8px; border-radius: 6px;
             background: rgba(167,139,250,0.1); color: var(--purple);
             border: 1px solid rgba(167,139,250,0.2);
         }
-        .all-day-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+        .all-day-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Stats row */
-        .stats-row { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-        .stat {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 10px; padding: 10px 14px; text-align: center; flex: 1; min-width: 80px;
-        }
-        .stat .num { font-size: 1.2rem; font-weight: 700; }
-        .stat .label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-
-        /* Timeline */
-        .timeline-section { margin-top: 1rem; }
-        .section-label {
-            font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px;
-            color: var(--muted); margin-bottom: 0.75rem; padding-bottom: 6px;
-            border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; gap: 8px;
-        }
-
-        .timeline {
-            position: relative;
-            padding-left: 60px;
-        }
-
-        /* Time gutter */
-        .time-slot {
-            position: relative;
-            min-height: 48px;
-            margin-bottom: 2px;
-        }
-        .time-label {
-            position: absolute;
-            left: -58px;
-            top: 0;
-            width: 48px;
-            font-size: 0.72rem;
-            color: var(--muted);
-            text-align: right;
-            font-variant-numeric: tabular-nums;
-            padding-top: 2px;
-        }
-
-        /* Event blocks */
-        .event-block {
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin-bottom: 3px;
-            font-size: 0.85rem;
-            position: relative;
-            border-left: 3px solid;
-            transition: all 0.2s;
-        }
-        .event-block:hover { filter: brightness(1.15); }
-
-        .event-block.work {
-            background: rgba(59,130,246,0.08);
-            border-left-color: var(--work);
-        }
-        .event-block.work-free {
-            background: rgba(59,130,246,0.04);
-            border-left-color: var(--work);
-            opacity: 0.6;
-            border-left-style: dashed;
-        }
-        .event-block.personal {
-            background: rgba(139,92,246,0.1);
-            border-left-color: var(--personal);
-        }
-        .event-block.lunch {
-            background: rgba(245,158,11,0.08);
-            border-left-color: var(--lunch);
-        }
-        .event-block.free-window {
-            background: rgba(16,185,129,0.06);
-            border-left-color: var(--free);
-            border-left-style: dashed;
-        }
-
-        .event-title {
-            font-weight: 600; font-size: 0.88rem;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        .event-time {
-            font-size: 0.72rem; color: var(--muted); margin-top: 1px;
-        }
-        .event-meta {
-            font-size: 0.7rem; color: var(--muted); margin-top: 2px;
-        }
-
-        /* Current time indicator */
-        .now-line {
-            position: absolute;
-            left: 0; right: 0;
-            height: 2px;
-            background: var(--accent);
-            z-index: 10;
-            pointer-events: none;
-        }
-        .now-line::before {
-            content: 'NOW';
-            position: absolute;
-            left: -54px;
-            top: -8px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 1px;
-        }
-        .now-dot {
-            position: absolute;
-            left: -5px; top: -4px;
-            width: 10px; height: 10px;
-            background: var(--accent);
-            border-radius: 50%;
-        }
-
-        /* Up next card */
         .up-next {
             background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(139,92,246,0.08));
             border: 1px solid rgba(0,212,170,0.2);
-            border-radius: 12px; padding: 14px 16px;
-            margin-bottom: 1.5rem;
+            border-radius: 12px; padding: 12px 14px; margin-bottom: 0.75rem;
         }
-        .up-next-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 6px; }
-        .up-next-title { font-weight: 700; font-size: 1.05rem; }
-        .up-next-time { font-size: 0.85rem; color: var(--muted); }
-        .up-next-countdown { font-size: 0.85rem; color: var(--warn); margin-top: 4px; }
+        .up-next-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 4px; }
+        .up-next-title { font-weight: 700; font-size: 1rem; }
+        .up-next-time { font-size: 0.82rem; color: var(--muted); }
+        .up-next-countdown { font-size: 0.82rem; color: var(--warn); margin-top: 2px; }
 
-        /* Free windows summary */
-        .free-summary {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 10px; padding: 14px 16px; margin-bottom: 1.5rem;
-        }
-        .free-summary h3 {
-            font-size: 0.85rem; color: var(--free); margin-bottom: 8px;
-        }
+        .free-chips { margin-bottom: 0.75rem; }
         .free-chip {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 5px 12px; border-radius: 20px; margin: 3px 4px 3px 0;
-            font-size: 0.82rem; background: rgba(16,185,129,0.08);
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 10px; border-radius: 20px; margin: 2px 4px 2px 0;
+            font-size: 0.78rem; background: rgba(16,185,129,0.08);
             border: 1px solid rgba(16,185,129,0.2); color: var(--free);
         }
 
-        /* Date nav */
+        .timeline { position: relative; padding-left: 56px; }
+        .time-slot { position: relative; margin-bottom: 2px; }
+        .time-label {
+            position: absolute; left: -54px; top: 0; width: 46px;
+            font-size: 0.7rem; color: var(--muted); text-align: right;
+            font-variant-numeric: tabular-nums; padding-top: 2px;
+        }
+        .event-block {
+            border-radius: 8px; padding: 7px 11px; margin-bottom: 2px;
+            font-size: 0.82rem; border-left: 3px solid; transition: all 0.2s;
+        }
+        .event-block.work { background: rgba(59,130,246,0.08); border-left-color: var(--work); }
+        .event-block.work-free { background: rgba(59,130,246,0.04); border-left-color: var(--work); opacity: 0.6; border-left-style: dashed; }
+        .event-block.personal { background: rgba(139,92,246,0.1); border-left-color: var(--personal); }
+        .event-block.lunch { background: rgba(245,158,11,0.08); border-left-color: var(--lunch); }
+        .event-title { font-weight: 600; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .event-time { font-size: 0.7rem; color: var(--muted); }
+        .event-meta { font-size: 0.68rem; color: var(--muted); }
+
+        .now-line {
+            position: relative; height: 2px; background: var(--accent);
+            margin: 8px 0; z-index: 10;
+        }
+        .now-line::before {
+            content: 'NOW'; position: absolute; left: -50px; top: -7px;
+            font-size: 0.62rem; font-weight: 700; color: var(--accent); letter-spacing: 1px;
+        }
+        .now-line .now-dot {
+            position: absolute; left: -5px; top: -4px;
+            width: 10px; height: 10px; background: var(--accent); border-radius: 50%;
+        }
+
         .date-nav {
-            display: flex; align-items: center; gap: 12px;
-            margin-bottom: 0.5rem;
+            display: flex; gap: 8px; margin-bottom: 0.75rem;
         }
         .date-nav button {
             background: var(--surface); border: 1px solid var(--border);
-            color: var(--text); border-radius: 8px; padding: 6px 14px;
-            font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
+            color: var(--text); border-radius: 8px; padding: 5px 12px;
+            font-size: 0.78rem; cursor: pointer; transition: all 0.2s;
         }
         .date-nav button:hover { border-color: var(--primary); color: var(--primary); }
-        .date-nav button:active { transform: scale(0.95); }
         .date-nav .today-btn { color: var(--primary); border-color: rgba(0,212,170,0.3); }
 
-        /* Loading */
-        .loading { text-align: center; padding: 3rem 0; color: var(--muted); }
-        .spinner {
-            width: 32px; height: 32px; border: 3px solid var(--border);
-            border-top-color: var(--primary); border-radius: 50%;
-            animation: spin 0.7s linear infinite; margin: 0 auto 0.75rem;
+        /* =========== TASKS PANEL =========== */
+        .section-label {
+            font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--muted); margin: 1.5rem 0 0.6rem; padding-bottom: 5px;
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 8px;
         }
+        .section-count { font-size: 0.68rem; background: var(--surface2); padding: 2px 7px; border-radius: 10px; }
+
+        .stats-row { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+        .stat {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 10px; padding: 8px 12px; text-align: center; flex: 1; min-width: 65px;
+        }
+        .stat .num { font-size: 1.1rem; font-weight: 700; }
+        .stat .label { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .time-bar { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-bottom: 1rem; }
+        .time-bar-header { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); margin-bottom: 5px; }
+        .time-bar-track { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+        .time-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+
+        /* Task cards */
+        .focus-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 14px 16px; margin-bottom: 8px;
+            display: flex; gap: 10px; border-left: 4px solid var(--primary);
+            transition: all 0.2s;
+        }
+        .card-check {
+            width: 22px; height: 22px; border: 2px solid var(--muted);
+            border-radius: 6px; flex-shrink: 0; margin-top: 1px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; background: transparent; padding: 0;
+        }
+        .card-check:hover { border-color: var(--primary); background: rgba(0,212,170,0.1); }
+        .card-check.completing { border-color: var(--primary); background: var(--primary); animation: checkPop 0.3s ease; }
+        .card-check.completing::after { content: '✓'; color: var(--bg); font-size: 13px; font-weight: 700; }
+        .card-check.error { border-color: var(--accent); animation: shake 0.3s ease; }
+        .focus-card.completed, .week-card.completed, .wait-item.completed { opacity: 0.35; }
+        .focus-card.completed .card-title, .week-card.completed .card-title { text-decoration: line-through; }
+        .focus-card.removing, .week-card.removing, .wait-item.removing {
+            opacity: 0; max-height: 0; padding: 0; margin: 0; overflow: hidden;
+            transition: all 0.5s ease 0.2s;
+        }
+        @keyframes checkPop { 0%{transform:scale(1)} 50%{transform:scale(1.2)} 100%{transform:scale(1)} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+        .card-body { flex: 1; min-width: 0; }
+        .card-title { font-weight: 600; font-size: 0.92rem; margin-bottom: 3px; }
+        .card-action {
+            font-size: 0.82rem; color: var(--primary); margin-bottom: 6px;
+            padding: 6px 10px; background: rgba(0,212,170,0.06);
+            border-radius: 6px; border-left: 3px solid var(--primary);
+        }
+        .card-action::before { content: '→ '; font-weight: 700; }
+        .card-why { font-size: 0.78rem; color: var(--warn); margin-bottom: 4px; }
+        .card-why::before { content: '⚡ '; }
+        .card-meta { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+        .badge { font-size: 0.7rem; padding: 2px 7px; border-radius: 6px; white-space: nowrap; }
+        .badge-context { background: rgba(167,139,250,0.12); color: var(--purple); }
+        .badge-time { background: rgba(96,165,250,0.12); color: var(--blue); }
+        .badge-due { background: rgba(245,158,11,0.12); color: var(--warn); }
+        .badge-overdue { background: rgba(255,107,107,0.15); color: var(--accent); }
+        .badge-list { background: rgba(255,255,255,0.05); color: var(--muted); }
+        .card-tip { font-size: 0.75rem; color: var(--muted); margin-top: 6px; font-style: italic; }
+        .card-tip::before { content: '💡 '; }
+
+        .week-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 10px; padding: 10px 12px; margin-bottom: 5px;
+            display: flex; gap: 10px; transition: all 0.2s;
+        }
+        .week-card .card-title { font-size: 0.88rem; }
+        .week-card .card-action { font-size: 0.8rem; padding: 5px 9px; margin-bottom: 5px; }
+
+        .batch-header {
+            display: flex; align-items: center; gap: 10px;
+            padding: 6px 0; margin: 10px 0 5px; border-bottom: 1px dashed var(--border);
+        }
+        .batch-name { font-size: 0.88rem; font-weight: 600; flex: 1; }
+        .batch-meta { font-size: 0.7rem; color: var(--muted); }
+
+        .wait-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 7px 10px; background: var(--surface);
+            border: 1px solid var(--border); border-radius: 8px;
+            margin-bottom: 3px; font-size: 0.83rem; transition: all 0.2s;
+        }
+        .wait-item .card-check { width: 18px; height: 18px; min-width: 18px; }
+
+        .backlog-list-name { font-size: 0.76rem; font-weight: 600; color: var(--muted); margin: 8px 0 3px; }
+
+        .collapse-toggle {
+            background: none; border: none; color: var(--muted); cursor: pointer;
+            font-size: 0.72rem; padding: 3px 7px; border-radius: 6px; transition: all 0.2s;
+        }
+        .collapse-toggle:hover { color: var(--text); background: var(--surface2); }
+        .collapsed { display: none; }
+
+        /* Status bar */
+        .status-bar {
+            display: flex; align-items: center; gap: 6px;
+            margin-top: 0.5rem; font-size: 0.75rem; color: var(--muted);
+        }
+        .status-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--primary); animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        .toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            padding: 8px 18px; border-radius: 8px; font-size: 0.88rem; z-index: 999;
+            font-weight: 500; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: opacity 0.3s;
+        }
+
+        .fab-group { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 100; }
+        .fab {
+            width: 44px; height: 44px; border-radius: 50%; border: none;
+            color: var(--bg); font-size: 1.1rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .fab:hover { transform: scale(1.1); }
+        .fab-sync { background: var(--primary); }
+        .fab-refresh { background: var(--purple); }
+        .fab.syncing { pointer-events: none; background: var(--surface2); }
+        .fab.syncing .fab-icon { animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* Loading */
+        .loading { text-align: center; padding: 2rem 0; color: var(--muted); }
+        .spinner {
+            width: 28px; height: 28px; border: 3px solid var(--border);
+            border-top-color: var(--primary); border-radius: 50%;
+            animation: spin 0.7s linear infinite; margin: 0 auto 0.5rem;
+        }
+
         @media (max-width: 480px) {
-            .container { padding: 20px 12px 80px; }
+            .container { padding: 20px 12px 100px; }
             .header h1 { font-size: 1.4rem; }
-            .timeline { padding-left: 50px; }
-            .time-label { left: -48px; width: 40px; font-size: 0.68rem; }
-            .event-title { font-size: 0.82rem; }
+            .timeline { padding-left: 48px; }
+            .time-label { left: -46px; width: 40px; font-size: 0.66rem; }
             .stats-row { gap: 6px; }
-            .stat { padding: 8px 10px; }
-            .stat .num { font-size: 1rem; }
+            .stat { padding: 7px 8px; min-width: 55px; }
+            .stat .num { font-size: 0.95rem; }
+            .stat .label { font-size: 0.58rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="/private/today/" class="back-link">← Today Dashboard</a>
+        <a href="/private/" class="back-link">← Dashboard</a>
 
         <div class="header">
-            <h1 id="title">📅 Loading schedule...</h1>
+            <h1 id="title">⏳ Loading...</h1>
             <div class="date-str" id="dateStr"></div>
-        </div>
-
-        <div class="date-nav">
-            <button onclick="navDay(-1)">← Prev</button>
-            <button class="today-btn" onclick="navToday()">Today</button>
-            <button onclick="navDay(1)">Next →</button>
-        </div>
-
-        <div id="content">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Fetching calendar...</p>
+            <div class="status-bar">
+                <div class="status-dot"></div>
+                <span id="statusText">Loading...</span>
             </div>
+        </div>
+
+        <div class="tab-bar">
+            <button class="tab-btn active" onclick="switchTab('combined')">📋 Combined</button>
+            <button class="tab-btn" onclick="switchTab('schedule')">📅 Schedule</button>
+            <button class="tab-btn" onclick="switchTab('tasks')">✅ Tasks</button>
+        </div>
+
+        <!-- COMBINED VIEW -->
+        <div class="tab-panel active" id="panel-combined">
+            <div id="combined-schedule"></div>
+            <div id="combined-tasks"></div>
+        </div>
+
+        <!-- SCHEDULE ONLY -->
+        <div class="tab-panel" id="panel-schedule">
+            <div class="date-nav">
+                <button onclick="navDay(-1)">← Prev</button>
+                <button class="today-btn" onclick="navToday()">Today</button>
+                <button onclick="navDay(1)">Next →</button>
+            </div>
+            <div id="schedule-full"></div>
+        </div>
+
+        <!-- TASKS ONLY -->
+        <div class="tab-panel" id="panel-tasks">
+            <div id="tasks-full"></div>
         </div>
     </div>
 
+    <div class="fab-group">
+        <button class="fab fab-refresh" id="fabRefresh" onclick="fullRefresh()" title="Re-analyze with AI">
+            <span class="fab-icon">🧠</span>
+        </button>
+        <button class="fab fab-sync" id="fabSync" onclick="syncOnly()" title="Sync MS To Do">
+            <span class="fab-icon">🔄</span>
+        </button>
+    </div>
+
     <script>
-        let currentDate = new Date().toISOString().slice(0, 10);
-        const API = '/api/schedule';
+        let scheduleData = null, taskData = null;
+        let currentDate = new Date().toISOString().slice(0,10);
+        let lastGenerated = '';
 
         function esc(s) { if(!s) return ''; const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-
         function fmtTime12(t) {
             if (!t) return '';
             const [h, m] = t.split(':').map(Number);
-            const ampm = h >= 12 ? 'PM' : 'AM';
-            const h12 = h % 12 || 12;
-            return m === 0 ? `${h12} ${ampm}` : `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+            const ap = h >= 12 ? 'PM' : 'AM';
+            return (m===0 ? `${h%12||12} ${ap}` : `${h%12||12}:${String(m).padStart(2,'0')} ${ap}`);
+        }
+        function minsBetween(a, b) {
+            const [ah,am]=a.split(':').map(Number), [bh,bm]=b.split(':').map(Number);
+            return (bh*60+bm)-(ah*60+am);
+        }
+        function fmtDur(m) { return m<60?`${m}m`:(m%60?`${Math.floor(m/60)}h ${m%60}m`:`${m/60}h`); }
+        function fmtTime(min) { return fmtDur(min); }
+
+        function showToast(msg, err) {
+            const t=document.createElement('div'); t.className='toast';
+            t.style.background=err?'rgba(255,107,107,0.95)':'rgba(0,212,170,0.95)';
+            t.style.color=err?'#fff':'#0a0a1a'; t.textContent=msg;
+            document.body.appendChild(t);
+            setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3000);
         }
 
-        function minutesBetween(a, b) {
-            const [ah, am] = a.split(':').map(Number);
-            const [bh, bm] = b.split(':').map(Number);
-            return (bh * 60 + bm) - (ah * 60 + am);
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+                b.classList.toggle('active', b.textContent.includes(
+                    tab==='combined'?'Combined':tab==='schedule'?'Schedule':'Tasks'));
+            });
+            document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+            document.getElementById('panel-'+tab).classList.add('active');
         }
 
-        function formatDuration(mins) {
-            if (mins < 60) return `${mins}m`;
-            const h = Math.floor(mins / 60), m = mins % 60;
-            return m ? `${h}h ${m}m` : `${h}h`;
-        }
-
-        function classifyEvent(ev, isWork) {
+        // ========= SCHEDULE RENDERING =========
+        function classifyEv(e, isWork) {
             if (!isWork) return 'personal';
-            const subj = ev.subject.toLowerCase();
-            if (subj.includes('lunch')) return 'lunch';
-            if (ev.showAs === 'free') return 'work-free';
-            return 'work';
+            if (e.subject.toLowerCase().includes('lunch')) return 'lunch';
+            return e.showAs==='free' ? 'work-free' : 'work';
         }
 
-        function findUpNext(allEvents, currentTime) {
-            if (!currentTime) return null;
-            const now = currentTime.replace(':', '');
-            for (const ev of allEvents) {
-                const start = ev.start.replace(':', '');
-                if (start > now) return ev;
-            }
-            return null;
-        }
-
-        function render(data) {
-            const isToday = data.date === new Date().toISOString().slice(0, 10);
-            const dateObj = new Date(data.date + 'T12:00:00');
-            const dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
-            document.getElementById('title').textContent = `📅 ${data.day}'s Schedule`;
-            document.getElementById('dateStr').innerHTML = dateStr +
-                (data.work_hours
-                    ? ` <span class="work-badge">💼 ${fmtTime12(data.work_hours.start)} – ${fmtTime12(data.work_hours.end)}</span>`
-                    : ` <span class="work-badge off-badge">🌤 Day Off</span>`);
-
+        function renderSchedule(data, targetEl, compact) {
+            const isToday = data.date === new Date().toISOString().slice(0,10);
             let html = '';
 
-            // All-day events
-            if (data.all_day && data.all_day.length > 0) {
+            // All-day
+            if (data.all_day?.length) {
                 html += '<div class="all-day-bar"><span class="all-day-label">All Day</span>';
-                for (const e of data.all_day) {
-                    html += `<span class="all-day-tag">${esc(e.subject)}</span>`;
-                }
+                data.all_day.forEach(e => html += `<span class="all-day-tag">${esc(e.subject)}</span>`);
                 html += '</div>';
             }
 
-            // Merge and sort all timed events
-            const allEvents = [];
-            for (const e of (data.work_events || [])) {
-                allEvents.push({...e, _type: classifyEvent(e, true), _src: 'work'});
-            }
-            for (const e of (data.personal_events || [])) {
-                allEvents.push({...e, _type: 'personal', _src: 'personal'});
-            }
-            allEvents.sort((a, b) => a.start.localeCompare(b.start));
+            // Merge events
+            const all = [];
+            (data.work_events||[]).forEach(e => all.push({...e, _type: classifyEv(e,true), _src:'work'}));
+            (data.personal_events||[]).forEach(e => all.push({...e, _type:'personal', _src:'personal'}));
+            all.sort((a,b) => a.start.localeCompare(b.start));
 
-            // Stats
-            const workMins = (data.work_events || []).reduce((s, e) => s + Math.max(0, minutesBetween(e.start, e.end)), 0);
-            const personalMins = (data.personal_events || []).reduce((s, e) => s + Math.max(0, minutesBetween(e.start, e.end)), 0);
-            const freeMins = (data.free_windows || []).reduce((s, w) => s + Math.max(0, minutesBetween(w.start, w.end)), 0);
-
-            html += '<div class="stats-row">';
-            html += `<div class="stat"><div class="num" style="color:var(--work)">${allEvents.filter(e=>e._src==='work').length}</div><div class="label">Work</div></div>`;
-            html += `<div class="stat"><div class="num" style="color:var(--personal)">${allEvents.filter(e=>e._src==='personal').length}</div><div class="label">Personal</div></div>`;
-            html += `<div class="stat"><div class="num" style="color:var(--free)">${formatDuration(freeMins)}</div><div class="label">Free Time</div></div>`;
-            html += `<div class="stat"><div class="num" style="color:var(--text)">${allEvents.length}</div><div class="label">Total</div></div>`;
-            html += '</div>';
-
-            // Up next (only for today)
+            // Up next
             if (isToday && data.current_time) {
-                const upNext = findUpNext(allEvents, data.current_time);
-                if (upNext) {
-                    const minsUntil = minutesBetween(data.current_time, upNext.start);
+                const now = data.current_time.replace(':','');
+                const next = all.find(e => e.start.replace(':','') > now);
+                if (next) {
+                    const mins = minsBetween(data.current_time, next.start);
                     html += `<div class="up-next">
                         <div class="up-next-label">⏭ Up Next</div>
-                        <div class="up-next-title">${esc(upNext.subject)}</div>
-                        <div class="up-next-time">${fmtTime12(upNext.start)} – ${fmtTime12(upNext.end)}</div>
-                        ${minsUntil > 0 ? `<div class="up-next-countdown">in ${formatDuration(minsUntil)}</div>` : ''}
+                        <div class="up-next-title">${esc(next.subject)}</div>
+                        <div class="up-next-time">${fmtTime12(next.start)} – ${fmtTime12(next.end)}</div>
+                        ${mins>0?`<div class="up-next-countdown">in ${fmtDur(mins)}</div>`:''}
                     </div>`;
                 }
             }
 
             // Free windows
-            if (data.free_windows && data.free_windows.length > 0) {
-                html += '<div class="free-summary"><h3>🟢 Free Windows</h3>';
-                for (const w of data.free_windows) {
-                    const dur = minutesBetween(w.start, w.end);
-                    html += `<span class="free-chip">${fmtTime12(w.start)} – ${fmtTime12(w.end)} (${formatDuration(dur)})</span>`;
-                }
+            if (data.free_windows?.length) {
+                html += '<div class="free-chips">';
+                data.free_windows.forEach(w => {
+                    const dur = minsBetween(w.start, w.end);
+                    if (dur > 0) html += `<span class="free-chip">🟢 ${fmtTime12(w.start)}–${fmtTime12(w.end)} (${fmtDur(dur)})</span>`;
+                });
                 html += '</div>';
             }
 
             // Timeline
-            html += '<div class="section-label">📋 Timeline</div>';
-            html += '<div class="timeline" id="timeline">';
+            if (!compact) {
+                html += '<div class="timeline">';
+                let lastEnd = null;
+                for (const ev of all) {
+                    const dur = minsBetween(ev.start, ev.end);
+                    const showTime = !lastEnd || ev.start !== lastEnd;
 
-            // Determine time range
-            let earliest = '07:00', latest = '22:00';
-            if (allEvents.length) {
-                earliest = allEvents[0].start;
-                latest = allEvents[allEvents.length - 1].end;
-            }
-            // Round to hour boundaries
-            let startHour = Math.max(6, parseInt(earliest.split(':')[0]));
-            let endHour = Math.min(23, parseInt(latest.split(':')[0]) + 1);
-
-            // Build hour-by-hour slots with events
-            let lastRenderedEnd = null;
-            for (const ev of allEvents) {
-                const hour = parseInt(ev.start.split(':')[0]);
-                const min = parseInt(ev.start.split(':')[1]);
-                const timeStr = fmtTime12(ev.start);
-                const dur = minutesBetween(ev.start, ev.end);
-
-                // Show time label if new time slot
-                const showTime = !lastRenderedEnd || ev.start !== lastRenderedEnd;
-
-                html += `<div class="time-slot">`;
-                if (showTime) {
-                    html += `<div class="time-label">${timeStr}</div>`;
-                }
-                html += `<div class="event-block ${ev._type}">
-                    <div class="event-title">${esc(ev.subject)}</div>
-                    <div class="event-time">${fmtTime12(ev.start)} – ${fmtTime12(ev.end)}${dur > 0 ? ` · ${formatDuration(dur)}` : ''}</div>
-                    ${ev.calendar ? `<div class="event-meta">${esc(ev.calendar)}</div>` : ''}
-                </div>`;
-                html += `</div>`;
-
-                lastRenderedEnd = ev.end;
-            }
-
-            // Current time marker (for today)
-            if (isToday && data.current_time) {
-                html += `<div class="now-marker" data-time="${data.current_time}"></div>`;
-            }
-
-            html += '</div>'; // .timeline
-
-            if (allEvents.length === 0) {
-                html += '<div style="text-align:center;padding:2rem;color:var(--muted)">No events scheduled. Enjoy the freedom. 🌤</div>';
-            }
-
-            document.getElementById('content').innerHTML = html;
-
-            // Position NOW marker
-            if (isToday && data.current_time) {
-                positionNowMarker(data.current_time, allEvents);
-            }
-        }
-
-        function positionNowMarker(currentTime, allEvents) {
-            const timeline = document.getElementById('timeline');
-            if (!timeline) return;
-
-            const slots = timeline.querySelectorAll('.time-slot');
-            if (!slots.length) return;
-
-            // Find the slot closest to current time
-            const nowMins = parseInt(currentTime.split(':')[0]) * 60 + parseInt(currentTime.split(':')[1]);
-            let insertAfter = null;
-
-            for (const slot of slots) {
-                const block = slot.querySelector('.event-block');
-                if (!block) continue;
-                const timeText = block.querySelector('.event-time')?.textContent || '';
-                // Extract start time from event
-                const evStart = block.closest('.time-slot')?.querySelector('.time-label')?.textContent;
-            }
-
-            // Simple: add the now line after the timeline label
-            const nowLine = document.createElement('div');
-            nowLine.className = 'now-line';
-            nowLine.innerHTML = '<div class="now-dot"></div>';
-            nowLine.style.position = 'relative';
-            nowLine.style.margin = '12px 0';
-
-            // Find where to insert — after events that have started
-            let lastPastSlot = null;
-            for (const slot of slots) {
-                const timeLabel = slot.querySelector('.time-label');
-                if (timeLabel) {
-                    // Parse the 12h time
-                    const text = timeLabel.textContent.trim();
-                    const match = text.match(/(\d+):?(\d*)\s*(AM|PM)/i);
-                    if (match) {
-                        let h = parseInt(match[1]);
-                        const m = match[2] ? parseInt(match[2]) : 0;
-                        const ampm = match[3].toUpperCase();
-                        if (ampm === 'PM' && h !== 12) h += 12;
-                        if (ampm === 'AM' && h === 12) h = 0;
-                        const slotMins = h * 60 + m;
-                        if (slotMins <= nowMins) lastPastSlot = slot;
+                    // Insert NOW line
+                    if (isToday && data.current_time && lastEnd && ev.start.replace(':','') > data.current_time.replace(':','') && (!lastEnd || lastEnd.replace(':','') <= data.current_time.replace(':',''))) {
+                        html += `<div class="now-line"><div class="now-dot"></div></div>`;
                     }
+
+                    html += `<div class="time-slot">`;
+                    if (showTime) html += `<div class="time-label">${fmtTime12(ev.start)}</div>`;
+                    html += `<div class="event-block ${ev._type}">
+                        <div class="event-title">${esc(ev.subject)}</div>
+                        <div class="event-time">${fmtTime12(ev.start)} – ${fmtTime12(ev.end)}${dur>0?' · '+fmtDur(dur):''}</div>
+                        ${ev.calendar ? `<div class="event-meta">${esc(ev.calendar)}</div>` : ''}
+                    </div></div>`;
+                    lastEnd = ev.end;
                 }
+
+                // NOW line at end if needed
+                if (isToday && data.current_time && lastEnd && lastEnd.replace(':','') <= data.current_time.replace(':','')) {
+                    html += `<div class="now-line"><div class="now-dot"></div></div>`;
+                }
+
+                html += '</div>';
             }
 
-            if (lastPastSlot && lastPastSlot.nextSibling) {
-                timeline.insertBefore(nowLine, lastPastSlot.nextSibling);
-            } else if (lastPastSlot) {
-                timeline.appendChild(nowLine);
+            if (!all.length && !data.all_day?.length) {
+                html += '<div style="text-align:center;padding:1.5rem;color:var(--muted)">No events. 🌤</div>';
+            }
+
+            targetEl.innerHTML = html;
+        }
+
+        // ========= TASKS RENDERING =========
+        function dueLabel(task) {
+            if (!task.due) return null;
+            if (task.urgency==='overdue') return {text:`${Math.abs(task.days_until)}d overdue`,cls:'badge-overdue'};
+            if (task.urgency==='today') return {text:'Today',cls:'badge-due'};
+            if (task.days_until && task.days_until<=7) return {text:`${task.days_until}d`,cls:'badge-due'};
+            return null;
+        }
+
+        function renderFocusCard(t) {
+            const due = dueLabel(t);
+            const id = t.id ? `data-task-id="${esc(t.id)}"` : '';
+            return `<div class="focus-card" ${id}>
+                <button class="card-check" onclick="completeTask(this)" title="Complete"></button>
+                <div class="card-body">
+                    <div class="card-title">${esc(t.title)}</div>
+                    ${t.action?`<div class="card-action">${esc(t.action)}</div>`:''}
+                    ${t.why_today?`<div class="card-why">${esc(t.why_today)}</div>`:''}
+                    <div class="card-meta">
+                        ${t.context?`<span class="badge badge-context">${esc(t.context)}</span>`:''}
+                        ${t.time_est?`<span class="badge badge-time">⏱ ${fmtTime(t.time_est)}</span>`:''}
+                        ${due?`<span class="badge ${due.cls}">${due.text}</span>`:''}
+                        <span class="badge badge-list">${esc(t.list)}</span>
+                    </div>
+                    ${t.tip?`<div class="card-tip">${esc(t.tip)}</div>`:''}
+                </div>
+            </div>`;
+        }
+
+        function renderWeekCard(t) {
+            const due = dueLabel(t);
+            const id = t.id ? `data-task-id="${esc(t.id)}"` : '';
+            return `<div class="week-card" ${id}>
+                <button class="card-check" onclick="completeTask(this)" title="Complete"></button>
+                <div class="card-body">
+                    <div class="card-title">${esc(t.title)}</div>
+                    ${t.action?`<div class="card-action">${esc(t.action)}</div>`:''}
+                    <div class="card-meta">
+                        ${t.context?`<span class="badge badge-context">${esc(t.context)}</span>`:''}
+                        ${t.time_est?`<span class="badge badge-time">⏱ ${fmtTime(t.time_est)}</span>`:''}
+                        ${due?`<span class="badge ${due.cls}">${due.text}</span>`:''}
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderTasks(data, targetEl) {
+            let html = '';
+            const fc = (data.today_focus||[]).length;
+            const wc = (data.this_week_batches||[]).reduce((s,b)=>s+b.tasks.length,0) + (data.this_week_other||[]).length;
+            const waitc = (data.can_wait||[]).length;
+            const todayMin = data.today_time||0;
+            const availMin = data.available_minutes||90;
+            const pct = Math.min(100, Math.round((todayMin/availMin)*100));
+            const barColor = pct>90?'var(--accent)':pct>70?'var(--warn)':'var(--primary)';
+
+            html += '<div class="stats-row">';
+            html += `<div class="stat"><div class="num" style="color:var(--primary)">${fc}</div><div class="label">Today</div></div>`;
+            html += `<div class="stat"><div class="num" style="color:var(--warn)">${wc}</div><div class="label">This Week</div></div>`;
+            html += `<div class="stat"><div class="num" style="color:var(--blue)">${waitc}</div><div class="label">Can Wait</div></div>`;
+            html += `<div class="stat"><div class="num" style="color:var(--muted)">${data.total_open||0}</div><div class="label">Total</div></div>`;
+            html += '</div>';
+
+            html += `<div class="time-bar">
+                <div class="time-bar-header"><span>Plan: <strong>${fmtTime(todayMin)}</strong></span><span>Available: <strong>${fmtTime(availMin)}</strong></span></div>
+                <div class="time-bar-track"><div class="time-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+            </div>`;
+
+            // Today focus
+            if (data.today_focus?.length) {
+                html += `<div class="section-label">🎯 TODAY'S FOCUS <span class="section-count">${fmtTime(todayMin)}</span></div>`;
+                html += data.today_focus.map(renderFocusCard).join('');
+            }
+
+            // This week
+            const weekTotal = wc;
+            if (weekTotal > 0) {
+                html += `<div class="section-label">📅 THIS WEEK <span class="section-count">${weekTotal}</span>
+                    <button class="collapse-toggle" onclick="toggle('weekC')">▼</button></div>`;
+                html += '<div id="weekC">';
+                for (const b of (data.this_week_batches||[])) {
+                    const bm = b.tasks.reduce((s,t)=>s+(t.time_est||0),0);
+                    html += `<div class="batch-header"><div class="batch-name">🔗 ${esc(b.name)}</div>
+                        <span class="batch-meta">${b.tasks.length} tasks${bm?' · '+fmtTime(bm):''}</span></div>`;
+                    html += b.tasks.map(renderWeekCard).join('');
+                }
+                html += (data.this_week_other||[]).map(renderWeekCard).join('');
+                html += '</div>';
+            }
+
+            // Can wait
+            if (data.can_wait?.length) {
+                html += `<div class="section-label">⏸ CAN WAIT <span class="section-count">${data.can_wait.length}</span>
+                    <button class="collapse-toggle" onclick="toggle('waitC')">▼</button></div>`;
+                html += '<div id="waitC" class="collapsed">';
+                html += data.can_wait.map(t =>
+                    `<div class="wait-item" ${t.id?`data-task-id="${esc(t.id)}"`:''}>
+                        <button class="card-check" onclick="completeTask(this)" title="Complete"></button>
+                        <span>${esc(t.title)}</span>
+                    </div>`).join('');
+                html += '</div>';
+            }
+
+            // Backlog
+            if (data.backlog?.length) {
+                const bt = data.backlog.reduce((s,g)=>s+g.tasks.length,0);
+                html += `<div class="section-label">📦 BACKLOG <span class="section-count">${bt}</span>
+                    <button class="collapse-toggle" onclick="toggle('blogC')">▼</button></div>`;
+                html += '<div id="blogC" class="collapsed">';
+                for (const g of data.backlog) {
+                    html += `<div class="backlog-list-name">${esc(g.name)}</div>`;
+                    html += g.tasks.map(t =>
+                        `<div class="wait-item" ${t.id?`data-task-id="${esc(t.id)}"`:''}>
+                            <button class="card-check" onclick="completeTask(this)" title="Complete"></button>
+                            <span>${esc(t.title)}</span>
+                        </div>`).join('');
+                }
+                html += '</div>';
+            }
+
+            if (!html) html = '<div style="text-align:center;padding:2rem;color:var(--muted)">✨ All clear.</div>';
+            targetEl.innerHTML = html;
+        }
+
+        function toggle(id) { document.getElementById(id)?.classList.toggle('collapsed'); }
+
+        // ========= TASK COMPLETION =========
+        async function completeTask(btn) {
+            const card = btn.closest('.focus-card, .week-card, .wait-item');
+            const tid = card?.dataset?.taskId;
+            if (!tid) { showToast('No task ID', true); return; }
+            if (btn.classList.contains('completing')) return;
+            btn.classList.add('completing'); card.classList.add('completed');
+            try {
+                const r = await fetch(`/api/tasks/complete?id=${encodeURIComponent(tid)}`,{method:'POST'});
+                const d = await r.json();
+                if (!r.ok||d.error) { throw new Error(d.error||r.status); }
+                showToast(`✓ ${d.title||'Task'} done`);
+                setTimeout(()=>{card.classList.add('removing');setTimeout(()=>card.remove(),700)},400);
+            } catch(e) {
+                btn.classList.remove('completing'); card.classList.remove('completed');
+                btn.classList.add('error'); setTimeout(()=>btn.classList.remove('error'),600);
+                showToast(`Failed: ${e.message}`, true);
             }
         }
 
-        async function loadSchedule(dateStr) {
-            document.getElementById('content').innerHTML = '<div class="loading"><div class="spinner"></div><p>Fetching calendar...</p></div>';
+        // ========= DATA LOADING =========
+        async function loadAll() {
+            const status = document.getElementById('statusText');
+            status.textContent = 'Loading...';
+
             try {
-                const url = dateStr ? `${API}?date=${dateStr}` : API;
-                const r = await fetch(url);
-                if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                const data = await r.json();
-                if (data.error) throw new Error(data.error);
-                render(data);
-            } catch (e) {
-                document.getElementById('content').innerHTML =
-                    `<div style="text-align:center;padding:2rem;color:var(--accent)">⚠️ ${esc(e.message)}</div>`;
+                const [sResp, tResp] = await Promise.all([
+                    fetch('/api/schedule'),
+                    fetch('/api/tasks/smart')
+                ]);
+                scheduleData = await sResp.json();
+                taskData = await tResp.json();
+
+                if (scheduleData.error) throw new Error(scheduleData.error);
+                if (taskData.error) throw new Error(taskData.error);
+
+                const dateObj = new Date(scheduleData.date + 'T12:00:00');
+                const dateStr = dateObj.toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+                document.getElementById('title').textContent = `📋 ${scheduleData.day}`;
+                document.getElementById('dateStr').innerHTML = dateStr +
+                    (scheduleData.work_hours
+                        ? ` <span class="work-badge">💼 ${fmtTime12(scheduleData.work_hours.start)}–${fmtTime12(scheduleData.work_hours.end)}</span>`
+                        : ` <span class="work-badge off-badge">🌤 Day Off</span>`);
+
+                // Combined: compact schedule + full tasks
+                renderSchedule(scheduleData, document.getElementById('combined-schedule'), true);
+                renderTasks(taskData, document.getElementById('combined-tasks'));
+
+                // Full schedule tab
+                renderSchedule(scheduleData, document.getElementById('schedule-full'), false);
+
+                // Full tasks tab
+                renderTasks(taskData, document.getElementById('tasks-full'));
+
+                lastGenerated = taskData.generated || '';
+                status.textContent = taskData.from_cache
+                    ? `Cached (${Math.floor(taskData.cache_age/60)}m) · live`
+                    : 'Fresh · live';
+            } catch(e) {
+                document.getElementById('combined-schedule').innerHTML =
+                    `<div style="text-align:center;padding:1.5rem;color:var(--accent)">⚠️ ${esc(e.message)}</div>`;
+                status.textContent = 'Error — retrying...';
+                setTimeout(loadAll, 10000);
             }
+        }
+
+        async function fullRefresh() {
+            const fab = document.getElementById('fabRefresh');
+            if (fab.classList.contains('syncing')) return;
+            fab.classList.add('syncing');
+            document.getElementById('statusText').textContent = 'Re-analyzing...';
+            try {
+                await fetch('/api/tasks/refresh');
+                const [sR, tR] = await Promise.all([
+                    fetch('/api/schedule'),
+                    fetch('/api/tasks/smart?force')
+                ]);
+                scheduleData = await sR.json();
+                taskData = await tR.json();
+                renderSchedule(scheduleData, document.getElementById('combined-schedule'), true);
+                renderTasks(taskData, document.getElementById('combined-tasks'));
+                renderSchedule(scheduleData, document.getElementById('schedule-full'), false);
+                renderTasks(taskData, document.getElementById('tasks-full'));
+                document.getElementById('statusText').textContent = 'Fresh · just now';
+                showToast('Re-analyzed ✓');
+            } catch(e) { showToast(`Failed: ${e.message}`, true); }
+            finally { fab.classList.remove('syncing'); }
+        }
+
+        async function syncOnly() {
+            const fab = document.getElementById('fabSync');
+            if (fab.classList.contains('syncing')) return;
+            fab.classList.add('syncing');
+            document.getElementById('statusText').textContent = 'Syncing...';
+            try {
+                await fetch('/api/tasks/refresh');
+                await loadAll();
+                showToast('Synced ✓');
+            } catch(e) { showToast(`Failed: ${e.message}`, true); }
+            finally { fab.classList.remove('syncing'); }
         }
 
         function navDay(offset) {
-            const d = new Date(currentDate + 'T12:00:00');
-            d.setDate(d.getDate() + offset);
-            currentDate = d.toISOString().slice(0, 10);
-            loadSchedule(currentDate);
+            const d = new Date(currentDate+'T12:00:00');
+            d.setDate(d.getDate()+offset);
+            currentDate = d.toISOString().slice(0,10);
+            fetch(`/api/schedule?date=${currentDate}`).then(r=>r.json()).then(data=>{
+                scheduleData = data;
+                renderSchedule(data, document.getElementById('schedule-full'), false);
+            });
         }
-
         function navToday() {
-            currentDate = new Date().toISOString().slice(0, 10);
-            loadSchedule(currentDate);
+            currentDate = new Date().toISOString().slice(0,10);
+            fetch('/api/schedule').then(r=>r.json()).then(data=>{
+                scheduleData = data;
+                renderSchedule(data, document.getElementById('schedule-full'), false);
+            });
         }
 
-        // Auto-refresh every 60s for today
-        loadSchedule();
-        setInterval(() => {
-            if (currentDate === new Date().toISOString().slice(0, 10)) {
-                loadSchedule(currentDate);
-            }
-        }, 60000);
+        // Init + auto-refresh
+        loadAll();
+        setInterval(async()=>{
+            try {
+                const [sR,tR] = await Promise.all([fetch('/api/schedule'), fetch('/api/tasks/smart')]);
+                const sd = await sR.json(), td = await tR.json();
+                if (td.error||sd.error) return;
+                if (lastGenerated && td.generated !== lastGenerated) {
+                    scheduleData=sd; taskData=td;
+                    renderSchedule(sd, document.getElementById('combined-schedule'), true);
+                    renderTasks(td, document.getElementById('combined-tasks'));
+                    renderSchedule(sd, document.getElementById('schedule-full'), false);
+                    renderTasks(td, document.getElementById('tasks-full'));
+                    showToast('Auto-updated ✓');
+                    document.getElementById('statusText').textContent = 'Live · auto-updated';
+                }
+                lastGenerated = td.generated;
+                // Always update schedule (current_time changes)
+                scheduleData=sd;
+                renderSchedule(sd, document.getElementById('combined-schedule'), true);
+            } catch{}
+        }, 30000);
     </script>
 </body>
 </html>
