@@ -158,10 +158,13 @@
             object-fit: cover;
             display: block;
             transition: transform 0.5s ease;
+            -webkit-touch-callout: none;
         }
 
-        .scene:hover .scene-image img {
-            transform: scale(1.05);
+        @media (hover: hover) {
+            .scene:hover .scene-image img {
+                transform: scale(1.05);
+            }
         }
 
         .scene-text {
@@ -219,8 +222,8 @@
             color: var(--blood);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* Responsive — Tablet */
+        @media (max-width: 900px) {
             .scene-inner {
                 grid-template-columns: 1fr;
             }
@@ -228,10 +231,96 @@
                 direction: ltr;
             }
             .scene-image {
-                min-height: 250px;
+                min-height: 300px;
+                max-height: 400px;
             }
             .scene-text {
-                padding: 25px;
+                padding: 30px;
+            }
+        }
+
+        /* Responsive — Mobile */
+        @media (max-width: 600px) {
+            .hero {
+                padding: 40px 15px 50px;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero .subtitle {
+                font-size: 0.95rem;
+                letter-spacing: 1px;
+            }
+            .hero .year {
+                font-size: 0.75rem;
+                letter-spacing: 3px;
+            }
+            .intro {
+                padding: 30px 15px;
+            }
+            .intro-content {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+            .intro-content .quote {
+                font-size: 1.1rem;
+            }
+            .scenes {
+                padding: 20px 10px;
+            }
+            .scene {
+                margin-bottom: 30px;
+                border-radius: 3px;
+            }
+            .scene-image {
+                min-height: 220px;
+                max-height: 300px;
+            }
+            .scene-text {
+                padding: 20px 18px 25px;
+            }
+            .scene-number {
+                font-size: 2rem;
+                margin-bottom: 2px;
+            }
+            .scene h2 {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+            }
+            .scene .famous-quote {
+                font-size: 1.05rem;
+                padding-left: 12px;
+                margin: 10px 0;
+            }
+            .scene p {
+                font-size: 0.88rem;
+                line-height: 1.7;
+                margin-bottom: 10px;
+            }
+            .scene .fun-fact {
+                font-size: 0.8rem;
+                padding: 10px 12px;
+                margin-top: 12px;
+            }
+            .footer {
+                padding: 25px 15px;
+                font-size: 0.78rem;
+            }
+            .footer .coconut {
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Responsive — Small Mobile */
+        @media (max-width: 380px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .scene-text {
+                padding: 15px 14px 20px;
+            }
+            .scene h2 {
+                font-size: 1.1rem;
             }
         }
 
