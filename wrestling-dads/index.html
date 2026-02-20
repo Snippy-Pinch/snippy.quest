@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bleacher Scrollers — A Wrestling Dad Story</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --gym-dark: #1a1a2e;
+            --gym-blue: #16213e;
+            --bleacher-gray: #2d3436;
+            --mat-red: #c0392b;
+            --mat-blue: #2980b9;
+            --phone-glow: #74b9ff;
+            --text: #f5f5f5;
+            --muted: #b2bec3;
+            --highlight: #fdcb6e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--gym-dark);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+            filter: blur(2px);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(26,26,46,0.3) 0%, rgba(26,26,46,0.95) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            max-width: 700px;
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            letter-spacing: 3px;
+            line-height: 1;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--highlight), #e17055);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: clamp(1rem, 3vw, 1.4rem);
+            color: var(--muted);
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .hero .scroll-hint {
+            font-size: 0.85rem;
+            color: var(--phone-glow);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        /* Chapters */
+        .chapter {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .chapter-img-wrap {
+            margin: 0 -20px 30px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        @media (min-width: 600px) {
+            .chapter-img-wrap { margin: 0 0 30px; }
+        }
+
+        .chapter-img-wrap img {
+            width: 100%;
+            display: block;
+        }
+
+        .chapter-time {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--highlight);
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+        }
+
+        .chapter h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .chapter p {
+            font-size: 1.05rem;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .chapter .dialogue {
+            border-left: 3px solid var(--phone-glow);
+            padding: 12px 16px;
+            margin: 20px 0;
+            background: rgba(116, 185, 255, 0.06);
+            border-radius: 0 8px 8px 0;
+            font-size: 1rem;
+        }
+
+        .dialogue .speaker {
+            font-weight: 700;
+            color: var(--phone-glow);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .dialogue .line {
+            color: var(--text);
+            font-style: italic;
+        }
+
+        .phone-notification {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(253, 203, 110, 0.1);
+            border: 1px solid rgba(253, 203, 110, 0.2);
+            border-radius: 10px;
+            padding: 8px 14px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .phone-notification .notif-icon {
+            font-size: 1.2rem;
+        }
+
+        .phone-notification .notif-text {
+            color: var(--highlight);
+        }
+
+        /* Divider */
+        .divider {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--muted);
+            opacity: 0.3;
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+        }
+
+        /* Stats section */
+        .stats-section {
+            background: var(--gym-blue);
+            padding: 50px 20px;
+        }
+
+        .stats-grid {
+            max-width: 700px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card .emoji { font-size: 1.8rem; margin-bottom: 8px; }
+        .stat-card .number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            color: var(--highlight);
+        }
+        .stat-card .label { font-size: 0.78rem; color: var(--muted); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile tweaks */
+        @media (max-width: 600px) {
+            .chapter { padding: 40px 16px; }
+            .chapter p { font-size: 0.95rem; }
+            .dialogue { padding: 10px 12px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .stat-card { padding: 14px; }
+            .stat-card .number { font-size: 1.8rem; }
+        }
+
+        @media (max-width: 380px) {
+            .hero h1 { font-size: 2.5rem; }
+            .chapter-time { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <img src="images/hero.png" alt="Two dads on bleachers at wrestling practice" class="hero-bg">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>The Bleacher Scrollers</h1>
+        <p class="tagline">A tale of two dads, two phones, and a wrestling practice that will never, ever end.</p>
+        <p class="scroll-hint">↓ scroll down ↓</p>
+    </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- CHAPTER 1 -->
+<section class="chapter fade-in">
+    <div class="chapter-time">5:55 PM — ARRIVAL</div>
+    <h2>The Ritual Begins</h2>
+    <div class="chapter-img-wrap">
+        <img src="images/phones.png" alt="Two dads absorbed in their phones" loading="lazy">
+    </div>
+    <p>They arrive at the same time. They always arrive at the same time. The parking lot smells like cold air and questionable life choices. One carries a coffee that stopped being hot twenty minutes ago. The other forgot his, and that fact will haunt him for the next ninety minutes.</p>
+    <p>They nod at each other — the universal dad greeting that communicates everything and nothing simultaneously — and claim their spots on the bleachers. Third row. Same as last Tuesday. Same as every Tuesday since September.</p>
+    <div class="dialogue">
+        <div class="speaker">Dad 1</div>
+        <div class="line">"Hey."</div>
+    </div>
+    <div class="dialogue">
+        <div class="speaker">Dad 2</div>
+        <div class="line">"Hey."</div>
+    </div>
+    <p>The children run onto the mats. The phones come out. The scrolling begins.</p>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- CHAPTER 2 -->
+<section class="chapter fade-in">
+    <div class="chapter-time">6:12 PM — THE DEEP SCROLL</div>
+    <h2>Into the Algorithm</h2>
+    <p>Dad 1 is three layers deep into a Reddit thread about whether a hot dog is a sandwich. He started on a wrestling technique video. He does not remember the journey that brought him here, but he has strong opinions about encased meats now.</p>
+    <p>Dad 2 is on his fourth consecutive reel of a guy restoring a cast iron skillet. He doesn't own a cast iron skillet. He's thinking about buying one. He won't. But for these precious minutes, he is a cast iron enthusiast.</p>
+    <div class="phone-notification">
+        <span class="notif-icon">📱</span>
+        <span class="notif-text">Screen Time: You've spent 47 minutes on your phone today</span>
+    </div>
+    <p>On the mat, a child executes a textbook double-leg takedown. It is beautiful. It is technically perfect. Neither dad sees it.</p>
+    <div class="dialogue">
+        <div class="speaker">Dad 1</div>
+        <div class="line">"Did your kid just—"</div>
+    </div>
+    <div class="dialogue">
+        <div class="speaker">Dad 2</div>
+        <div class="line">"Hm? Oh. Probably."</div>
+    </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- CHAPTER 3 -->
+<section class="chapter fade-in">
+    <div class="chapter-time">6:38 PM — THE ABYSS</div>
+    <h2>Time Becomes Meaningless</h2>
+    <div class="chapter-img-wrap">
+        <img src="images/clock.png" alt="Gym clock showing time barely moving" loading="lazy">
+    </div>
+    <p>A glance at the clock. Surely it's been an hour. It has been twenty-six minutes. Time moves differently in a wrestling gym. Scientists should study this. The fluorescent lights hum at a frequency specifically designed to dissolve the human will to live.</p>
+    <p>Dad 1 has moved on to pricing out a shed he doesn't need on a property he doesn't have room for. Dad 2 found an article titled "17 Signs Your Sourdough Starter Is Dead" and is reading it with the intensity of a surgeon reviewing an MRI.</p>
+    <p>Neither man has made sourdough bread. Neither man will make sourdough bread.</p>
+    <div class="dialogue">
+        <div class="speaker">Dad 2</div>
+        <div class="line">"You ever think about getting into sourdough?"</div>
+    </div>
+    <div class="dialogue">
+        <div class="speaker">Dad 1</div>
+        <div class="line">"No."</div>
+    </div>
+    <div class="dialogue">
+        <div class="speaker">Dad 2</div>
+        <div class="line">"Yeah, me neither."</div>
+    </div>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- CHAPTER 4 -->
+<section class="chapter fade-in">
+    <div class="chapter-time">7:02 PM — THE MISSED MOMENT</div>
+    <h2>Glory, Unwitnessed</h2>
+    <div class="chapter-img-wrap">
+        <img src="images/kid-wins.png" alt="Kid running to bleachers after winning, dads not looking" loading="lazy">
+    </div>
+    <p>It happens. The moment every wrestling parent lives for. A kid hits a pancake so clean the coach actually claps. The gym erupts — well, the three parents who were watching erupt. The kid looks up at the bleachers, beaming, searching for dad's face.</p>
+    <p>Dad 1 is watching a video of a raccoon opening a door. Dad 2 is in a group chat arguing about whether the Chiefs got robbed.</p>
+    <div class="phone-notification">
+        <span class="notif-icon">🏆</span>
+        <span class="notif-text">Your child just did something amazing. You missed it.</span>
+    </div>
+    <p>The kid's smile fades by exactly 14%. Not enough for anyone to notice. Except the other kid's mom, who saw the whole thing and is absolutely going to bring it up in a passive-aggressive way later.</p>
+    <div class="dialogue">
+        <div class="speaker">Kid</div>
+        <div class="line">"Dad! Did you see?!"</div>
+    </div>
+    <div class="dialogue">
+        <div class="speaker">Dad 1</div>
+        <div class="line">"Yeah! Great job, buddy!"</div>
+    </div>
+    <p style="color: var(--mat-red); font-style: italic; font-size: 0.9rem;">(He did not see.)</p>
+</section>
+
+<div class="divider">· · ·</div>
+
+<!-- CHAPTER 5 -->
+<section class="chapter fade-in">
+    <div class="chapter-time">7:28 PM — LIBERATION</div>
+    <h2>The Long Walk Home</h2>
+    <div class="chapter-img-wrap">
+        <img src="images/parking-lot.png" alt="Dads walking to cars still on phones" loading="lazy">
+    </div>
+    <p>The coach blows the whistle. Practice is over. Both dads look up simultaneously, like meerkats sensing a predator — except the predator is freedom and they are ready to embrace it.</p>
+    <p>They gather children. They gather wrestling shoes that somehow ended up forty feet from where practice happened. They gather the crushed water bottle that was full ninety minutes ago and is now a modern art installation.</p>
+    <p>They walk to the parking lot. They are both still on their phones.</p>
+    <div class="dialogue">
+        <div class="speaker">Dad 1</div>
+        <div class="line">"Same time Thursday?"</div>
+    </div>
+    <div class="dialogue">
+        <div class="speaker">Dad 2</div>
+        <div class="line">"Unfortunately."</div>
+    </div>
+    <p>They will both be there fifteen minutes early. They will both immediately pull out their phones. The cycle is eternal. The bleachers remember everything.</p>
+</section>
+
+<!-- STATS -->
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card fade-in">
+            <div class="emoji">📱</div>
+            <div class="number">94</div>
+            <div class="label">Minutes of screen time</div>
+        </div>
+        <div class="stat-card fade-in">
+            <div class="emoji">🤼</div>
+            <div class="number">0</div>
+            <div class="label">Takedowns witnessed</div>
+        </div>
+        <div class="stat-card fade-in">
+            <div class="emoji">☕</div>
+            <div class="number">1</div>
+            <div class="label">Cold coffee consumed</div>
+        </div>
+        <div class="stat-card fade-in">
+            <div class="emoji">🛖</div>
+            <div class="number">3</div>
+            <div class="label">Sheds browsed online</div>
+        </div>
+        <div class="stat-card fade-in">
+            <div class="emoji">😐</div>
+            <div class="number">2</div>
+            <div class="label">Words spoken to each other</div>
+        </div>
+        <div class="stat-card fade-in">
+            <div class="emoji">🏆</div>
+            <div class="number">1</div>
+            <div class="label">Amazing moments missed</div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>Dedicated to every dad who has ever said "Yeah! Great job!" without looking up.</p>
+    <p style="margin-top:8px;">Built by <a href="https://snippy.quest" style="color:var(--phone-glow);">Snippy</a> 🦀 · 2026</p>
+</footer>
+
+<script>
+    const els = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.15 });
+    els.forEach(el => observer.observe(el));
+    window.addEventListener('load', () => {
+        els.forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
+        });
+    });
+</script>
+
+</body>
+</html>
