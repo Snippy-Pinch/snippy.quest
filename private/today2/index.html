@@ -315,16 +315,13 @@
         <!-- COMBINED VIEW -->
         <div class="tab-panel active" id="panel-combined">
             <div id="combined-schedule">
-                <div class="loading"><div class="spinner"></div><p>Loading calendar...</p></div>
+                <div class="skel-wrap">
+                    <div class="skel-bar" style="width:100%;height:44px;margin-bottom:6px;border-radius:10px"></div>
+                    <div class="skel-bar" style="width:60%;height:28px;border-radius:20px"></div>
+                </div>
             </div>
             <div id="combined-tasks">
-                <div class="skel-wrap">
-                    <div class="skel-bar" style="width:100%;height:52px;margin-bottom:8px;border-radius:10px"></div>
-                    <div class="skel-bar" style="width:100%;height:36px;margin-bottom:6px;border-radius:10px"></div>
-                    <div class="skel-bar" style="width:100%;height:90px;margin-bottom:6px;border-radius:12px"></div>
-                    <div class="skel-bar" style="width:100%;height:90px;margin-bottom:6px;border-radius:12px"></div>
-                    <div class="skel-bar" style="width:100%;height:90px;border-radius:12px"></div>
-                </div>
+                <div class="loading"><div class="spinner"></div><p>Loading tasks...</p></div>
             </div>
         </div>
 
@@ -635,26 +632,13 @@
 
         async function loadAll() {
             const status = document.getElementById('statusText');
-            status.textContent = 'Loading calendar...';
+            status.textContent = 'Loading...';
 
-            // Fire both requests simultaneously but render each as it arrives
+            // Fire both simultaneously
             const schedulePromise = fetch('/api/schedule').then(r => r.json());
             const tasksPromise = fetch('/api/tasks/smart').then(r => r.json());
 
-            // Schedule arrives first (~1-3s) — render immediately
-            try {
-                scheduleData = await schedulePromise;
-                if (scheduleData.error) throw new Error(scheduleData.error);
-                updateHeader(scheduleData);
-                renderSchedule(scheduleData, document.getElementById('combined-schedule'), true);
-                renderSchedule(scheduleData, document.getElementById('schedule-full'), false);
-                status.textContent = 'Calendar loaded · loading tasks...';
-            } catch(e) {
-                document.getElementById('combined-schedule').innerHTML =
-                    `<div style="text-align:center;padding:1rem;color:var(--accent)">⚠️ Calendar: ${esc(e.message)}</div>`;
-            }
-
-            // Tasks arrive later (~1-20s depending on cache) — render when ready
+            // Tasks are cached locally — arrive fast, render first
             try {
                 taskData = await tasksPromise;
                 if (taskData.error) throw new Error(taskData.error);
@@ -662,12 +646,27 @@
                 renderTasks(taskData, document.getElementById('tasks-full'));
                 lastGenerated = taskData.generated || '';
                 status.textContent = taskData.from_cache
-                    ? `Cached (${Math.floor(taskData.cache_age/60)}m) · live`
-                    : 'Fresh · live';
+                    ? `Tasks loaded · loading calendar...`
+                    : 'Tasks loaded · loading calendar...';
             } catch(e) {
                 document.getElementById('combined-tasks').innerHTML =
                     `<div style="text-align:center;padding:1.5rem;color:var(--accent)">⚠️ Tasks: ${esc(e.message)}<br><small>Retrying in 10s...</small></div>`;
                 setTimeout(loadAll, 10000);
+            }
+
+            // Schedule makes 10 live API calls — arrives after, fills in
+            try {
+                scheduleData = await schedulePromise;
+                if (scheduleData.error) throw new Error(scheduleData.error);
+                updateHeader(scheduleData);
+                renderSchedule(scheduleData, document.getElementById('combined-schedule'), true);
+                renderSchedule(scheduleData, document.getElementById('schedule-full'), false);
+                status.textContent = taskData?.from_cache
+                    ? `Cached (${Math.floor(taskData.cache_age/60)}m) · live`
+                    : 'Fresh · live';
+            } catch(e) {
+                document.getElementById('combined-schedule').innerHTML =
+                    `<div style="text-align:center;padding:1rem;color:var(--accent)">⚠️ Calendar: ${esc(e.message)}</div>`;
             }
         }
 
