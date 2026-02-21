@@ -240,6 +240,218 @@
             white-space: nowrap;
         }
         
+        /* Results Section Styles */
+        .results-section {
+            margin-top: 40px;
+        }
+        .results-header {
+            color: #c9a227;
+            font-size: 1.5rem;
+            margin: 30px 0 20px;
+            padding-left: 12px;
+            border-left: 4px solid #c9a227;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .results-header .sub {
+            font-size: 0.8rem;
+            color: #8b949e;
+            font-weight: 400;
+        }
+        .region-results-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .region-results-header {
+            padding: 14px 18px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.2s;
+        }
+        .region-results-header:hover {
+            background: rgba(48,54,61,0.4);
+        }
+        .region-results-header h3 {
+            font-size: 1rem;
+            color: #e6edf3;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .region-results-header .toggle-icon {
+            color: #8b949e;
+            font-size: 0.7rem;
+            transition: transform 0.2s;
+        }
+        .region-results-header.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+        .region-results-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+        .region-results-body.active {
+            max-height: 8000px;
+            transition: max-height 0.6s ease-in;
+        }
+        .region-results-content {
+            padding: 0 18px 18px;
+        }
+        .team-scores-bar {
+            background: rgba(22,27,34,0.8);
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+        }
+        .team-scores-bar h4 {
+            color: #c9a227;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        .team-scores-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .team-score-item {
+            background: rgba(88,166,255,0.08);
+            border: 1px solid rgba(88,166,255,0.15);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #8b949e;
+        }
+        .team-score-item.first { color: #c9a227; border-color: rgba(201,162,39,0.3); background: rgba(201,162,39,0.1); }
+        .team-score-item.second { color: #c0c0c0; border-color: rgba(192,192,192,0.3); background: rgba(192,192,192,0.08); }
+        .team-score-item.third { color: #cd7f32; border-color: rgba(205,127,50,0.3); background: rgba(205,127,50,0.08); }
+        .weight-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .weight-results-table thead th {
+            background: rgba(201,162,39,0.1);
+            color: #c9a227;
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #30363d;
+        }
+        .weight-results-table tbody tr {
+            border-bottom: 1px solid rgba(48,54,61,0.5);
+        }
+        .weight-results-table tbody tr:hover {
+            background: rgba(88,166,255,0.04);
+        }
+        .weight-results-table td {
+            padding: 7px 10px;
+            color: #e6edf3;
+        }
+        .weight-results-table td:first-child {
+            color: #c9a227;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .weight-results-table td.place-1 { color: #c9a227; }
+        .weight-results-table td.place-2 { color: #c0c0c0; }
+        .weight-results-table td.place-3 { color: #cd7f32; }
+        .weight-results-table td.place-4 { color: #8b949e; }
+        .pending-badge {
+            display: inline-block;
+            background: rgba(218,54,51,0.15);
+            color: #f85149;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(218,54,51,0.3);
+        }
+        .completed-badge {
+            display: inline-block;
+            background: rgba(63,185,80,0.15);
+            color: #3fb950;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(63,185,80,0.3);
+        }
+        .partial-badge {
+            display: inline-block;
+            background: rgba(201,162,39,0.15);
+            color: #c9a227;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(201,162,39,0.3);
+        }
+        .pending-note {
+            text-align: center;
+            padding: 30px 20px;
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+        .pending-note .icon { font-size: 2rem; margin-bottom: 10px; }
+        .pending-note a { color: #58a6ff; text-decoration: none; }
+        .pending-note a:hover { text-decoration: underline; }
+        .results-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .results-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(88,166,255,0.1);
+            color: #58a6ff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            border: 1px solid rgba(88,166,255,0.2);
+            transition: background 0.2s;
+        }
+        .results-link:hover {
+            background: rgba(88,166,255,0.2);
+        }
+        .girls-highlight {
+            border-left-color: #f778ba;
+        }
+        .girls-badge {
+            display: inline-block;
+            background: rgba(247,120,186,0.15);
+            color: #f778ba;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border: 1px solid rgba(247,120,186,0.3);
+        }
+        @media (max-width: 700px) {
+            .weight-results-table { font-size: 0.75rem; }
+            .weight-results-table td, .weight-results-table th { padding: 5px 6px; }
+        }
+
         .footer {
             text-align: center;
             padding: 40px 20px;
@@ -552,6 +764,425 @@
         </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- REGIONAL RESULTS SECTION -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div class="container results-section">
+
+        <!-- ═══ GIRLS REGIONAL RESULTS ═══ -->
+        <div class="results-header" style="border-left-color: #f778ba;">
+            🏅 Girls Regional Results <span class="sub">Completed Feb 20, 2026</span>
+        </div>
+
+        <!-- Girls Region 1 -->
+        <div class="region-results-card" style="border-color: rgba(247,120,186,0.2);">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="girls-badge">GIRLS</span>
+                    Region 1 — De Smet, SD
+                    <span class="partial-badge">PARTIAL RESULTS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="team-scores-bar">
+                        <h4>TEAM SCORES (partial)</h4>
+                        <div class="team-scores-list">
+                            <span class="team-score-item">5. Sully Buttes — 79.0</span>
+                        </div>
+                    </div>
+                    <table class="weight-results-table">
+                        <thead>
+                            <tr><th>Weight</th><th>🥇 1st</th><th>🥈 2nd</th><th>🥉 3rd</th><th>4th</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>120</td>
+                                <td class="place-1">Olivia Anderson (Watertown)</td>
+                                <td class="place-2">Tahnie Yellow Hawk (Sully Buttes)</td>
+                                <td class="place-3">—</td>
+                                <td class="place-4">—</td>
+                            </tr>
+                            <tr>
+                                <td>130</td>
+                                <td class="place-1">Cateri Yellow Hawk (Sully Buttes)</td>
+                                <td class="place-2">Sophia Knittel (Ipswich)</td>
+                                <td class="place-3">—</td>
+                                <td class="place-4">—</td>
+                            </tr>
+                            <tr>
+                                <td>140</td>
+                                <td class="place-1">—</td>
+                                <td class="place-2">—</td>
+                                <td class="place-3">Paige Jonas (Sully Buttes)</td>
+                                <td class="place-4">Saphera Reid (SF Jefferson)</td>
+                            </tr>
+                            <tr>
+                                <td>145</td>
+                                <td class="place-1">Cheyenne Fuller (Sully Buttes)</td>
+                                <td class="place-2">Lilliya Meek (Faulkton Area)</td>
+                                <td class="place-3">—</td>
+                                <td class="place-4">—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530012" class="results-link" target="_blank">📊 Full Brackets on FlowRestling</a>
+                        <a href="https://www.trackwrestling.com/Login.jsp?tournamentIndex=0&tName=SDHSAA" class="results-link" target="_blank">📊 TrackWrestling</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Girls Region 2 -->
+        <div class="region-results-card" style="border-color: rgba(247,120,186,0.2);">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="girls-badge">GIRLS</span>
+                    Region 2 — Elk Point, SD
+                    <span class="pending-badge">AWAITING RESULTS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="pending-note">
+                        <div class="icon">📋</div>
+                        <p>Full results not yet posted publicly.<br>Check the links below for brackets and placements.</p>
+                    </div>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530013/brackets" class="results-link" target="_blank">📊 FlowRestling Brackets</a>
+                        <a href="https://www.trackwrestling.com/Login.jsp?tournamentIndex=0&tName=SDHSAA" class="results-link" target="_blank">📊 TrackWrestling</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Girls Region 3 -->
+        <div class="region-results-card" style="border-color: rgba(247,120,186,0.2);">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="girls-badge">GIRLS</span>
+                    Region 3 — Mitchell, SD
+                    <span class="completed-badge">✓ COMPLETED</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="team-scores-bar">
+                        <h4>TEAM SCORES</h4>
+                        <div class="team-scores-list">
+                            <span class="team-score-item first">🥇 1. Aberdeen Central — 228.0</span>
+                            <span class="team-score-item second">🥈 2. Pierre — 193.0</span>
+                            <span class="team-score-item third">🥉 3. Bon Homme/Scotland/Avon — 161.5</span>
+                            <span class="team-score-item">4. Mitchell — (score TBD)</span>
+                            <span class="team-score-item">5. Huron — (score TBD)</span>
+                            <span class="team-score-item">6. Miller/Highmore-Harrold — 101.0</span>
+                            <span class="team-score-item">Todd County/White River — 74.0</span>
+                            <span class="team-score-item">Chamberlain — 2 state qualifiers</span>
+                            <span class="team-score-item">Lyman — 1 state qualifier</span>
+                        </div>
+                    </div>
+                    <table class="weight-results-table">
+                        <thead>
+                            <tr><th>Weight</th><th>🥇 1st</th><th>🥈 2nd</th><th>🥉 3rd</th><th>4th</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>135</td>
+                                <td class="place-1">Lexie Hillmer (Pierre)</td>
+                                <td class="place-2">—</td>
+                                <td class="place-3">—</td>
+                                <td class="place-4">—</td>
+                            </tr>
+                            <tr>
+                                <td>155</td>
+                                <td class="place-1">—</td>
+                                <td class="place-2">Abbi Lewis (Pierre) *</td>
+                                <td class="place-3">—</td>
+                                <td class="place-4">—</td>
+                            </tr>
+                            <tr>
+                                <td>235</td>
+                                <td class="place-1">Unique Clairmont (Todd Co./White River)</td>
+                                <td class="place-2">—</td>
+                                <td class="place-3">—</td>
+                                <td class="place-4">—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="font-size: 0.75rem; color: #8b949e; margin-top: 8px; font-style: italic;">* Abbi Lewis (155) — medical forfeit in finals; #1 state-rated, seeking 3rd straight state title.<br>Aberdeen Central won 5 weight classes. Pierre placed 10 wrestlers in top 4, all advancing to state.</p>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530014" class="results-link" target="_blank">📊 Full Brackets on FlowRestling</a>
+                        <a href="https://drgnews.com/2026/02/21/pierre-takes-second-at-region-3-wrestling/" class="results-link" target="_blank">📰 DRG News Coverage</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Girls Region 4 -->
+        <div class="region-results-card" style="border-color: rgba(247,120,186,0.2);">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="girls-badge">GIRLS</span>
+                    Region 4 — Rapid City, SD
+                    <span class="partial-badge">PARTIAL RESULTS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="team-scores-bar">
+                        <h4>TEAM SCORES</h4>
+                        <div class="team-scores-list">
+                            <span class="team-score-item first">🥇 1. Sturgis Brown — 208.0</span>
+                            <span class="team-score-item second">🥈 2. Spearfish — 206.5</span>
+                            <span class="team-score-item third">🥉 3. Rapid City Stevens — 169.5</span>
+                            <span class="team-score-item">4. Lemmon — 140.0</span>
+                            <span class="team-score-item">Stanley County — 3 state qualifiers</span>
+                            <span class="team-score-item">Mobridge-Pollock — 1 state qualifier</span>
+                        </div>
+                    </div>
+                    <div class="pending-note" style="padding: 16px;">
+                        <p>Individual weight class placements are available on FlowRestling and TrackWrestling.</p>
+                    </div>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530015/brackets" class="results-link" target="_blank">📊 Full Brackets on FlowRestling</a>
+                        <a href="https://www.trackwrestling.com/Login.jsp?tournamentIndex=0&tName=SDHSAA" class="results-link" target="_blank">📊 TrackWrestling</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ═══ BOYS CLASS B REGIONAL RESULTS ═══ -->
+        <div class="results-header">
+            🏅 Boys Class B Regional Results <span class="sub">Finals Day — Feb 21, 2026</span>
+        </div>
+
+        <!-- Region 1B -->
+        <div class="region-results-card">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="class-badge class-b">CLASS B</span>
+                    Region 1B — Webster, SD
+                    <span class="pending-badge">⏳ FINALS IN PROGRESS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="pending-note">
+                        <div class="icon">⏳</div>
+                        <p>Finals are in progress today (Feb 21).<br>Results will be posted as they become available.</p>
+                        <p style="margin-top: 8px; font-size: 0.8rem;">17 teams competing — Top 4 at each weight advance to State</p>
+                    </div>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530006/brackets" class="results-link" target="_blank">📊 Live Brackets — FlowRestling</a>
+                        <a href="https://www.trackwrestling.com/tw/predefinedtournaments/VerifyPassword.jsp?tournamentId=683619132" class="results-link" target="_blank">📊 TrackWrestling</a>
+                        <a href="https://www.youtube.com/watch?v=zJo7wusan9E" class="results-link" target="_blank">📺 Watch Live</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Region 2B -->
+        <div class="region-results-card">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="class-badge class-b">CLASS B</span>
+                    Region 2B — Elk Point, SD
+                    <span class="pending-badge">⏳ FINALS IN PROGRESS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="pending-note">
+                        <div class="icon">⏳</div>
+                        <p>Finals are in progress today (Feb 21).<br>Results will be posted as they become available.</p>
+                        <p style="margin-top: 8px; font-size: 0.8rem;">14 teams competing — Top 4 at each weight advance to State</p>
+                    </div>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530008/brackets" class="results-link" target="_blank">📊 Live Brackets — FlowRestling</a>
+                        <a href="https://www.trackwrestling.com/Login.jsp?tournamentIndex=0&tName=SDHSAA" class="results-link" target="_blank">📊 TrackWrestling</a>
+                        <a href="https://www.youtube.com/watch?v=FPg4WWUsynw" class="results-link" target="_blank">📺 Watch Live</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Region 3B -->
+        <div class="region-results-card">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="class-badge class-b">CLASS B</span>
+                    Region 3B — Winner, SD
+                    <span class="pending-badge">⏳ FINALS IN PROGRESS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="pending-note">
+                        <div class="icon">⏳</div>
+                        <p>Finals are in progress today (Feb 21).<br>Results will be posted as they become available.</p>
+                        <p style="margin-top: 8px; font-size: 0.8rem;">11 teams competing — Top 4 at each weight advance to State</p>
+                    </div>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530009/brackets" class="results-link" target="_blank">📊 Live Brackets — FlowRestling</a>
+                        <a href="https://www.dakotagrappler.com/sdhsaa-region-3b-brackets/" class="results-link" target="_blank">📊 DakotaGrappler</a>
+                        <a href="https://www.youtube.com/watch?v=2AV4MYlo8j4" class="results-link" target="_blank">📺 Watch Live</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Region 4B -->
+        <div class="region-results-card">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="class-badge class-b">CLASS B</span>
+                    Region 4B — Hill City, SD
+                    <span class="pending-badge">⏳ FINALS IN PROGRESS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="pending-note">
+                        <div class="icon">⏳</div>
+                        <p>Finals are in progress today (Feb 21).<br>Results will be posted as they become available.</p>
+                        <p style="margin-top: 8px; font-size: 0.8rem;">19 teams competing — Top 4 at each weight advance to State<br>⏰ Finals end ~8:00 PM MT</p>
+                    </div>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530004/brackets" class="results-link" target="_blank">📊 Live Brackets — FlowRestling</a>
+                        <a href="https://www.trackwrestling.com/Login.jsp?tournamentIndex=0&tName=SDHSAA" class="results-link" target="_blank">📊 TrackWrestling</a>
+                        <a href="https://www.youtube.com/watch?v=flRtaf-0nwQ" class="results-link" target="_blank">📺 Watch Live</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ═══ BOYS CLASS A REGIONAL RESULTS ═══ -->
+        <div class="results-header">
+            🏅 Boys Class A Regional Results <span class="sub">Finals Day — Feb 21, 2026</span>
+        </div>
+
+        <!-- Region 1A -->
+        <div class="region-results-card">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="class-badge class-a">CLASS A</span>
+                    Region 1A — Dell Rapids, SD
+                    <span class="pending-badge">⏳ FINALS IN PROGRESS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="pending-note">
+                        <div class="icon">⏳</div>
+                        <p>Finals are in progress today (Feb 21).<br>Results will be posted as they become available.</p>
+                        <p style="margin-top: 8px; font-size: 0.8rem;">9 teams competing — Top 4 at each weight advance to State</p>
+                    </div>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530010/brackets" class="results-link" target="_blank">📊 Live Brackets — FlowRestling</a>
+                        <a href="https://www.trackwrestling.com/Login.jsp?tournamentIndex=0&tName=SDHSAA" class="results-link" target="_blank">📊 TrackWrestling</a>
+                        <a href="https://www.youtube.com/watch?v=4f2a1PowJLs" class="results-link" target="_blank">📺 Watch Live</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Region 2A -->
+        <div class="region-results-card">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="class-badge class-a">CLASS A</span>
+                    Region 2A — Harrisburg, SD
+                    <span class="pending-badge">⏳ FINALS IN PROGRESS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="pending-note">
+                        <div class="icon">⏳</div>
+                        <p>Finals are in progress today (Feb 21).<br>Results will be posted as they become available.</p>
+                    </div>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530007/brackets" class="results-link" target="_blank">📊 Live Brackets — FlowRestling</a>
+                        <a href="https://www.trackwrestling.com/Login.jsp?tournamentIndex=0&tName=SDHSAA" class="results-link" target="_blank">📊 TrackWrestling</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Region 3A -->
+        <div class="region-results-card">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="class-badge class-a">CLASS A</span>
+                    Region 3A — Mitchell, SD
+                    <span class="pending-badge">⏳ FINALS IN PROGRESS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="pending-note">
+                        <div class="icon">⏳</div>
+                        <p>Finals are in progress today (Feb 21).<br>Results will be posted as they become available.</p>
+                        <p style="margin-top: 8px; font-size: 0.8rem;">8 teams competing — Top 4 at each weight advance to State</p>
+                    </div>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530005/brackets" class="results-link" target="_blank">📊 Live Brackets — FlowRestling</a>
+                        <a href="https://www.trackwrestling.com/Login.jsp?tournamentIndex=0&tName=SDHSAA" class="results-link" target="_blank">📊 TrackWrestling</a>
+                        <a href="https://www.youtube.com/watch?v=sHVeG6W0lDY" class="results-link" target="_blank">📺 Watch Live</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Region 4A -->
+        <div class="region-results-card">
+            <div class="region-results-header" onclick="toggleResults(this)">
+                <h3>
+                    <span class="class-badge class-a">CLASS A</span>
+                    Region 4A — Rapid City, SD
+                    <span class="pending-badge">⏳ FINALS IN PROGRESS</span>
+                </h3>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="region-results-body">
+                <div class="region-results-content">
+                    <div class="pending-note">
+                        <div class="icon">⏳</div>
+                        <p>Finals are in progress today (Feb 21).<br>Results will be posted as they become available.</p>
+                        <p style="margin-top: 8px; font-size: 0.8rem;">9 teams competing — Top 4 at each weight advance to State</p>
+                    </div>
+                    <div class="results-links">
+                        <a href="https://www.flowrestling.org/nextgen/events/14530011/brackets" class="results-link" target="_blank">📊 Live Brackets — FlowRestling</a>
+                        <a href="https://www.trackwrestling.com/tw/predefinedtournaments/VerifyPassword.jsp?tournamentId=854811132" class="results-link" target="_blank">📊 TrackWrestling</a>
+                        <a href="https://www.youtube.com/watch?v=PAXfwEsyisE" class="results-link" target="_blank">📺 Watch Live</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info banner -->
+        <div class="date-note" style="margin-top: 24px;">
+            🏆 <strong>State Individual Tournament:</strong> Feb 26-28, 2026 — Denny Sanford PREMIER Center, Sioux Falls<br>
+            <span style="font-size: 0.8rem;">Top 4 placers from each weight class at regionals advance to state. Full results will be updated when available from <a href="https://www.trackwrestling.com/Login.jsp?state=42" style="color: #58a6ff;" target="_blank">TrackWrestling</a> and <a href="https://www.flowrestling.org" style="color: #58a6ff;" target="_blank">FlowRestling</a>.</span>
+        </div>
+
+    </div>
+    <!-- END RESULTS SECTION -->
+
     <div class="footer">
         <p>🦀 <a href="https://snippy.quest">snippy.quest</a> — Go get 'em! 🤼</p>
     </div>
@@ -561,6 +1192,11 @@
             element.classList.toggle('active');
             const teamsList = element.nextElementSibling;
             teamsList.classList.toggle('active');
+        }
+        function toggleResults(element) {
+            element.classList.toggle('active');
+            const resultsBody = element.nextElementSibling;
+            resultsBody.classList.toggle('active');
         }
     </script>
 </body>
