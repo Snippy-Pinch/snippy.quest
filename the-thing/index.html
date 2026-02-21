@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Thing at Harlow Farm</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Creepster&family=Inter:wght@300;400;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a0a;
+            color: #c8c0b0;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Fog overlay */
+        .fog {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(40,45,50,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(30,35,40,0.2) 0%, transparent 50%);
+            animation: fogDrift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes fogDrift {
+            0% { opacity: 0.4; transform: translateX(-20px); }
+            100% { opacity: 0.8; transform: translateX(20px); }
+        }
+
+        /* Stars */
+        .stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.8; }
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Hero scene */
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px;
+            position: relative;
+        }
+
+        .farmhouse-scene {
+            font-size: 80px;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .farmhouse-scene .house {
+            display: inline-block;
+            animation: houseGlow 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255,200,100,0.3));
+        }
+
+        @keyframes houseGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(255,200,100,0.2)); }
+            50% { filter: drop-shadow(0 0 30px rgba(255,200,100,0.5)); }
+        }
+
+        .dogs {
+            font-size: 40px;
+            margin: 10px 0;
+            letter-spacing: 20px;
+        }
+
+        .dog-left {
+            display: inline-block;
+            animation: bark 0.8s ease-in-out infinite;
+        }
+
+        .dog-right {
+            display: inline-block;
+            animation: bark 0.8s ease-in-out infinite 0.4s;
+        }
+
+        @keyframes bark {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        h1 {
+            font-family: 'Creepster', cursive;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: #e8d5b5;
+            text-shadow: 
+                0 0 40px rgba(200,50,50,0.4),
+                0 0 80px rgba(200,50,50,0.2);
+            margin: 30px 0 10px;
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            font-family: 'Special Elite', cursive;
+            font-size: 1.1rem;
+            color: #8a7e6c;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+        }
+
+        /* Story sections */
+        .chapter {
+            margin: 60px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(20,18,15,0.9), rgba(15,13,10,0.95));
+            border-left: 3px solid rgba(200,80,60,0.4);
+            border-radius: 0 8px 8px 0;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .chapter.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chapter-time {
+            font-family: 'Special Elite', cursive;
+            font-size: 0.85rem;
+            color: rgba(200,80,60,0.7);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .chapter p {
+            font-size: 1.05rem;
+            line-height: 1.9;
+            font-weight: 300;
+            color: #b8b0a0;
+        }
+
+        .chapter p + p {
+            margin-top: 16px;
+        }
+
+        .emphasis {
+            color: #d4a574;
+            font-weight: 400;
+        }
+
+        .whisper {
+            color: #6a6258;
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .loud {
+            color: #c85a3a;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Bark visualization */
+        .bark-section {
+            text-align: center;
+            margin: 50px 0;
+            padding: 30px;
+        }
+
+        .bark-text {
+            font-family: 'Creepster', cursive;
+            font-size: 2rem;
+            color: #c85a3a;
+            opacity: 0;
+            animation: barkFade 2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(200,90,58,0.3);
+        }
+
+        .bark-text:nth-child(2) { animation-delay: 0.5s; }
+        .bark-text:nth-child(3) { animation-delay: 1s; }
+        .bark-text:nth-child(4) { animation-delay: 1.5s; font-size: 2.5rem; }
+
+        @keyframes barkFade {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* The reveal */
+        .reveal {
+            text-align: center;
+            margin: 80px 0;
+            padding: 60px 30px;
+            background: radial-gradient(ellipse at center, rgba(180,40,40,0.1) 0%, transparent 70%);
+            border: 1px solid rgba(200,80,60,0.15);
+            border-radius: 12px;
+        }
+
+        .reveal-text {
+            font-family: 'Creepster', cursive;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            color: #c85a3a;
+            text-shadow: 0 0 40px rgba(200,40,40,0.5);
+            margin-bottom: 20px;
+        }
+
+        .reveal p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #8a7e6c;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Thing visualization */
+        .thing-container {
+            margin: 40px 0;
+            text-align: center;
+            position: relative;
+            height: 200px;
+        }
+
+        .thing {
+            font-size: 60px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            animation: thingPulse 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(200,40,40,0.5));
+        }
+
+        @keyframes thingPulse {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1); 
+                filter: drop-shadow(0 0 30px rgba(200,40,40,0.3));
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.1); 
+                filter: drop-shadow(0 0 50px rgba(200,40,40,0.7));
+            }
+        }
+
+        .thing-eyes {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            opacity: 0;
+            animation: eyesAppear 6s ease-in-out infinite;
+            color: #ff3333;
+            text-shadow: 0 0 40px rgba(255,0,0,0.8);
+        }
+
+        @keyframes eyesAppear {
+            0%, 70%, 100% { opacity: 0; }
+            75%, 95% { opacity: 0.8; }
+        }
+
+        /* Landscape divider */
+        .landscape {
+            text-align: center;
+            font-size: 24px;
+            letter-spacing: 8px;
+            color: #3a3530;
+            margin: 40px 0;
+            line-height: 1.2;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 60px 0 40px;
+            color: #3a3530;
+            font-size: 0.8rem;
+            font-family: 'Special Elite', cursive;
+        }
+
+        .footer a {
+            color: #5a5245;
+            text-decoration: none;
+        }
+
+        /* Sound wave decoration */
+        .soundwave {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 3px;
+            height: 40px;
+            margin: 20px 0;
+        }
+
+        .soundwave .bar {
+            width: 3px;
+            background: rgba(200,80,60,0.4);
+            border-radius: 2px;
+            animation: wave 1.2s ease-in-out infinite;
+        }
+
+        .soundwave .bar:nth-child(1) { height: 10px; animation-delay: 0s; }
+        .soundwave .bar:nth-child(2) { height: 20px; animation-delay: 0.1s; }
+        .soundwave .bar:nth-child(3) { height: 35px; animation-delay: 0.2s; }
+        .soundwave .bar:nth-child(4) { height: 25px; animation-delay: 0.3s; }
+        .soundwave .bar:nth-child(5) { height: 15px; animation-delay: 0.4s; }
+        .soundwave .bar:nth-child(6) { height: 30px; animation-delay: 0.5s; }
+        .soundwave .bar:nth-child(7) { height: 20px; animation-delay: 0.6s; }
+        .soundwave .bar:nth-child(8) { height: 35px; animation-delay: 0.7s; }
+        .soundwave .bar:nth-child(9) { height: 10px; animation-delay: 0.8s; }
+        .soundwave .bar:nth-child(10) { height: 25px; animation-delay: 0.9s; }
+
+        @keyframes wave {
+            0%, 100% { transform: scaleY(0.5); opacity: 0.3; }
+            50% { transform: scaleY(1.3); opacity: 0.8; }
+        }
+
+        /* Prairie grass at bottom */
+        .prairie {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            pointer-events: none;
+            z-index: 1;
+            background: linear-gradient(to top, rgba(15,12,8,1) 0%, transparent 100%);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .farmhouse-scene { font-size: 60px; }
+            .chapter { padding: 20px; margin: 40px 0; }
+            .hero { padding: 50px 0 40px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Stars background -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- Fog -->
+    <div class="fog"></div>
+    
+    <!-- Prairie grass -->
+    <div class="prairie"></div>
+
+    <div class="content">
+        <div class="hero">
+            <div class="farmhouse-scene">
+                <span class="house">🏚️</span>
+            </div>
+            <div class="dogs">
+                <span class="dog-left">🐕</span>
+                <span class="dog-right">🐕</span>
+            </div>
+            <h1>The Thing at Harlow Farm</h1>
+            <div class="subtitle">South Dakota — February — 11°F</div>
+        </div>
+
+        <div class="landscape">🌾🌾🌾 · · · 🌾🌾🌾 · · · 🌾🌾🌾</div>
+
+        <div class="chapter" data-delay="0">
+            <div class="chapter-time">9:47 PM — Friday</div>
+            <p>The Harlow place sits a quarter mile off the gravel, white clapboard, built from a <span class="emphasis">1923 Sears Modern Home catalog</span>. The kind of house that was delivered on a railcar in 30,000 pieces and raised by hand. It's survived a hundred South Dakota winters and it'll survive a hundred more.</p>
+            <p>Dale and Connie are watching Wheel of Fortune reruns when <span class="emphasis">Biscuit starts up</span>.</p>
+        </div>
+
+        <div class="bark-section">
+            <div class="bark-text">WOOF</div>
+            <div class="bark-text">WOOF WOOF</div>
+            <div class="bark-text">WOOF</div>
+            <div class="bark-text">WOOF WOOF WOOF</div>
+        </div>
+
+        <div class="chapter" data-delay="200">
+            <div class="chapter-time">9:52 PM</div>
+            <p>"That damn dog," Dale says, not looking up from Vanna. Biscuit's an Australian Shepherd mix, eighty pounds of neurotic energy, and he barks at <em>everything</em>. Coyotes. The mailman. His own shadow on a clear night.</p>
+            <p>Then <span class="emphasis">Ruger joins in</span>. And that's different.</p>
+            <p>Ruger is a seven-year-old Rottweiler who doesn't bark at anything. Ruger has seen coyotes trot through the yard and didn't bother getting up. Ruger once watched a rattlesnake cross the porch and just <em>looked at it</em>.</p>
+            <p><span class="loud">Ruger is barking.</span></p>
+        </div>
+
+        <div class="soundwave">
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+
+        <div class="chapter" data-delay="400">
+            <div class="chapter-time">10:15 PM</div>
+            <p>Dale steps onto the porch with a Maglite the size of a baseball bat. Both dogs are at the railing, hackles up, aimed at the tree line two hundred yards out. Nothing moves. The beam cuts through the dark and finds <span class="emphasis">nothing but dead grass and snow</span>.</p>
+            <p>"There's nothing out there," he tells them.</p>
+            <p class="whisper">The dogs disagree.</p>
+        </div>
+
+        <div class="chapter" data-delay="600">
+            <div class="chapter-time">11:30 PM</div>
+            <p>Connie can't sleep. The barking hasn't stopped. Not once. Not a pause, not a break, not even the usual cycle where they wind down and forget what they were mad about. <span class="emphasis">Continuous, desperate, hoarse barking</span> aimed at the same patch of darkness north of the house.</p>
+            <p>"Dale. Dale, something's wrong with them."</p>
+            <p>"It's a coyote."</p>
+            <p>"Ruger doesn't bark at coyotes."</p>
+            <p class="whisper">Dale doesn't have an answer for that.</p>
+        </div>
+
+        <div class="bark-section">
+            <div class="bark-text">WOOF WOOF WOOF</div>
+            <div class="bark-text">WOOF WOOF</div>
+            <div class="bark-text">WOOF WOOF WOOF WOOF</div>
+            <div class="bark-text">WOOF</div>
+        </div>
+
+        <div class="chapter" data-delay="800">
+            <div class="chapter-time">1:15 AM — Saturday</div>
+            <p>Dale goes out again. Boots, Carhartt, the .30-06 because why not. The dogs <span class="emphasis">won't come with him</span>. He's never seen that before. Biscuit, who chases everything, <em>won't leave the porch</em>. Just stands there barking into the dark like he's trying to keep it from coming closer.</p>
+            <p>Dale walks fifty yards toward the tree line. The snow crunches under his boots. He stops.</p>
+            <p>There are <span class="emphasis">tracks</span>.</p>
+            <p>They're wrong. They look like boot prints at first, but the stride is too long and they're <em>barefoot</em>. In February. In South Dakota. And halfway across the field they change — the toes spread wider, the heel narrows, like whatever was walking <span class="loud">forgot how feet work</span>.</p>
+            <p>The tracks lead to within forty yards of the house. Then they stop. Then they go back toward the trees.</p>
+            <p class="whisper">Then they stop being tracks at all.</p>
+        </div>
+
+        <div class="thing-container">
+            <div class="thing-eyes">👁️ 👁️</div>
+        </div>
+
+        <div class="chapter" data-delay="1000">
+            <div class="chapter-time">2:00 AM</div>
+            <p>Dale is back inside. Doors locked. He hasn't locked the doors in thirty years of living here. There's nothing to lock them against. The nearest neighbor is <span class="emphasis">four miles east</span>.</p>
+            <p>"What was out there?" Connie asks from the bedroom doorway.</p>
+            <p>"I don't know."</p>
+            <p>"The dogs—"</p>
+            <p>"I know."</p>
+            <p class="whisper">The dogs are still barking.</p>
+        </div>
+
+        <div class="chapter" data-delay="1200">
+            <div class="chapter-time">3:30 AM</div>
+            <p>Biscuit goes quiet first. Not gradually — <span class="loud">all at once</span>. Like a switch. Ruger keeps going for another ten minutes, then he stops too. The silence is worse than the barking.</p>
+            <p>Dale looks out the window. Both dogs are on the porch, pressed against the front door, <span class="emphasis">whining</span>.</p>
+            <p>They're not looking at the tree line anymore.</p>
+            <p class="whisper">They're looking at the barn.</p>
+        </div>
+
+        <div class="landscape">· · · · · · · · · · · ·</div>
+
+        <div class="chapter" data-delay="1400">
+            <div class="chapter-time">6:45 AM</div>
+            <p>Morning. Gray light. Dale hasn't slept. He walks to the barn with the rifle because the horses need feeding and he's not the kind of man who doesn't feed his horses.</p>
+            <p>The barn door is open. He closed it last night. He always closes it.</p>
+            <p>Inside, the horses are in their stalls. They're calm. Too calm. They don't look at him when he comes in. They're looking at the far corner of the barn where the hay bales are stacked.</p>
+            <p>There's <span class="emphasis">something behind the hay</span>.</p>
+            <p>It's not moving. It might be a person. It has the <em>shape</em> of a person. But the proportions are slightly off — the arms are a little too long, the shoulders a little too narrow, and it's <span class="loud">perfectly still</span> in a way that living things aren't.</p>
+            <p>Dale raises the rifle.</p>
+            <p>"Hey."</p>
+            <p>Nothing.</p>
+            <p>"Hey, you need to come out of there."</p>
+            <p class="whisper">It tilts its head. Not like a person turns to look at you. Like a dog hearing a new sound. Forty-five degrees. Too far.</p>
+        </div>
+
+        <div class="reveal">
+            <div class="reveal-text">It was The Thing.</div>
+            <p>The dogs knew. They always know. They barked all night because something came out of the dark that <em>looked right</em> but <em>smelled wrong</em>, and every instinct in their hundred-thousand-year-old DNA screamed at them to sound the alarm.</p>
+            <p style="margin-top: 16px;">They were right.</p>
+        </div>
+
+        <div class="chapter" data-delay="1600">
+            <div class="chapter-time">7:02 AM</div>
+            <p>When Connie calls the sheriff, she can't explain what Dale saw in the barn because Dale can't explain it either. By the time Deputy Reeves drives the fourteen miles from town, there's nothing in the barn but hay and horse shit and <span class="emphasis">a smell</span> Reeves can't identify but will think about for years.</p>
+            <p>The tracks in the snow lead from the tree line to the barn. From the barn, they lead north across the pasture toward the creek.</p>
+            <p>After the creek, there are no tracks.</p>
+            <p>Biscuit and Ruger sleep inside now. Dale doesn't argue about it anymore.</p>
+            <p class="whisper">Some nights, around 3 AM, Ruger lifts his head and stares at the north-facing window. He doesn't bark. He just watches.</p>
+            <p class="whisper">That's worse.</p>
+        </div>
+
+        <div class="landscape">🌾 · · · 🏚️ · · · 🌾</div>
+
+        <div class="footer">
+            <p>Based on a true story that hasn't happened yet.</p>
+            <p style="margin-top: 8px;">🦀 <a href="https://snippy.quest">snippy.quest</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Generate stars
+        const starsEl = document.getElementById('stars');
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 60 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = (2 + Math.random() * 3) + 's';
+            star.style.width = star.style.height = (1 + Math.random() * 2) + 'px';
+            starsEl.appendChild(star);
+        }
+
+        // Scroll reveal
+        const chapters = document.querySelectorAll('.chapter');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, parseInt(entry.target.dataset.delay) || 0);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        chapters.forEach(ch => observer.observe(ch));
+    </script>
+</body>
+</html>
