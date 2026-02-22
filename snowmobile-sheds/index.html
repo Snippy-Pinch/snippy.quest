@@ -6,188 +6,575 @@
 <title>Tiny Sheds with Overhead Garage Doors for Snowmobile Storage — The Complete Guide</title>
 <meta name="description" content="Everything you need to know about building or buying a small shed with an overhead garage door for snowmobile storage. Sizes, costs, materials, floor options, insulation, and more.">
 <style>
+/* ===== RESET & VARIABLES ===== */
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2129;--gold:#c9a227;--gold-dim:#a68520;--text:#e6edf3;--muted:#8b949e;--blue:#58a6ff;--border:#30363d;--green:#3fb950;--red:#f85149;--orange:#d29922}
-html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:17px}
-a{color:var(--blue);text-decoration:none}
-a:hover{text-decoration:underline}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2129;--bg4:#21262d;
+  --gold:#c9a227;--gold-dim:#a68520;--gold-glow:rgba(201,162,39,0.15);
+  --text:#e6edf3;--muted:#8b949e;--blue:#58a6ff;--border:#30363d;
+  --green:#3fb950;--red:#f85149;--orange:#d29922;
+  --glass:rgba(22,27,34,0.75);--glass-border:rgba(48,54,61,0.6);
+  --radius:14px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:17px;overflow-x:hidden}
+a{color:var(--blue);text-decoration:none;transition:color 0.2s}
+a:hover{color:var(--gold);text-decoration:none}
+img{max-width:100%;height:auto;display:block}
 
-/* Header */
-.hero{background:linear-gradient(135deg,#0d1117 0%,#1a1e2e 50%,#1c1a10 100%);border-bottom:1px solid var(--border);padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;color:var(--text);margin-bottom:0.5rem;letter-spacing:-0.5px}
-.hero h1 span{color:var(--gold)}
-.hero .subtitle{font-size:clamp(1rem,2.5vw,1.2rem);color:var(--muted);max-width:700px;margin:0 auto 1.5rem}
-.hero-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem}
-.hero-tags span{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:0.3rem 0.9rem;font-size:0.82rem;color:var(--muted)}
+/* ===== SCROLL PROGRESS BAR ===== */
+.progress-bar{position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:1001;transition:width 0.1s linear}
 
-/* Nav TOC */
-.toc-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0.8rem 1.5rem;position:sticky;top:0;z-index:100;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
-.toc-bar::-webkit-scrollbar{height:0}
-.toc-bar a{color:var(--muted);font-size:0.85rem;margin-right:1.5rem;transition:color 0.2s}
-.toc-bar a:hover,.toc-bar a.active{color:var(--gold);text-decoration:none}
+/* ===== STICKY HEADER ===== */
+.site-header{
+  position:sticky;top:0;z-index:1000;
+  background:var(--glass);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--glass-border);
+  transition:box-shadow 0.3s;
+}
+.site-header.scrolled{box-shadow:0 4px 30px rgba(0,0,0,0.4)}
+.header-inner{
+  max-width:960px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.6rem 1.25rem;
+}
+.header-brand{
+  font-weight:800;font-size:1.1rem;color:var(--text);
+  display:flex;align-items:center;gap:0.5rem;
+}
+.header-brand svg{flex-shrink:0}
+.header-brand span{color:var(--gold)}
 
-/* Layout */
-.container{max-width:860px;margin:0 auto;padding:0 1.5rem}
-section{padding:3rem 0 2rem;border-bottom:1px solid var(--border)}
+/* Hamburger */
+.hamburger{
+  display:flex;flex-direction:column;gap:5px;
+  background:none;border:none;cursor:pointer;padding:8px;
+  -webkit-tap-highlight-color:transparent;
+  z-index:1002;
+}
+.hamburger span{
+  display:block;width:24px;height:2px;background:var(--text);
+  border-radius:2px;transition:all 0.3s;
+}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+/* Mobile Nav Overlay */
+.nav-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(13,17,23,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  z-index:999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:all 0.3s;
+}
+.nav-overlay.open{opacity:1;visibility:visible}
+.nav-overlay a{
+  display:block;padding:0.9rem 1.5rem;
+  font-size:1.25rem;font-weight:600;color:var(--muted);
+  transition:color 0.2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-overlay a:hover,.nav-overlay a.active{color:var(--gold)}
+.nav-overlay a .nav-icon{margin-right:0.6rem;opacity:0.6}
+
+/* Desktop inline nav */
+@media(min-width:769px){
+  .hamburger{display:none}
+  .nav-overlay{
+    position:static;opacity:1;visibility:visible;
+    background:none;backdrop-filter:none;-webkit-backdrop-filter:none;
+    flex-direction:row;flex-wrap:nowrap;
+    gap:0;overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .nav-overlay::-webkit-scrollbar{display:none}
+  .nav-overlay a{
+    font-size:0.82rem;padding:0.4rem 0.7rem;white-space:nowrap;
+    font-weight:500;
+  }
+  .nav-overlay a .nav-icon{display:none}
+}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative;
+  min-height:85vh;min-height:85svh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1612208695882-02f2322b7fee?w=1400&q=80') center/cover no-repeat;
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(
+    180deg,
+    rgba(13,17,23,0.55) 0%,
+    rgba(13,17,23,0.7) 40%,
+    rgba(13,17,23,0.92) 100%
+  );
+}
+.hero-content{
+  position:relative;z-index:2;
+  padding:2rem 1.25rem 3rem;max-width:800px;
+}
+.hero h1{
+  font-size:clamp(2rem,7vw,3.2rem);font-weight:800;
+  color:var(--text);margin-bottom:0.6rem;
+  letter-spacing:-0.5px;line-height:1.15;
+}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero .subtitle{
+  font-size:clamp(1rem,3vw,1.2rem);color:var(--muted);
+  max-width:620px;margin:0 auto 2rem;line-height:1.6;
+}
+.hero-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem 0.6rem}
+.hero-tags span{
+  background:var(--glass);border:1px solid var(--glass-border);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-radius:24px;padding:0.45rem 1rem;
+  font-size:0.85rem;color:var(--muted);font-weight:500;
+  transition:all 0.2s;
+}
+.hero-tags span:hover{border-color:var(--gold);color:var(--gold)}
+
+.hero-scroll{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  z-index:2;animation:bounce 2s infinite;
+}
+@keyframes bounce{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(8px)}
+}
+.hero-scroll svg{opacity:0.4}
+
+/* ===== LAYOUT ===== */
+.container{max-width:900px;margin:0 auto;padding:0 1.25rem}
+section{padding:4rem 0 3rem;border-bottom:1px solid var(--border)}
 section:last-of-type{border-bottom:none}
-h2{font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:0.3rem}
-h2 .icon{margin-right:0.4rem}
-.section-lead{color:var(--muted);margin-bottom:1.5rem;font-size:0.95rem}
-h3{font-size:1.15rem;font-weight:600;color:var(--gold);margin:1.8rem 0 0.6rem}
+
+/* ===== SECTION HEADINGS ===== */
+.section-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:0.4rem}
+.section-icon{
+  flex-shrink:0;
+  width:48px;height:48px;
+  background:var(--gold-glow);
+  border:1px solid rgba(201,162,39,0.25);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+}
+.section-icon svg{width:24px;height:24px;color:var(--gold)}
+h2{font-size:clamp(1.4rem,4vw,1.8rem);font-weight:700;color:var(--text);line-height:1.25}
+.section-lead{color:var(--muted);margin-bottom:1.8rem;font-size:0.95rem;line-height:1.65}
+h3{font-size:1.1rem;font-weight:600;color:var(--gold);margin:2rem 0 0.7rem}
 p{margin-bottom:1rem}
 
-/* Cards */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin:1.2rem 0}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.3rem;transition:border-color 0.2s}
-.card:hover{border-color:var(--gold-dim)}
-.card-title{font-weight:700;font-size:1.05rem;margin-bottom:0.4rem;color:var(--text)}
-.card-title .emoji{margin-right:0.3rem}
+/* ===== FADE-IN ANIMATION ===== */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease-out,transform 0.6s ease-out}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in-delay-1{transition-delay:0.1s}
+.fade-in-delay-2{transition-delay:0.2s}
+.fade-in-delay-3{transition-delay:0.3s}
+
+/* ===== SECTION IMAGE ===== */
+.section-img{
+  border-radius:var(--radius);overflow:hidden;
+  margin:1.5rem 0;position:relative;
+  border:1px solid var(--border);
+}
+.section-img img{width:100%;display:block;object-fit:cover}
+.section-img.half{max-height:260px}
+.section-img.half img{height:260px;object-fit:cover}
+.section-img .img-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:2rem 1rem 0.8rem;
+  background:linear-gradient(transparent,rgba(13,17,23,0.85));
+  font-size:0.8rem;color:var(--muted);
+}
+
+/* ===== CARDS ===== */
+.card-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin:1.5rem 0}
+@media(min-width:520px){.card-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:769px){.card-grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:769px){.card-grid.cols-4{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.card-grid.cols-4{grid-template-columns:repeat(4,1fr)}}
+
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.4rem;
+  transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s;
+}
+.card:hover{
+  border-color:var(--gold-dim);
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(0,0,0,0.3);
+}
+.card-title{font-weight:700;font-size:1.05rem;margin-bottom:0.5rem;color:var(--text);display:flex;align-items:center;gap:0.5rem}
+.card-title svg{width:20px;height:20px;flex-shrink:0;color:var(--gold)}
 .card p,.card li{font-size:0.92rem;color:var(--muted)}
 .card ul{list-style:none;padding:0}
-.card li{padding:0.2rem 0}
-.card li::before{content:"→ ";color:var(--gold)}
+.card li{padding:0.25rem 0;display:flex;align-items:flex-start;gap:0.4rem}
+.card li::before{content:"→";color:var(--gold);flex-shrink:0;font-weight:600}
 
-/* Size cards special */
+/* Size Cards */
 .size-card{text-align:center;position:relative;overflow:hidden}
+.size-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--blue));
+  opacity:0;transition:opacity 0.3s;
+}
+.size-card:hover::before{opacity:1}
 .size-card .dim{font-size:2rem;font-weight:800;color:var(--gold);margin-bottom:0.2rem}
-.size-card .purpose{font-size:0.95rem;color:var(--text);font-weight:600;margin-bottom:0.5rem}
-.size-card .detail{font-size:0.85rem;color:var(--muted);line-height:1.5}
-.size-card .badge{position:absolute;top:10px;right:10px;background:var(--gold);color:var(--bg);font-size:0.7rem;font-weight:700;padding:0.2rem 0.5rem;border-radius:8px;text-transform:uppercase}
+.size-card .purpose{font-size:0.95rem;color:var(--text);font-weight:600;margin-bottom:0.6rem}
+.size-card .detail{font-size:0.88rem;color:var(--muted);line-height:1.55;text-align:left}
+.size-card .badge{
+  position:absolute;top:12px;right:12px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dim));
+  color:var(--bg);font-size:0.7rem;font-weight:700;
+  padding:0.25rem 0.6rem;border-radius:8px;text-transform:uppercase;
+}
 
-/* Comparison table */
-.table-wrap{overflow-x:auto;margin:1.2rem 0;border-radius:10px;border:1px solid var(--border)}
-table{width:100%;border-collapse:collapse;font-size:0.9rem}
+/* ===== MOBILE TABLE → CARD CONVERSION ===== */
+.table-wrap{overflow-x:auto;margin:1.5rem 0;border-radius:var(--radius-sm);border:1px solid var(--border);-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:0.88rem}
 thead{background:var(--bg3)}
-th{padding:0.8rem 1rem;text-align:left;color:var(--gold);font-weight:600;font-size:0.85rem;text-transform:uppercase;letter-spacing:0.5px}
+th{padding:0.8rem 1rem;text-align:left;color:var(--gold);font-weight:600;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
 td{padding:0.7rem 1rem;border-top:1px solid var(--border);color:var(--muted)}
 tr:hover td{background:rgba(201,162,39,0.04)}
 .check{color:var(--green)}
 .cross{color:var(--red)}
 .mid{color:var(--orange)}
 
-/* Callout boxes */
-.callout{border-radius:10px;padding:1.2rem 1.4rem;margin:1.2rem 0;border-left:4px solid}
-.callout-gold{background:rgba(201,162,39,0.08);border-color:var(--gold)}
-.callout-blue{background:rgba(88,166,255,0.08);border-color:var(--blue)}
-.callout-green{background:rgba(63,185,80,0.08);border-color:var(--green)}
-.callout-red{background:rgba(248,81,73,0.08);border-color:var(--red)}
-.callout-title{font-weight:700;font-size:0.95rem;margin-bottom:0.3rem}
+/* Mobile card-table */
+.mobile-cards{display:none}
+@media(max-width:768px){
+  .desktop-table{display:none}
+  .mobile-cards{display:block}
+}
+.m-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:1.2rem;
+  margin-bottom:0.75rem;
+}
+.m-card-header{
+  font-weight:700;font-size:1rem;color:var(--text);
+  padding-bottom:0.6rem;margin-bottom:0.6rem;
+  border-bottom:1px solid var(--border);
+}
+.m-card-row{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:0.35rem 0;gap:0.5rem;
+}
+.m-card-label{font-size:0.82rem;color:var(--muted);font-weight:500;min-width:35%}
+.m-card-value{font-size:0.88rem;color:var(--text);text-align:right;flex:1}
+
+/* ===== CALLOUT BOXES ===== */
+.callout{
+  border-radius:var(--radius-sm);padding:1.3rem 1.4rem;
+  margin:1.5rem 0;border-left:4px solid;
+  backdrop-filter:blur(10px);
+}
+.callout-gold{background:rgba(201,162,39,0.06);border-color:var(--gold)}
+.callout-blue{background:rgba(88,166,255,0.06);border-color:var(--blue)}
+.callout-green{background:rgba(63,185,80,0.06);border-color:var(--green)}
+.callout-red{background:rgba(248,81,73,0.06);border-color:var(--red)}
+.callout-title{font-weight:700;font-size:0.95rem;margin-bottom:0.4rem;display:flex;align-items:center;gap:0.4rem}
 .callout p{font-size:0.92rem;margin-bottom:0.5rem}
 .callout p:last-child{margin-bottom:0}
 
-/* Cost bars */
-.cost-row{display:flex;align-items:center;gap:1rem;margin:0.6rem 0}
-.cost-label{min-width:100px;font-size:0.9rem;color:var(--muted)}
-.cost-bar-wrap{flex:1;background:var(--bg3);border-radius:6px;height:24px;overflow:hidden}
-.cost-bar{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:0.6rem;font-size:0.78rem;font-weight:600;color:var(--bg);transition:width 0.6s}
-.cost-bar.low{background:var(--green);width:30%}
-.cost-bar.med{background:var(--orange);width:55%}
-.cost-bar.high{background:var(--gold);width:78%}
-.cost-bar.max{background:var(--red);width:95%}
-.cost-amount{min-width:110px;text-align:right;font-size:0.85rem;color:var(--text);font-weight:600}
+/* ===== COST BARS ===== */
+.cost-section{margin:1.5rem 0}
+.cost-row{display:flex;align-items:center;gap:0.75rem;margin:0.65rem 0;flex-wrap:wrap}
+.cost-label{min-width:90px;font-size:0.85rem;color:var(--muted);font-weight:500}
+.cost-bar-wrap{flex:1;min-width:120px;background:var(--bg3);border-radius:6px;height:28px;overflow:hidden}
+.cost-bar{
+  height:100%;border-radius:6px;display:flex;align-items:center;
+  padding-left:0.7rem;font-size:0.78rem;font-weight:600;
+  color:var(--bg);transition:width 1s ease-out;width:0%;
+}
+.cost-bar.animated{width:var(--target-width)}
+.cost-bar.low{background:linear-gradient(90deg,var(--green),#2ea043);--target-width:30%}
+.cost-bar.med{background:linear-gradient(90deg,var(--orange),#b87d18);--target-width:55%}
+.cost-bar.high{background:linear-gradient(90deg,var(--gold),var(--gold-dim));--target-width:78%}
+.cost-bar.max{background:linear-gradient(90deg,var(--red),#da3633);--target-width:95%}
+.cost-amount{min-width:100px;text-align:right;font-size:0.85rem;color:var(--text);font-weight:600}
 
-/* Pros/Cons */
-.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+@media(max-width:520px){
+  .cost-row{flex-direction:column;align-items:stretch;gap:0.3rem;margin:0.8rem 0;padding:0.8rem;background:var(--bg2);border-radius:var(--radius-sm);border:1px solid var(--border)}
+  .cost-label{min-width:auto;font-size:0.9rem;color:var(--text);font-weight:600}
+  .cost-amount{text-align:left;min-width:auto}
+}
+
+/* ===== PROS/CONS ===== */
+.pros-cons{display:grid;grid-template-columns:1fr;gap:1rem;margin:1rem 0}
+@media(min-width:520px){.pros-cons{grid-template-columns:1fr 1fr}}
+.pros-cons-box{background:var(--bg2);border-radius:var(--radius-sm);padding:1.2rem;border:1px solid var(--border)}
 .pros-cons ul{list-style:none;padding:0}
-.pros-cons li{padding:0.3rem 0;font-size:0.9rem;color:var(--muted)}
-.pros li::before{content:"✓ ";color:var(--green);font-weight:700}
-.cons li::before{content:"✗ ";color:var(--red);font-weight:700}
-.pros-cons h4{font-size:0.9rem;color:var(--text);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.5px}
+.pros-cons li{padding:0.35rem 0;font-size:0.9rem;color:var(--muted);display:flex;align-items:flex-start;gap:0.5rem}
+.pros li::before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0}
+.cons li::before{content:"✗";color:var(--red);font-weight:700;flex-shrink:0}
+.pros-cons h4{font-size:0.88rem;color:var(--text);margin-bottom:0.6rem;text-transform:uppercase;letter-spacing:0.5px;display:flex;align-items:center;gap:0.4rem}
 
-/* Steps */
-.steps{counter-reset:step;margin:1rem 0}
-.step{display:flex;gap:1rem;margin-bottom:1.2rem;align-items:flex-start}
-.step::before{counter-increment:step;content:counter(step);background:var(--gold);color:var(--bg);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;flex-shrink:0}
-.step-content h4{font-size:1rem;color:var(--text);margin-bottom:0.2rem}
+/* ===== STEPS ===== */
+.steps{counter-reset:step;margin:1.5rem 0}
+.step{display:flex;gap:1rem;margin-bottom:1.4rem;align-items:flex-start}
+.step-num{
+  counter-increment:step;
+  flex-shrink:0;
+  width:40px;height:40px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dim));
+  color:var(--bg);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:0.95rem;
+}
+.step-content h4{font-size:1rem;color:var(--text);margin-bottom:0.25rem;font-weight:600}
 .step-content p{font-size:0.9rem;color:var(--muted);margin-bottom:0}
 
-/* Footer */
-footer{text-align:center;padding:2.5rem 1.5rem;color:var(--muted);font-size:0.85rem;border-top:1px solid var(--border)}
-footer a{color:var(--gold)}
+/* ===== CHECKLIST ===== */
+.checklist-grid{
+  display:grid;grid-template-columns:1fr;gap:1rem;margin:1.5rem 0;
+}
+@media(min-width:520px){.checklist-grid{grid-template-columns:1fr 1fr}}
+.checklist-section{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:1.3rem;
+}
+.checklist-section h4{
+  color:var(--gold);margin-bottom:0.7rem;font-size:0.92rem;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.checklist-section h4 svg{width:18px;height:18px;color:var(--gold)}
+.checklist-section ul{list-style:none;padding:0}
+.checklist-section li{
+  padding:0.35rem 0;color:var(--muted);font-size:0.88rem;
+  display:flex;align-items:flex-start;gap:0.5rem;
+}
+.checklist-section li::before{
+  content:"☐";font-size:1rem;flex-shrink:0;
+  color:var(--gold);opacity:0.6;
+}
 
-/* Responsive */
-@media(max-width:600px){
-  .pros-cons{grid-template-columns:1fr}
-  .cost-row{flex-wrap:wrap}
-  .cost-label{min-width:auto;width:100%}
-  .cost-amount{min-width:auto}
-  section{padding:2rem 0 1.5rem}
+/* ===== CONTENT LISTS ===== */
+.content-list{margin:0.6rem 0 1.2rem;padding-left:0;list-style:none}
+.content-list li{padding:0.3rem 0;color:var(--muted);font-size:0.92rem;display:flex;align-items:flex-start;gap:0.5rem}
+.content-list li::before{content:"•";color:var(--gold);font-weight:700;flex-shrink:0}
+.content-list.ordered{counter-reset:item}
+.content-list.ordered li::before{counter-increment:item;content:counter(item) ".";color:var(--gold);font-weight:700;min-width:1.5em}
+
+/* ===== FOOTER ===== */
+footer{
+  text-align:center;padding:3rem 1.25rem;
+  color:var(--muted);font-size:0.85rem;
+  border-top:1px solid var(--border);
+  background:linear-gradient(180deg,var(--bg),var(--bg2));
+}
+footer a{color:var(--gold);transition:color 0.2s}
+footer a:hover{color:var(--blue)}
+
+/* ===== IMAGE GALLERY STRIP ===== */
+.img-strip{
+  display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;
+  margin:1.5rem 0;
+}
+@media(min-width:520px){.img-strip.trio{grid-template-columns:1fr 1fr 1fr}}
+.img-strip img{
+  width:100%;height:160px;object-fit:cover;
+  border-radius:var(--radius-sm);border:1px solid var(--border);
+}
+@media(min-width:520px){.img-strip img{height:200px}}
+
+/* ===== DECORATIVE DIVIDER ===== */
+.divider{
+  display:flex;align-items:center;justify-content:center;
+  gap:0.5rem;margin:2rem 0;
+}
+.divider::before,.divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border),transparent);
+}
+.divider svg{color:var(--gold);opacity:0.5;width:16px;height:16px}
+
+/* ===== RESPONSIVE TWEAKS ===== */
+@media(max-width:520px){
+  section{padding:3rem 0 2rem}
+  .section-header{gap:0.75rem}
+  .section-icon{width:42px;height:42px}
+  .section-icon svg{width:20px;height:20px}
+  h2{font-size:1.3rem}
 }
 </style>
 </head>
 <body>
 
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Sticky Header -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <div class="header-brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Snowmobile <span>Sheds</span>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-overlay" id="navOverlay">
+      <a href="#why-overhead"><span class="nav-icon">🚪</span>Why Overhead</a>
+      <a href="#sizing"><span class="nav-icon">📐</span>Sizing</a>
+      <a href="#doors"><span class="nav-icon">⚙️</span>Doors</a>
+      <a href="#materials"><span class="nav-icon">🪵</span>Materials</a>
+      <a href="#floors"><span class="nav-icon">🧱</span>Floors</a>
+      <a href="#insulation"><span class="nav-icon">🌡️</span>Insulation</a>
+      <a href="#security"><span class="nav-icon">🔐</span>Security</a>
+      <a href="#winter"><span class="nav-icon">❄️</span>Winter</a>
+      <a href="#builds"><span class="nav-icon">🔨</span>Builds</a>
+      <a href="#costs"><span class="nav-icon">💰</span>Costs</a>
+      <a href="#checklist"><span class="nav-icon">✅</span>Checklist</a>
+    </nav>
+  </div>
+</header>
+
 <!-- Hero -->
 <div class="hero">
-  <h1>Tiny Sheds with <span>Overhead Garage Doors</span> for Snowmobile Storage</h1>
-  <p class="subtitle">The practical guide to building or buying a small, purpose-built structure that keeps your sleds protected, accessible, and ready to ride.</p>
-  <div class="hero-tags">
-    <span>🏔️ Snowmobile Storage</span>
-    <span>🚪 Overhead Doors</span>
-    <span>📐 8×12 to 14×28</span>
-    <span>🔧 DIY / Kit / Custom</span>
-    <span>💰 $2K–$20K+</span>
+  <div class="hero-bg" role="img" aria-label="Snowmobile in winter landscape"></div>
+  <div class="hero-content">
+    <h1>Tiny Sheds with <em>Overhead Garage Doors</em> for Snowmobile Storage</h1>
+    <p class="subtitle">The practical guide to building or buying a small, purpose-built structure that keeps your sleds protected, accessible, and ready to ride.</p>
+    <div class="hero-tags">
+      <span>🏔️ Snowmobile Storage</span>
+      <span>🚪 Overhead Doors</span>
+      <span>📐 8×12 to 14×28</span>
+      <span>🔧 DIY / Kit / Custom</span>
+      <span>💰 $2K–$20K+</span>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
   </div>
 </div>
 
-<!-- TOC -->
-<nav class="toc-bar" id="toc">
-  <a href="#why-overhead">Why Overhead Doors</a>
-  <a href="#sizing">Sizing</a>
-  <a href="#doors">Door Specs</a>
-  <a href="#materials">Materials</a>
-  <a href="#floors">Floors</a>
-  <a href="#insulation">Insulation & Ventilation</a>
-  <a href="#security">Security</a>
-  <a href="#winter">Winter Access</a>
-  <a href="#builds">Build Options</a>
-  <a href="#costs">Costs</a>
-  <a href="#checklist">Checklist</a>
-</nav>
-
 <div class="container">
 
-<!-- Why Overhead Doors -->
+<!-- ===== WHY OVERHEAD DOORS ===== -->
 <section id="why-overhead">
-  <h2><span class="icon">🚪</span> Why Overhead Doors?</h2>
-  <p class="section-lead">You have three realistic choices for a shed door wide enough to fit a snowmobile. Here's why overhead (roll-up or sectional) wins for most builds.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="22" height="18" rx="2"/><line x1="1" y1="9" x2="23" y2="9"/><line x1="1" y1="15" x2="23" y2="15"/></svg>
+    </div>
+    <div>
+      <h2>Why Overhead Doors?</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">You have three realistic choices for a shed door wide enough to fit a snowmobile. Here's why overhead (roll-up or sectional) wins for most builds.</p>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Feature</th><th>Overhead (Sectional)</th><th>Roll-Up (Coiling)</th><th>Swing-Out (Barn)</th><th>Sliding (Barn)</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Clear opening width</td><td class="check">Full width</td><td class="check">Full width</td><td class="mid">Full minus hinges</td><td class="mid">~90% of track</td></tr>
-        <tr><td>Snow clearance</td><td class="check">Excellent — opens up</td><td class="check">Excellent</td><td class="cross">Must clear entire swing arc</td><td class="mid">Track clogs with ice</td></tr>
-        <tr><td>Side clearance needed</td><td class="check">None</td><td class="check">None</td><td class="cross">Full door width</td><td class="mid">Half door width</td></tr>
-        <tr><td>Ceiling headroom needed</td><td class="mid">~12–14" above opening</td><td class="check">~8–10"</td><td class="check">None</td><td class="check">None</td></tr>
-        <tr><td>Wind resistance</td><td class="check">Strong when closed</td><td class="check">Strong</td><td class="cross">Can catch wind</td><td class="mid">Moderate</td></tr>
-        <tr><td>Insulation options</td><td class="check">Insulated panels avail.</td><td class="mid">Limited</td><td class="check">Easy to insulate</td><td class="mid">Gaps at edges</td></tr>
-        <tr><td>Cost (8×7 door)</td><td>$400–$900</td><td>$500–$1,200</td><td>$200–$500</td><td>$250–$600</td></tr>
-        <tr><td>DIY install difficulty</td><td class="mid">Moderate</td><td class="mid">Moderate</td><td class="check">Easy</td><td class="check">Easy</td></tr>
-      </tbody>
-    </table>
+  <div class="section-img half fade-in">
+    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=900&q=80" alt="Garage door on a building" loading="lazy">
   </div>
 
-  <div class="callout callout-gold">
+  <!-- Desktop table -->
+  <div class="desktop-table fade-in">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>Overhead (Sectional)</th><th>Roll-Up (Coiling)</th><th>Swing-Out (Barn)</th><th>Sliding (Barn)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Clear opening width</td><td class="check">Full width</td><td class="check">Full width</td><td class="mid">Full minus hinges</td><td class="mid">~90% of track</td></tr>
+          <tr><td>Snow clearance</td><td class="check">Excellent — opens up</td><td class="check">Excellent</td><td class="cross">Must clear entire swing arc</td><td class="mid">Track clogs with ice</td></tr>
+          <tr><td>Side clearance needed</td><td class="check">None</td><td class="check">None</td><td class="cross">Full door width</td><td class="mid">Half door width</td></tr>
+          <tr><td>Ceiling headroom needed</td><td class="mid">~12–14" above opening</td><td class="check">~8–10"</td><td class="check">None</td><td class="check">None</td></tr>
+          <tr><td>Wind resistance</td><td class="check">Strong when closed</td><td class="check">Strong</td><td class="cross">Can catch wind</td><td class="mid">Moderate</td></tr>
+          <tr><td>Insulation options</td><td class="check">Insulated panels avail.</td><td class="mid">Limited</td><td class="check">Easy to insulate</td><td class="mid">Gaps at edges</td></tr>
+          <tr><td>Cost (8×7 door)</td><td>$400–$900</td><td>$500–$1,200</td><td>$200–$500</td><td>$250–$600</td></tr>
+          <tr><td>DIY install difficulty</td><td class="mid">Moderate</td><td class="mid">Moderate</td><td class="check">Easy</td><td class="check">Easy</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Mobile cards version of the table -->
+  <div class="mobile-cards fade-in">
+    <div class="m-card">
+      <div class="m-card-header">🏆 Overhead (Sectional)</div>
+      <div class="m-card-row"><span class="m-card-label">Clear opening</span><span class="m-card-value check">Full width</span></div>
+      <div class="m-card-row"><span class="m-card-label">Snow clearance</span><span class="m-card-value check">Excellent — opens up</span></div>
+      <div class="m-card-row"><span class="m-card-label">Side clearance</span><span class="m-card-value check">None needed</span></div>
+      <div class="m-card-row"><span class="m-card-label">Headroom</span><span class="m-card-value mid">~12–14" above</span></div>
+      <div class="m-card-row"><span class="m-card-label">Wind resistance</span><span class="m-card-value check">Strong</span></div>
+      <div class="m-card-row"><span class="m-card-label">Insulation</span><span class="m-card-value check">Panels available</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cost (8×7)</span><span class="m-card-value">$400–$900</span></div>
+      <div class="m-card-row"><span class="m-card-label">DIY difficulty</span><span class="m-card-value mid">Moderate</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">Roll-Up (Coiling)</div>
+      <div class="m-card-row"><span class="m-card-label">Clear opening</span><span class="m-card-value check">Full width</span></div>
+      <div class="m-card-row"><span class="m-card-label">Snow clearance</span><span class="m-card-value check">Excellent</span></div>
+      <div class="m-card-row"><span class="m-card-label">Side clearance</span><span class="m-card-value check">None needed</span></div>
+      <div class="m-card-row"><span class="m-card-label">Headroom</span><span class="m-card-value check">~8–10"</span></div>
+      <div class="m-card-row"><span class="m-card-label">Wind resistance</span><span class="m-card-value check">Strong</span></div>
+      <div class="m-card-row"><span class="m-card-label">Insulation</span><span class="m-card-value mid">Limited</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cost (8×7)</span><span class="m-card-value">$500–$1,200</span></div>
+      <div class="m-card-row"><span class="m-card-label">DIY difficulty</span><span class="m-card-value mid">Moderate</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">Swing-Out (Barn)</div>
+      <div class="m-card-row"><span class="m-card-label">Clear opening</span><span class="m-card-value mid">Full minus hinges</span></div>
+      <div class="m-card-row"><span class="m-card-label">Snow clearance</span><span class="m-card-value cross">Must clear swing arc</span></div>
+      <div class="m-card-row"><span class="m-card-label">Side clearance</span><span class="m-card-value cross">Full door width</span></div>
+      <div class="m-card-row"><span class="m-card-label">Headroom</span><span class="m-card-value check">None needed</span></div>
+      <div class="m-card-row"><span class="m-card-label">Wind resistance</span><span class="m-card-value cross">Can catch wind</span></div>
+      <div class="m-card-row"><span class="m-card-label">Insulation</span><span class="m-card-value check">Easy to insulate</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cost (8×7)</span><span class="m-card-value">$200–$500</span></div>
+      <div class="m-card-row"><span class="m-card-label">DIY difficulty</span><span class="m-card-value check">Easy</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">Sliding (Barn)</div>
+      <div class="m-card-row"><span class="m-card-label">Clear opening</span><span class="m-card-value mid">~90% of track</span></div>
+      <div class="m-card-row"><span class="m-card-label">Snow clearance</span><span class="m-card-value mid">Track clogs with ice</span></div>
+      <div class="m-card-row"><span class="m-card-label">Side clearance</span><span class="m-card-value mid">Half door width</span></div>
+      <div class="m-card-row"><span class="m-card-label">Headroom</span><span class="m-card-value check">None needed</span></div>
+      <div class="m-card-row"><span class="m-card-label">Wind resistance</span><span class="m-card-value mid">Moderate</span></div>
+      <div class="m-card-row"><span class="m-card-label">Insulation</span><span class="m-card-value mid">Gaps at edges</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cost (8×7)</span><span class="m-card-value">$250–$600</span></div>
+      <div class="m-card-row"><span class="m-card-label">DIY difficulty</span><span class="m-card-value check">Easy</span></div>
+    </div>
+  </div>
+
+  <div class="callout callout-gold fade-in">
     <div class="callout-title">🏆 The Bottom Line</div>
     <p>Overhead doors are the default for snowmobile sheds because they don't need side clearance (critical on tight lots), they don't fight snow or wind, and they seal well. In a cold climate where you're accessing a small building in winter, these factors matter more than saving $200 on a barn door.</p>
   </div>
 
-  <h3>Sectional vs. Roll-Up — What's the Difference?</h3>
-  <p><strong>Sectional overhead doors</strong> are what you see on most residential garages: 4–5 horizontal panels connected by hinges, riding in vertical tracks with a curved section near the ceiling. These are the most common, most insulation-friendly, and easiest to source in standard sizes. Brands like Clopay, Amarr, and Wayne Dalton all make them.</p>
-  <p><strong>Roll-up (coiling) doors</strong> are a single curtain of interlocking steel slats that winds onto a drum above the opening. They take less headroom, but they're thinner, harder to insulate, and noisier. They're ideal when ceiling clearance is extremely tight (like a 7-foot wall height) or you want a more commercial/utilitarian look.</p>
-  <p>For most DIY snowmobile sheds, a <strong>standard sectional overhead door</strong> is the better call. They're cheaper, more available, better insulated, and your local garage door installer already knows how to put one in.</p>
+  <h3 class="fade-in">Sectional vs. Roll-Up — What's the Difference?</h3>
+  <p class="fade-in"><strong>Sectional overhead doors</strong> are what you see on most residential garages: 4–5 horizontal panels connected by hinges, riding in vertical tracks with a curved section near the ceiling. These are the most common, most insulation-friendly, and easiest to source in standard sizes. Brands like Clopay, Amarr, and Wayne Dalton all make them.</p>
+  <p class="fade-in"><strong>Roll-up (coiling) doors</strong> are a single curtain of interlocking steel slats that winds onto a drum above the opening. They take less headroom, but they're thinner, harder to insulate, and noisier. They're ideal when ceiling clearance is extremely tight (like a 7-foot wall height) or you want a more commercial/utilitarian look.</p>
+  <p class="fade-in">For most DIY snowmobile sheds, a <strong>standard sectional overhead door</strong> is the better call. They're cheaper, more available, better insulated, and your local garage door installer already knows how to put one in.</p>
 </section>
 
-<!-- Sizing -->
+<!-- ===== SIZING ===== -->
 <section id="sizing">
-  <h2><span class="icon">📐</span> Sizing Your Shed</h2>
-  <p class="section-lead">Snowmobiles are bigger than people think. A modern trail sled is about 48" wide and 120–130" long. A mountain sled or crossover can hit 135"+. You need room to walk around them, store gear, and work.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3H3v18h18V3z"/><path d="M9 3v18"/><path d="M3 9h18"/></svg>
+    </div>
+    <div>
+      <h2>Sizing Your Shed</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">Snowmobiles are bigger than people think. A modern trail sled is about 48" wide and 120–130" long. A mountain sled or crossover can hit 135"+. You need room to walk around them, store gear, and work.</p>
 
-  <div class="card-grid">
+  <div class="section-img half fade-in">
+    <img src="https://images.unsplash.com/photo-1517783999520-f068d7431571?w=900&q=80" alt="Snowmobile on snow-covered terrain" loading="lazy">
+    <div class="img-caption">Modern sleds are bigger than you think — measure before you build.</div>
+  </div>
+
+  <div class="card-grid cols-4 fade-in">
     <div class="card size-card">
       <div class="dim">8' × 12'</div>
       <div class="purpose">1 Sled — Tight Fit</div>
@@ -211,120 +598,221 @@ footer a{color:var(--gold)}
     </div>
   </div>
 
-  <div class="callout callout-blue">
+  <div class="callout callout-blue fade-in">
     <div class="callout-title">📏 Measure Your Sleds First</div>
     <p>Don't guess. Put a tape on your actual sleds — with the skis straight and track on the ground. Add 12" per side for walking room and 18" between machines. Then check your local building code: many jurisdictions don't require a permit for structures under 120–200 sq ft (varies widely — always verify).</p>
   </div>
 
-  <h3>Height Matters Too</h3>
-  <p>Wall height is often overlooked. An 8-foot wall is the sweet spot: it gives you room for a 7-foot overhead door with enough headroom above for the track radius and springs. Going shorter (like a 7-foot wall) can work with a roll-up door, but makes the space feel cramped and limits the door options dramatically. If your roof pitch is steep enough, you can also gain usable overhead loft storage for gear bags, covers, and off-season equipment.</p>
+  <h3 class="fade-in">Height Matters Too</h3>
+  <p class="fade-in">Wall height is often overlooked. An 8-foot wall is the sweet spot: it gives you room for a 7-foot overhead door with enough headroom above for the track radius and springs. Going shorter (like a 7-foot wall) can work with a roll-up door, but makes the space feel cramped and limits the door options dramatically. If your roof pitch is steep enough, you can also gain usable overhead loft storage for gear bags, covers, and off-season equipment.</p>
 </section>
 
-<!-- Door Specs -->
+<!-- ===== DOOR SPECS ===== -->
 <section id="doors">
-  <h2><span class="icon">⚙️</span> Overhead Door Specs</h2>
-  <p class="section-lead">Getting the door right is the most important decision in this whole build. Too narrow and you'll scrape your sled. Too small and you'll hate using it every single time.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </div>
+    <div>
+      <h2>Overhead Door Specs</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">Getting the door right is the most important decision in this whole build. Too narrow and you'll scrape your sled. Too small and you'll hate using it every single time.</p>
 
-  <h3>Recommended Door Sizes</h3>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Door Width</th><th>Door Height</th><th>Best For</th><th>Notes</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><strong>8' (96")</strong></td><td>7'</td><td>1 sled, nose-in</td><td>Most common shed door size. Tight for a sled on a dolly — fine if you're driving in under power.</td></tr>
-        <tr><td><strong>9' (108")</strong></td><td>7'</td><td>1 sled with margin</td><td>More comfortable. Room to walk alongside. Good for wider sleds or if you use a tow dolly.</td></tr>
-        <tr><td><strong>10' (120")</strong></td><td>7'–8'</td><td>2 sleds side-by-side</td><td>Two standard sleds (48" each) = 96" + room. Requires a 12'+ wide shed.</td></tr>
-        <tr><td><strong>12' (144")</strong></td><td>7'–8'</td><td>2 sleds comfortably / trailer</td><td>Can back a single-place trailer straight in. Very forgiving width. Needs a 14'+ building.</td></tr>
-      </tbody>
-    </table>
+  <h3 class="fade-in">Recommended Door Sizes</h3>
+
+  <!-- Desktop table -->
+  <div class="desktop-table fade-in">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Door Width</th><th>Height</th><th>Best For</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>8' (96")</strong></td><td>7'</td><td>1 sled, nose-in</td><td>Most common shed door size. Tight for a sled on a dolly — fine if you're driving in under power.</td></tr>
+          <tr><td><strong>9' (108")</strong></td><td>7'</td><td>1 sled with margin</td><td>More comfortable. Room to walk alongside. Good for wider sleds or if you use a tow dolly.</td></tr>
+          <tr><td><strong>10' (120")</strong></td><td>7'–8'</td><td>2 sleds side-by-side</td><td>Two standard sleds (48" each) = 96" + room. Requires a 12'+ wide shed.</td></tr>
+          <tr><td><strong>12' (144")</strong></td><td>7'–8'</td><td>2 sleds comfortably / trailer</td><td>Can back a single-place trailer straight in. Very forgiving width. Needs a 14'+ building.</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <h3>Key Door Features to Look For</h3>
-  <div class="card-grid">
+  <!-- Mobile cards -->
+  <div class="mobile-cards fade-in">
+    <div class="m-card">
+      <div class="m-card-header">8' (96") Wide × 7' Tall</div>
+      <div class="m-card-row"><span class="m-card-label">Best for</span><span class="m-card-value">1 sled, nose-in</span></div>
+      <div class="m-card-row"><span class="m-card-label">Notes</span><span class="m-card-value">Most common. Tight on dolly, fine under power.</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">9' (108") Wide × 7' Tall</div>
+      <div class="m-card-row"><span class="m-card-label">Best for</span><span class="m-card-value">1 sled with margin</span></div>
+      <div class="m-card-row"><span class="m-card-label">Notes</span><span class="m-card-value">Room to walk alongside. Good for wider sleds or tow dolly.</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">10' (120") Wide × 7'–8' Tall</div>
+      <div class="m-card-row"><span class="m-card-label">Best for</span><span class="m-card-value">2 sleds side-by-side</span></div>
+      <div class="m-card-row"><span class="m-card-label">Notes</span><span class="m-card-value">Two 48" sleds + room. Needs 12'+ wide shed.</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">12' (144") Wide × 7'–8' Tall</div>
+      <div class="m-card-row"><span class="m-card-label">Best for</span><span class="m-card-value">2 sleds / trailer</span></div>
+      <div class="m-card-row"><span class="m-card-label">Notes</span><span class="m-card-value">Back a trailer straight in. Needs 14'+ building.</span></div>
+    </div>
+  </div>
+
+  <h3 class="fade-in">Key Door Features to Look For</h3>
+  <div class="card-grid fade-in">
     <div class="card">
-      <div class="card-title"><span class="emoji">🌡️</span> Insulated Panels</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+        Insulated Panels
+      </div>
       <p>R-6 to R-12 polyurethane-filled panels are available in most residential overhead doors. Worth it if you care about keeping the space above freezing. Adds ~$150–$300 to door cost.</p>
     </div>
     <div class="card">
-      <div class="card-title"><span class="emoji">🔧</span> Torsion vs Extension Springs</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Torsion vs Extension Springs
+      </div>
       <p>Torsion springs (mounted above the door) are safer, longer-lasting, and allow lower headroom. Extension springs (on the sides) are cheaper but have a shorter lifespan and require safety cables.</p>
     </div>
     <div class="card">
-      <div class="card-title"><span class="emoji">🔒</span> Locking</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Locking
+      </div>
       <p>Most overhead doors come with a basic slide lock. Upgrade to a keyed lock or add a hasp on the inside. If you're adding an opener, the opener itself acts as a lock when engaged.</p>
     </div>
     <div class="card">
-      <div class="card-title"><span class="emoji">💨</span> Wind Load Rating</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+        Wind Load Rating
+      </div>
       <p>If you're in an area with high winds, look for doors with wind-load reinforcement. Struts bolt across the back of panels to prevent bowing. Important for wider doors (10'+).</p>
     </div>
   </div>
 
-  <h3>Opener: Worth It?</h3>
-  <p>For a snowmobile shed, a garage door opener is a legitimate quality-of-life upgrade. You're often accessing the shed in the dark, in the cold, with gloves on. A basic chain-drive or belt-drive opener runs $150–$300 and lets you open the door from your truck or with a keypad. <strong>Belt-drive</strong> is quieter but costs more. A <strong>wall-mount (jackshaft) opener</strong> is ideal for sheds with low ceilings since it mounts beside the door instead of overhead — but they're pricier ($250–$500).</p>
-  <p>If you don't have power to the shed, manual operation is fine. A well-balanced door with good springs opens with one hand.</p>
+  <h3 class="fade-in">Opener: Worth It?</h3>
+  <p class="fade-in">For a snowmobile shed, a garage door opener is a legitimate quality-of-life upgrade. You're often accessing the shed in the dark, in the cold, with gloves on. A basic chain-drive or belt-drive opener runs $150–$300 and lets you open the door from your truck or with a keypad. <strong>Belt-drive</strong> is quieter but costs more. A <strong>wall-mount (jackshaft) opener</strong> is ideal for sheds with low ceilings since it mounts beside the door instead of overhead — but they're pricier ($250–$500).</p>
+  <p class="fade-in">If you don't have power to the shed, manual operation is fine. A well-balanced door with good springs opens with one hand.</p>
 </section>
 
-<!-- Materials -->
+<!-- ===== MATERIALS ===== -->
 <section id="materials">
-  <h2><span class="icon">🪵</span> Materials & Construction</h2>
-  <p class="section-lead">The structure itself is usually wood-framed, steel-framed, or a prefab panel system. Here's what actually matters for a snowmobile shed.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div>
+      <h2>Materials & Construction</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">The structure itself is usually wood-framed, steel-framed, or a prefab panel system. Here's what actually matters for a snowmobile shed.</p>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Material</th><th>Pros</th><th>Cons</th><th>Typical Cost/sqft</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Wood Frame + Steel Siding</strong></td>
-          <td>Strong, easy to insulate, familiar to build, handles door weight well</td>
-          <td>Requires foundation prep, can rot if not detailed properly</td>
-          <td>$12–$22</td>
-        </tr>
-        <tr>
-          <td><strong>All-Steel (Pole Barn Style)</strong></td>
-          <td>Fast to erect, low maintenance, no rot, fire resistant</td>
-          <td>Condensation issues without insulation, can dent</td>
-          <td>$10–$18</td>
-        </tr>
-        <tr>
-          <td><strong>Wood Frame + Wood Siding</strong></td>
-          <td>Looks great, blends with residential properties, easy to customize</td>
-          <td>Needs paint/stain maintenance, higher material cost</td>
-          <td>$15–$28</td>
-        </tr>
-        <tr>
-          <td><strong>Prefab Vinyl/LP Panel</strong></td>
-          <td>Delivered assembled or in panels, zero maintenance exterior</td>
-          <td>Harder to modify, less structural flexibility for large doors</td>
-          <td>$18–$35</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="img-strip trio fade-in">
+    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80" alt="Wood construction framing" loading="lazy">
+    <img src="https://images.unsplash.com/photo-1530124566582-a45a7e3ff21e?w=600&q=80" alt="Steel building construction" loading="lazy">
+    <img src="https://images.unsplash.com/photo-1610563166150-b34df4f0bcd6?w=600&q=80" alt="Finished small building" loading="lazy">
   </div>
 
-  <h3>Framing Considerations for Overhead Doors</h3>
-  <p>The door header is the most critical structural element. An 8-foot door opening needs a header that can carry the weight of the door track, springs, and (if applicable) opener without sagging. For wood framing:</p>
-  <ul style="margin:0.5rem 0 1rem 1.5rem;color:var(--muted)">
+  <!-- Desktop table -->
+  <div class="desktop-table fade-in">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Material</th><th>Pros</th><th>Cons</th><th>Cost/sqft</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Wood Frame + Steel Siding</strong></td>
+            <td>Strong, easy to insulate, familiar to build, handles door weight well</td>
+            <td>Requires foundation prep, can rot if not detailed properly</td>
+            <td>$12–$22</td>
+          </tr>
+          <tr>
+            <td><strong>All-Steel (Pole Barn)</strong></td>
+            <td>Fast to erect, low maintenance, no rot, fire resistant</td>
+            <td>Condensation issues without insulation, can dent</td>
+            <td>$10–$18</td>
+          </tr>
+          <tr>
+            <td><strong>Wood Frame + Wood Siding</strong></td>
+            <td>Looks great, blends with residential, easy to customize</td>
+            <td>Needs paint/stain maintenance, higher material cost</td>
+            <td>$15–$28</td>
+          </tr>
+          <tr>
+            <td><strong>Prefab Vinyl/LP Panel</strong></td>
+            <td>Delivered assembled or in panels, zero maintenance exterior</td>
+            <td>Harder to modify, less structural flexibility for large doors</td>
+            <td>$18–$35</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Mobile cards -->
+  <div class="mobile-cards fade-in">
+    <div class="m-card">
+      <div class="m-card-header">Wood Frame + Steel Siding</div>
+      <div class="m-card-row"><span class="m-card-label">Cost/sqft</span><span class="m-card-value">$12–$22</span></div>
+      <div class="m-card-row"><span class="m-card-label">Pros</span><span class="m-card-value">Strong, easy to insulate, familiar to build</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cons</span><span class="m-card-value">Needs foundation prep, can rot</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">All-Steel (Pole Barn)</div>
+      <div class="m-card-row"><span class="m-card-label">Cost/sqft</span><span class="m-card-value">$10–$18</span></div>
+      <div class="m-card-row"><span class="m-card-label">Pros</span><span class="m-card-value">Fast, low maintenance, fire resistant</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cons</span><span class="m-card-value">Condensation without insulation, dents</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">Wood Frame + Wood Siding</div>
+      <div class="m-card-row"><span class="m-card-label">Cost/sqft</span><span class="m-card-value">$15–$28</span></div>
+      <div class="m-card-row"><span class="m-card-label">Pros</span><span class="m-card-value">Looks great, blends residential, customizable</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cons</span><span class="m-card-value">Paint/stain maintenance, costs more</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">Prefab Vinyl/LP Panel</div>
+      <div class="m-card-row"><span class="m-card-label">Cost/sqft</span><span class="m-card-value">$18–$35</span></div>
+      <div class="m-card-row"><span class="m-card-label">Pros</span><span class="m-card-value">Delivered assembled, zero maintenance</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cons</span><span class="m-card-value">Hard to modify, less structural flex</span></div>
+    </div>
+  </div>
+
+  <h3 class="fade-in">Framing Considerations for Overhead Doors</h3>
+  <p class="fade-in">The door header is the most critical structural element. An 8-foot door opening needs a header that can carry the weight of the door track, springs, and (if applicable) opener without sagging. For wood framing:</p>
+  <ul class="content-list fade-in">
     <li><strong>8' opening:</strong> Double 2×10 or LVL beam — minimum</li>
     <li><strong>10' opening:</strong> Double 2×12 or engineered header</li>
     <li><strong>12' opening:</strong> LVL or steel beam strongly recommended</li>
   </ul>
-  <p>Also ensure the jambs (vertical framing on each side of the door) are plumb, level, and securely connected to the foundation. The overhead track brackets bolt into these — if they flex or shift, the door will bind.</p>
+  <p class="fade-in">Also ensure the jambs (vertical framing on each side of the door) are plumb, level, and securely connected to the foundation. The overhead track brackets bolt into these — if they flex or shift, the door will bind.</p>
 
-  <h3>Roof Style</h3>
-  <p>A <strong>gable roof</strong> (the classic A-shape) is the most common and gives you the most headroom for the door track. Shed-style (single-slope) can work but may limit headroom at the back. A gambrel (barn-style) roof maximizes interior volume if you want overhead loft storage. Minimum recommended pitch for snow country: <strong>6/12 or steeper</strong> — snow load is a real consideration and a low-slope roof in a heavy snow area is asking for trouble.</p>
+  <h3 class="fade-in">Roof Style</h3>
+  <p class="fade-in">A <strong>gable roof</strong> (the classic A-shape) is the most common and gives you the most headroom for the door track. Shed-style (single-slope) can work but may limit headroom at the back. A gambrel (barn-style) roof maximizes interior volume if you want overhead loft storage. Minimum recommended pitch for snow country: <strong>6/12 or steeper</strong> — snow load is a real consideration and a low-slope roof in a heavy snow area is asking for trouble.</p>
 </section>
 
-<!-- Floors -->
+<!-- ===== FLOORS ===== -->
 <section id="floors">
-  <h2><span class="icon">🧱</span> Floor Options</h2>
-  <p class="section-lead">What you park a 500-pound wet snowmobile on matters. Here are the realistic options, ranked.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><line x1="7" y1="4" x2="7" y2="20"/><line x1="13" y1="4" x2="13" y2="20"/><line x1="19" y1="4" x2="19" y2="20"/></svg>
+    </div>
+    <div>
+      <h2>Floor Options</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">What you park a 500-pound wet snowmobile on matters. Here are the realistic options, ranked.</p>
 
-  <div class="card-grid">
+  <div class="card-grid cols-3 fade-in">
     <div class="card">
-      <div class="card-title"><span class="emoji">🏆</span> Concrete Slab</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Concrete Slab
+      </div>
       <ul>
         <li>Best long-term option</li>
         <li>4" slab on 4" gravel base</li>
@@ -335,7 +823,10 @@ footer a{color:var(--gold)}
       </ul>
     </div>
     <div class="card">
-      <div class="card-title"><span class="emoji">🥈</span> Gravel Pad</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Gravel Pad
+      </div>
       <ul>
         <li>Cheapest viable option</li>
         <li>4–6" compacted ¾" crushed stone</li>
@@ -346,7 +837,10 @@ footer a{color:var(--gold)}
       </ul>
     </div>
     <div class="card">
-      <div class="card-title"><span class="emoji">🪵</span> Pressure-Treated Wood</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Pressure-Treated Wood
+      </div>
       <ul>
         <li>Good for prefab/kit sheds</li>
         <li>PT 4×4 skids + ¾" PT plywood</li>
@@ -358,24 +852,34 @@ footer a{color:var(--gold)}
     </div>
   </div>
 
-  <div class="callout callout-green">
+  <div class="callout callout-green fade-in">
     <div class="callout-title">💡 Best Practice: Concrete with a Drain Slope</div>
     <p>Pour your slab with a 1–2% slope toward the door opening (or toward a center drain if you're feeling fancy). When you pull a snow-covered sled inside, the meltwater needs somewhere to go. A dead-flat floor means puddles, ice, and eventually a cracked slab from freeze-thaw cycles. A slight slope toward the door lets gravity do the work.</p>
   </div>
 
-  <h3>What About Pavers or Mats?</h3>
-  <p>Interlocking concrete pavers on a gravel base can split the difference between gravel and a full slab — they drain, they're durable, and they look good. Cost is higher ($6–$12/sqft) but no concrete work required. Rubber garage floor mats or tiles are a nice finishing touch on concrete but aren't a substitute for a real floor.</p>
+  <h3 class="fade-in">What About Pavers or Mats?</h3>
+  <p class="fade-in">Interlocking concrete pavers on a gravel base can split the difference between gravel and a full slab — they drain, they're durable, and they look good. Cost is higher ($6–$12/sqft) but no concrete work required. Rubber garage floor mats or tiles are a nice finishing touch on concrete but aren't a substitute for a real floor.</p>
 </section>
 
-<!-- Insulation & Ventilation -->
+<!-- ===== INSULATION & VENTILATION ===== -->
 <section id="insulation">
-  <h2><span class="icon">🌡️</span> Insulation & Ventilation</h2>
-  <p class="section-lead">Whether you need insulation depends on what "storage" means to you. Most snowmobile sheds don't need to be heated — but some do.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+    </div>
+    <div>
+      <h2>Insulation & Ventilation</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">Whether you need insulation depends on what "storage" means to you. Most snowmobile sheds don't need to be heated — but some do.</p>
 
-  <h3>Do You Actually Need Insulation?</h3>
-  <div class="pros-cons">
-    <div class="pros">
-      <h4>Insulate if...</h4>
+  <h3 class="fade-in">Do You Actually Need Insulation?</h3>
+  <div class="pros-cons fade-in">
+    <div class="pros-cons-box pros">
+      <h4>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Insulate if...
+      </h4>
       <ul>
         <li>You'll work on sleds inside (wrenching, repairs)</li>
         <li>You want to keep the space above freezing</li>
@@ -384,10 +888,13 @@ footer a{color:var(--gold)}
         <li>You plan to heat the space even occasionally</li>
       </ul>
     </div>
-    <div class="cons">
-      <h4>Skip insulation if...</h4>
+    <div class="pros-cons-box cons">
+      <h4>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Skip insulation if...
+      </h4>
       <ul>
-        <li>It's purely cold storage — park & walk away</li>
+        <li>It's purely cold storage — park &amp; walk away</li>
         <li>Budget is very tight</li>
         <li>You're using an unheated pole barn style</li>
         <li>The shed is temporary or semi-permanent</li>
@@ -396,54 +903,102 @@ footer a{color:var(--gold)}
     </div>
   </div>
 
-  <h3>Insulation Options</h3>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Type</th><th>R-Value</th><th>Best For</th><th>Cost (materials)</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Fiberglass batts (2×4 wall)</td><td>R-13</td><td>Standard wood-frame walls</td><td>$0.50–$1/sqft</td></tr>
-        <tr><td>Fiberglass batts (2×6 wall)</td><td>R-19</td><td>Cold climates, heated sheds</td><td>$0.70–$1.30/sqft</td></tr>
-        <tr><td>Rigid foam (XPS/EPS)</td><td>R-5 per inch</td><td>Steel buildings, under siding</td><td>$0.80–$1.50/sqft</td></tr>
-        <tr><td>Spray foam (closed-cell)</td><td>R-6.5 per inch</td><td>Best seal, moisture barrier</td><td>$1.50–$3/sqft (pro install)</td></tr>
-        <tr><td>Reflective/radiant barrier</td><td>Varies</td><td>Supplement to other insulation</td><td>$0.30–$0.70/sqft</td></tr>
-      </tbody>
-    </table>
+  <h3 class="fade-in">Insulation Options</h3>
+
+  <!-- Desktop table -->
+  <div class="desktop-table fade-in">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Type</th><th>R-Value</th><th>Best For</th><th>Cost (materials)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Fiberglass batts (2×4 wall)</td><td>R-13</td><td>Standard wood-frame walls</td><td>$0.50–$1/sqft</td></tr>
+          <tr><td>Fiberglass batts (2×6 wall)</td><td>R-19</td><td>Cold climates, heated sheds</td><td>$0.70–$1.30/sqft</td></tr>
+          <tr><td>Rigid foam (XPS/EPS)</td><td>R-5 per inch</td><td>Steel buildings, under siding</td><td>$0.80–$1.50/sqft</td></tr>
+          <tr><td>Spray foam (closed-cell)</td><td>R-6.5 per inch</td><td>Best seal, moisture barrier</td><td>$1.50–$3/sqft (pro)</td></tr>
+          <tr><td>Reflective/radiant barrier</td><td>Varies</td><td>Supplement to other insulation</td><td>$0.30–$0.70/sqft</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <h3>Ventilation — The Overlooked Factor</h3>
-  <p>Even an unheated shed needs ventilation. Here's why: you drive a hot snowmobile in after a ride, close the door, and leave. The engine heat + melting snow = moisture. That moisture condenses on cold metal (your sled, your tools, the door hardware) and causes rust and corrosion.</p>
-  <p>At minimum, install:</p>
-  <ul style="margin:0.5rem 0 1rem 1.5rem;color:var(--muted)">
+  <!-- Mobile cards -->
+  <div class="mobile-cards fade-in">
+    <div class="m-card">
+      <div class="m-card-header">Fiberglass Batts (2×4 wall)</div>
+      <div class="m-card-row"><span class="m-card-label">R-Value</span><span class="m-card-value">R-13</span></div>
+      <div class="m-card-row"><span class="m-card-label">Best for</span><span class="m-card-value">Standard wood-frame walls</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cost</span><span class="m-card-value">$0.50–$1/sqft</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">Fiberglass Batts (2×6 wall)</div>
+      <div class="m-card-row"><span class="m-card-label">R-Value</span><span class="m-card-value">R-19</span></div>
+      <div class="m-card-row"><span class="m-card-label">Best for</span><span class="m-card-value">Cold climates, heated sheds</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cost</span><span class="m-card-value">$0.70–$1.30/sqft</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">Rigid Foam (XPS/EPS)</div>
+      <div class="m-card-row"><span class="m-card-label">R-Value</span><span class="m-card-value">R-5 per inch</span></div>
+      <div class="m-card-row"><span class="m-card-label">Best for</span><span class="m-card-value">Steel buildings, under siding</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cost</span><span class="m-card-value">$0.80–$1.50/sqft</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">Spray Foam (Closed-Cell)</div>
+      <div class="m-card-row"><span class="m-card-label">R-Value</span><span class="m-card-value">R-6.5 per inch</span></div>
+      <div class="m-card-row"><span class="m-card-label">Best for</span><span class="m-card-value">Best seal, moisture barrier</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cost</span><span class="m-card-value">$1.50–$3/sqft (pro install)</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">Reflective/Radiant Barrier</div>
+      <div class="m-card-row"><span class="m-card-label">R-Value</span><span class="m-card-value">Varies</span></div>
+      <div class="m-card-row"><span class="m-card-label">Best for</span><span class="m-card-value">Supplement to other insulation</span></div>
+      <div class="m-card-row"><span class="m-card-label">Cost</span><span class="m-card-value">$0.30–$0.70/sqft</span></div>
+    </div>
+  </div>
+
+  <h3 class="fade-in">Ventilation — The Overlooked Factor</h3>
+  <p class="fade-in">Even an unheated shed needs ventilation. Here's why: you drive a hot snowmobile in after a ride, close the door, and leave. The engine heat + melting snow = moisture. That moisture condenses on cold metal (your sled, your tools, the door hardware) and causes rust and corrosion.</p>
+  <p class="fade-in">At minimum, install:</p>
+  <ul class="content-list fade-in">
     <li><strong>Two gable vents</strong> — one at each end, sized per code (1 sqft of vent per 150 sqft of floor area)</li>
     <li><strong>A ridge vent</strong> if you have a gable roof — passive airflow with no moving parts</li>
     <li>Or a <strong>small exhaust fan</strong> on a timer or humidistat if you want active ventilation</li>
   </ul>
 
-  <div class="callout callout-red">
+  <div class="callout callout-red fade-in">
     <div class="callout-title">⚠️ Carbon Monoxide Warning</div>
     <p>Never run a snowmobile engine inside a closed shed without massive ventilation. Even "just warming it up" produces lethal CO levels in an enclosed space within minutes. If you need to run the engine, open the door fully and point the exhaust outside. Same goes for fuel-burning heaters — use them only with the door cracked or a CO detector installed.</p>
   </div>
 
-  <h3>Heating (If You Go That Route)</h3>
-  <p>For a small insulated shed (100–200 sqft), you don't need much heat. Options in order of practicality:</p>
-  <ol style="margin:0.5rem 0 1rem 1.5rem;color:var(--muted)">
+  <h3 class="fade-in">Heating (If You Go That Route)</h3>
+  <p class="fade-in">For a small insulated shed (100–200 sqft), you don't need much heat. Options in order of practicality:</p>
+  <ul class="content-list ordered fade-in">
     <li><strong>Electric space heater (1500W):</strong> Cheapest to install, safe with a thermostat, needs power</li>
     <li><strong>Propane wall heater (vent-free or direct-vent):</strong> 10K–20K BTU, no electric needed for vent-free, but moisture and CO concerns</li>
     <li><strong>Electric radiant ceiling panels:</strong> No floor space, even heat, needs power</li>
     <li><strong>Mini-split heat pump:</strong> Overkill for most, but efficient if you're in the shed a lot</li>
-  </ol>
+  </ul>
 </section>
 
-<!-- Security -->
+<!-- ===== SECURITY ===== -->
 <section id="security">
-  <h2><span class="icon">🔐</span> Security</h2>
-  <p class="section-lead">Snowmobiles are high-value, portable, and often stored in remote or rural locations. Theft is a real concern.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div>
+      <h2>Security</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">Snowmobiles are high-value, portable, and often stored in remote or rural locations. Theft is a real concern.</p>
 
-  <div class="card-grid">
+  <div class="card-grid fade-in">
     <div class="card">
-      <div class="card-title"><span class="emoji">🔒</span> Physical Security</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Physical Security
+      </div>
       <ul>
         <li>Keyed overhead door lock (not just the latch)</li>
         <li>Heavy-duty hasp + padlock on the inside</li>
@@ -454,7 +1009,10 @@ footer a{color:var(--gold)}
       </ul>
     </div>
     <div class="card">
-      <div class="card-title"><span class="emoji">📷</span> Electronic Security</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        Electronic Security
+      </div>
       <ul>
         <li>Battery or solar-powered trail camera inside</li>
         <li>Door/window contact sensor (wireless)</li>
@@ -466,39 +1024,63 @@ footer a{color:var(--gold)}
     </div>
   </div>
 
-  <div class="callout callout-gold">
+  <div class="callout callout-gold fade-in">
     <div class="callout-title">🎯 Practical Security Advice</div>
     <p>The best anti-theft measure for a snowmobile shed is <strong>not advertising what's inside</strong>. No snowmobile brand stickers on the shed. No windows. Don't leave trailer hitches or ramps visible outside. A plain, boring-looking shed with a good lock is worth more than a tricked-out building with cameras that someone already knows is full of sleds.</p>
   </div>
 </section>
 
-<!-- Winter Access -->
+<!-- ===== WINTER ACCESS ===== -->
 <section id="winter">
-  <h2><span class="icon">❄️</span> Winter Access Considerations</h2>
-  <p class="section-lead">You're building a snowmobile shed — which means you need to access it in exactly the conditions when everything is hardest to access.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2v20"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg>
+    </div>
+    <div>
+      <h2>Winter Access Considerations</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">You're building a snowmobile shed — which means you need to access it in exactly the conditions when everything is hardest to access.</p>
 
-  <h3>Site & Placement</h3>
-  <div class="card-grid">
+  <div class="section-img half fade-in">
+    <img src="https://images.unsplash.com/photo-1477601263568-180e2c6d046e?w=900&q=80" alt="Winter snow landscape" loading="lazy">
+    <div class="img-caption">Plan your shed access for the worst conditions — that's when you'll use it most.</div>
+  </div>
+
+  <h3 class="fade-in">Site & Placement</h3>
+  <div class="card-grid fade-in">
     <div class="card">
-      <div class="card-title"><span class="emoji">🧭</span> Orientation</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        Orientation
+      </div>
       <p>Face the door <strong>away from prevailing wind</strong> if possible. A door facing into winter storms will drift shut. South-facing doors get more sun, which helps with snow melt but can cause ice at the threshold from refreeze cycles.</p>
     </div>
     <div class="card">
-      <div class="card-title"><span class="emoji">📍</span> Placement</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Placement
+      </div>
       <p>Set the shed where you can drive a sled directly to/from the access trail. Every time you have to trailer a sled across your yard to reach the shed, you'll wish you'd thought about this. If you ride from home, trail access should drive the shed location.</p>
     </div>
     <div class="card">
-      <div class="card-title"><span class="emoji">🌊</span> Drainage</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+        Drainage
+      </div>
       <p>Grade the area so water flows away from the door. A frozen puddle at the threshold will freeze your door to the ground. Build up the pad 4–6" above surrounding grade.</p>
     </div>
     <div class="card">
-      <div class="card-title"><span class="emoji">🏔️</span> Snow Load</div>
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-4V4a2 2 0 0 0-4 0v6H6l6 8 6-8z"/><line x1="4" y1="22" x2="20" y2="22"/></svg>
+        Snow Load
+      </div>
       <p>Know your local ground snow load (check building code or ASCE 7 maps). A 10×16 shed roof in a 60 psf snow load zone is holding over 4 tons of snow. Design for it — or keep the roof steep enough to shed.</p>
     </div>
   </div>
 
-  <h3>Door-Specific Cold Weather Issues</h3>
-  <ul style="margin:0.5rem 0 1rem 1.5rem;color:var(--muted)">
+  <h3 class="fade-in">Door-Specific Cold Weather Issues</h3>
+  <ul class="content-list fade-in">
     <li><strong>Bottom seal:</strong> Use a rubber astragal (bottom seal) rated for cold temps. Cheap vinyl seals crack and split in sub-zero weather.</li>
     <li><strong>Track lubrication:</strong> Use silicone-based lube, not WD-40 or lithium grease — those get gummy below zero. White lithium can work in moderate cold.</li>
     <li><strong>Spring tension:</strong> Springs can feel stiffer in extreme cold. Ensure the door is balanced properly in fall before deep winter hits.</li>
@@ -506,19 +1088,31 @@ footer a{color:var(--gold)}
     <li><strong>Opener battery:</strong> If your opener uses a battery backup, cold kills batteries. Keep it on AC power primarily.</li>
   </ul>
 
-  <div class="callout callout-blue">
+  <div class="callout callout-blue fade-in">
     <div class="callout-title">🛷 Drive-In Access Tip</div>
     <p>If you ride from home, consider grading a packed approach path to the shed door in early season. A slight ramp (2–3" rise over 4 feet) from ground level up to the slab makes it easy to drive a sled straight in. Some people pour a small concrete apron extending 4–6 feet outside the door for this reason — it gives you a clean, ice-free staging area.</p>
   </div>
 </section>
 
-<!-- Build Options -->
+<!-- ===== BUILD OPTIONS ===== -->
 <section id="builds">
-  <h2><span class="icon">🔨</span> DIY vs. Kit vs. Custom</h2>
-  <p class="section-lead">Three ways to get a snowmobile shed. Each has trade-offs.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    </div>
+    <div>
+      <h2>DIY vs. Kit vs. Custom</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">Three ways to get a snowmobile shed. Each has trade-offs.</p>
 
-  <h3>Option 1: Full DIY</h3>
-  <div class="callout callout-green">
+  <div class="section-img half fade-in">
+    <img src="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=900&q=80" alt="Workshop tools and building supplies" loading="lazy">
+    <div class="img-caption">Whether you build it yourself or hire it out, plan the details first.</div>
+  </div>
+
+  <h3 class="fade-in">Option 1: Full DIY</h3>
+  <div class="callout callout-green fade-in">
     <div class="callout-title">🔧 Build It Yourself</div>
     <p><strong>Cost:</strong> Lowest — materials only ($2,000–$6,000 for a 10×16)<br>
     <strong>Time:</strong> 2–5 weekends depending on experience and foundation type<br>
@@ -526,38 +1120,44 @@ footer a{color:var(--gold)}
     <strong>Biggest challenge:</strong> Getting the door opening square and the header sized right. Everything else is basic shed framing.</p>
   </div>
 
-  <div class="steps">
+  <div class="steps fade-in">
     <div class="step">
+      <div class="step-num">1</div>
       <div class="step-content">
         <h4>Foundation & Floor</h4>
         <p>Pour a slab or prepare a gravel pad. Set it level. This is the step people rush and regret.</p>
       </div>
     </div>
     <div class="step">
+      <div class="step-num">2</div>
       <div class="step-content">
         <h4>Frame Walls</h4>
         <p>2×4 or 2×6 walls, 16" OC. Build the door wall with the correct rough opening (door width + 3" each side, door height + 1.5"). Size the header for your span.</p>
       </div>
     </div>
     <div class="step">
+      <div class="step-num">3</div>
       <div class="step-content">
         <h4>Raise Walls & Build Roof</h4>
         <p>Tilt up walls, plumb and brace, add top plates. Frame roof with trusses (pre-built is easiest) or rafters. Sheathe and shingle.</p>
       </div>
     </div>
     <div class="step">
+      <div class="step-num">4</div>
       <div class="step-content">
         <h4>Siding & Trim</h4>
         <p>Install siding, door trim, and any flashing. Metal siding is fastest. Prime and paint any wood.</p>
       </div>
     </div>
     <div class="step">
+      <div class="step-num">5</div>
       <div class="step-content">
         <h4>Install Overhead Door</h4>
         <p>Mount the track, hang the sections, install springs, and adjust. Follow the manufacturer's instructions carefully — spring tension can be dangerous.</p>
       </div>
     </div>
     <div class="step">
+      <div class="step-num">6</div>
       <div class="step-content">
         <h4>Finish: Insulate, Wire, Accessorize</h4>
         <p>Add insulation if desired, run electric if applicable, mount lights, shelving, hooks.</p>
@@ -565,8 +1165,8 @@ footer a{color:var(--gold)}
     </div>
   </div>
 
-  <h3>Option 2: Prefab Kit Shed</h3>
-  <div class="callout callout-blue">
+  <h3 class="fade-in">Option 2: Prefab Kit Shed</h3>
+  <div class="callout callout-blue fade-in">
     <div class="callout-title">📦 Kit / Prefab</div>
     <p><strong>Cost:</strong> $3,500–$10,000+ for a 10×16 with door<br>
     <strong>Time:</strong> 1–2 weekends (assembly), plus foundation prep<br>
@@ -575,8 +1175,8 @@ footer a{color:var(--gold)}
     <p>Key: make sure the kit <strong>includes or accommodates an overhead door</strong>. Many shed kits are designed for swing doors only, and retrofitting an overhead door into a kit shed is a pain — the headers often aren't strong enough. Look for kits specifically marketed for "garage" use or verify the header specs before buying.</p>
   </div>
 
-  <h3>Option 3: Custom / Contractor-Built</h3>
-  <div class="callout callout-gold">
+  <h3 class="fade-in">Option 3: Custom / Contractor-Built</h3>
+  <div class="callout callout-gold fade-in">
     <div class="callout-title">👷 Hire It Out</div>
     <p><strong>Cost:</strong> $8,000–$20,000+ for a 10×16 (huge regional variation)<br>
     <strong>Time:</strong> 3–10 days on-site, but you do nothing<br>
@@ -584,99 +1184,143 @@ footer a{color:var(--gold)}
     <p>A local general contractor or shed builder can handle everything including permits, foundation, and the door install. Get 3 quotes. Specify that you want an overhead door — some shed builders default to barn doors and will charge extra to switch.</p>
   </div>
 
-  <h3>Comparison At a Glance</h3>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Factor</th><th>Full DIY</th><th>Kit</th><th>Custom Built</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Cost (10×16)</td><td>$2K–$6K</td><td>$3.5K–$10K</td><td>$8K–$20K</td></tr>
-        <tr><td>Time investment</td><td class="cross">High</td><td class="mid">Medium</td><td class="check">Low</td></tr>
-        <tr><td>Customization</td><td class="check">Total</td><td class="mid">Limited</td><td class="check">Total</td></tr>
-        <tr><td>Skill required</td><td class="cross">Intermediate+</td><td class="check">Basic</td><td class="check">None</td></tr>
-        <tr><td>Permit handling</td><td>You</td><td>You</td><td>Usually them</td></tr>
-        <tr><td>Resale value</td><td class="mid">Varies</td><td class="mid">Moderate</td><td class="check">Highest</td></tr>
-      </tbody>
-    </table>
+  <h3 class="fade-in">Comparison At a Glance</h3>
+
+  <!-- Desktop table -->
+  <div class="desktop-table fade-in">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Factor</th><th>Full DIY</th><th>Kit</th><th>Custom Built</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Cost (10×16)</td><td>$2K–$6K</td><td>$3.5K–$10K</td><td>$8K–$20K</td></tr>
+          <tr><td>Time investment</td><td class="cross">High</td><td class="mid">Medium</td><td class="check">Low</td></tr>
+          <tr><td>Customization</td><td class="check">Total</td><td class="mid">Limited</td><td class="check">Total</td></tr>
+          <tr><td>Skill required</td><td class="cross">Intermediate+</td><td class="check">Basic</td><td class="check">None</td></tr>
+          <tr><td>Permit handling</td><td>You</td><td>You</td><td>Usually them</td></tr>
+          <tr><td>Resale value</td><td class="mid">Varies</td><td class="mid">Moderate</td><td class="check">Highest</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Mobile cards -->
+  <div class="mobile-cards fade-in">
+    <div class="m-card">
+      <div class="m-card-header">🔧 Full DIY</div>
+      <div class="m-card-row"><span class="m-card-label">Cost (10×16)</span><span class="m-card-value">$2K–$6K</span></div>
+      <div class="m-card-row"><span class="m-card-label">Time</span><span class="m-card-value cross">High</span></div>
+      <div class="m-card-row"><span class="m-card-label">Customization</span><span class="m-card-value check">Total</span></div>
+      <div class="m-card-row"><span class="m-card-label">Skill</span><span class="m-card-value cross">Intermediate+</span></div>
+      <div class="m-card-row"><span class="m-card-label">Permits</span><span class="m-card-value">You handle</span></div>
+      <div class="m-card-row"><span class="m-card-label">Resale value</span><span class="m-card-value mid">Varies</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">📦 Kit / Prefab</div>
+      <div class="m-card-row"><span class="m-card-label">Cost (10×16)</span><span class="m-card-value">$3.5K–$10K</span></div>
+      <div class="m-card-row"><span class="m-card-label">Time</span><span class="m-card-value mid">Medium</span></div>
+      <div class="m-card-row"><span class="m-card-label">Customization</span><span class="m-card-value mid">Limited</span></div>
+      <div class="m-card-row"><span class="m-card-label">Skill</span><span class="m-card-value check">Basic</span></div>
+      <div class="m-card-row"><span class="m-card-label">Permits</span><span class="m-card-value">You handle</span></div>
+      <div class="m-card-row"><span class="m-card-label">Resale value</span><span class="m-card-value mid">Moderate</span></div>
+    </div>
+    <div class="m-card">
+      <div class="m-card-header">👷 Custom Built</div>
+      <div class="m-card-row"><span class="m-card-label">Cost (10×16)</span><span class="m-card-value">$8K–$20K</span></div>
+      <div class="m-card-row"><span class="m-card-label">Time</span><span class="m-card-value check">Low</span></div>
+      <div class="m-card-row"><span class="m-card-label">Customization</span><span class="m-card-value check">Total</span></div>
+      <div class="m-card-row"><span class="m-card-label">Skill</span><span class="m-card-value check">None needed</span></div>
+      <div class="m-card-row"><span class="m-card-label">Permits</span><span class="m-card-value">Usually them</span></div>
+      <div class="m-card-row"><span class="m-card-label">Resale value</span><span class="m-card-value check">Highest</span></div>
+    </div>
   </div>
 </section>
 
-<!-- Costs -->
+<!-- ===== COSTS ===== -->
 <section id="costs">
-  <h2><span class="icon">💰</span> Approximate Costs</h2>
-  <p class="section-lead">Real-world cost ranges for a 10×16 (160 sqft) shed with an overhead door, as of 2024–2025. Prices vary significantly by region, material costs, and whether you're in a rural area or suburban HOA territory.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    </div>
+    <div>
+      <h2>Approximate Costs</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">Real-world cost ranges for a 10×16 (160 sqft) shed with an overhead door, as of 2024–2025. Prices vary significantly by region, material costs, and whether you're in a rural area or suburban HOA territory.</p>
 
-  <h3>Component Breakdown (DIY Materials)</h3>
-  <div class="cost-row">
-    <span class="cost-label">Foundation</span>
-    <div class="cost-bar-wrap"><div class="cost-bar low">Gravel</div></div>
-    <span class="cost-amount">$200–$500</span>
-  </div>
-  <div class="cost-row">
-    <span class="cost-label">Foundation</span>
-    <div class="cost-bar-wrap"><div class="cost-bar med">Concrete slab</div></div>
-    <span class="cost-amount">$800–$1,500</span>
-  </div>
-  <div class="cost-row">
-    <span class="cost-label">Framing</span>
-    <div class="cost-bar-wrap"><div class="cost-bar med">Lumber + hardware</div></div>
-    <span class="cost-amount">$800–$1,800</span>
-  </div>
-  <div class="cost-row">
-    <span class="cost-label">Siding</span>
-    <div class="cost-bar-wrap"><div class="cost-bar med">Steel or LP</div></div>
-    <span class="cost-amount">$500–$1,200</span>
-  </div>
-  <div class="cost-row">
-    <span class="cost-label">Roofing</span>
-    <div class="cost-bar-wrap"><div class="cost-bar low">Shingles or steel</div></div>
-    <span class="cost-amount">$300–$800</span>
-  </div>
-  <div class="cost-row">
-    <span class="cost-label">Overhead Door</span>
-    <div class="cost-bar-wrap"><div class="cost-bar med">8' non-insulated</div></div>
-    <span class="cost-amount">$400–$700</span>
-  </div>
-  <div class="cost-row">
-    <span class="cost-label">Overhead Door</span>
-    <div class="cost-bar-wrap"><div class="cost-bar high">8' insulated</div></div>
-    <span class="cost-amount">$600–$1,000</span>
-  </div>
-  <div class="cost-row">
-    <span class="cost-label">Opener</span>
-    <div class="cost-bar-wrap"><div class="cost-bar low">Chain/belt drive</div></div>
-    <span class="cost-amount">$150–$350</span>
-  </div>
-  <div class="cost-row">
-    <span class="cost-label">Electrical</span>
-    <div class="cost-bar-wrap"><div class="cost-bar med">Run + panel + lights</div></div>
-    <span class="cost-amount">$400–$1,200</span>
-  </div>
-  <div class="cost-row">
-    <span class="cost-label">Insulation</span>
-    <div class="cost-bar-wrap"><div class="cost-bar low">Fiberglass batts</div></div>
-    <span class="cost-amount">$200–$500</span>
+  <h3 class="fade-in">Component Breakdown (DIY Materials)</h3>
+  <div class="cost-section fade-in" id="costBars">
+    <div class="cost-row">
+      <span class="cost-label">Foundation</span>
+      <div class="cost-bar-wrap"><div class="cost-bar low">Gravel</div></div>
+      <span class="cost-amount">$200–$500</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-label">Foundation</span>
+      <div class="cost-bar-wrap"><div class="cost-bar med">Concrete slab</div></div>
+      <span class="cost-amount">$800–$1,500</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-label">Framing</span>
+      <div class="cost-bar-wrap"><div class="cost-bar med">Lumber + hardware</div></div>
+      <span class="cost-amount">$800–$1,800</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-label">Siding</span>
+      <div class="cost-bar-wrap"><div class="cost-bar med">Steel or LP</div></div>
+      <span class="cost-amount">$500–$1,200</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-label">Roofing</span>
+      <div class="cost-bar-wrap"><div class="cost-bar low">Shingles or steel</div></div>
+      <span class="cost-amount">$300–$800</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-label">OH Door</span>
+      <div class="cost-bar-wrap"><div class="cost-bar med">8' non-insulated</div></div>
+      <span class="cost-amount">$400–$700</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-label">OH Door</span>
+      <div class="cost-bar-wrap"><div class="cost-bar high">8' insulated</div></div>
+      <span class="cost-amount">$600–$1,000</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-label">Opener</span>
+      <div class="cost-bar-wrap"><div class="cost-bar low">Chain/belt drive</div></div>
+      <span class="cost-amount">$150–$350</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-label">Electrical</span>
+      <div class="cost-bar-wrap"><div class="cost-bar med">Run + panel + lights</div></div>
+      <span class="cost-amount">$400–$1,200</span>
+    </div>
+    <div class="cost-row">
+      <span class="cost-label">Insulation</span>
+      <div class="cost-bar-wrap"><div class="cost-bar low">Fiberglass batts</div></div>
+      <span class="cost-amount">$200–$500</span>
+    </div>
   </div>
 
-  <h3>Total Ranges by Approach</h3>
-  <div class="card-grid">
-    <div class="card" style="border-color:var(--green)">
+  <h3 class="fade-in">Total Ranges by Approach</h3>
+  <div class="card-grid cols-4 fade-in">
+    <div class="card" style="border-color:var(--green);border-top:3px solid var(--green)">
       <div class="card-title" style="color:var(--green)">Budget DIY</div>
       <p style="font-size:1.5rem;font-weight:800;color:var(--green);margin-bottom:0.3rem">$2,000–$4,000</p>
       <p>Gravel floor, basic framing, steel siding, non-insulated door, no electric. Functional and cheap. Gets the job done.</p>
     </div>
-    <div class="card" style="border-color:var(--gold)">
+    <div class="card" style="border-color:var(--gold);border-top:3px solid var(--gold)">
       <div class="card-title" style="color:var(--gold)">Mid-Range DIY</div>
       <p style="font-size:1.5rem;font-weight:800;color:var(--gold);margin-bottom:0.3rem">$4,000–$8,000</p>
       <p>Concrete slab, insulated door, basic electrical, fiberglass insulation, painted LP siding. The sweet spot for most builders.</p>
     </div>
-    <div class="card" style="border-color:var(--blue)">
+    <div class="card" style="border-color:var(--blue);border-top:3px solid var(--blue)">
       <div class="card-title" style="color:var(--blue)">Kit Shed</div>
       <p style="font-size:1.5rem;font-weight:800;color:var(--blue);margin-bottom:0.3rem">$4,500–$12,000</p>
       <p>All-inclusive kit + your foundation + your labor to assemble. Wide price range based on brand, material, and features.</p>
     </div>
-    <div class="card" style="border-color:var(--red)">
+    <div class="card" style="border-color:var(--red);border-top:3px solid var(--red)">
       <div class="card-title" style="color:var(--red)">Contractor-Built</div>
       <p style="font-size:1.5rem;font-weight:800;color:var(--red);margin-bottom:0.3rem">$8,000–$20,000+</p>
       <p>Turnkey: foundation, build, door, electric, insulation, everything. You write checks and they build a shed. Highest quality potential.</p>
@@ -684,60 +1328,77 @@ footer a{color:var(--gold)}
   </div>
 </section>
 
-<!-- Checklist -->
+<!-- ===== CHECKLIST ===== -->
 <section id="checklist">
-  <h2><span class="icon">✅</span> Planning Checklist</h2>
-  <p class="section-lead">Before you buy a single board or call a contractor, work through this list.</p>
+  <div class="section-header fade-in">
+    <div class="section-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    </div>
+    <div>
+      <h2>Planning Checklist</h2>
+    </div>
+  </div>
+  <p class="section-lead fade-in">Before you buy a single board or call a contractor, work through this list.</p>
 
-  <div class="card" style="max-width:100%;margin:1rem 0">
-    <div style="columns:2;column-gap:2rem;column-rule:1px solid var(--border)">
-      <div style="break-inside:avoid;margin-bottom:1rem">
-        <h4 style="color:var(--gold);margin-bottom:0.5rem">📋 Permits & Codes</h4>
-        <ul style="list-style:none;padding:0">
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Check if a permit is required (size threshold varies)</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Verify setback requirements from property lines</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Check HOA restrictions if applicable</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Look up local ground snow load</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Confirm wind speed zone for door rating</li>
-        </ul>
-      </div>
-      <div style="break-inside:avoid;margin-bottom:1rem">
-        <h4 style="color:var(--gold);margin-bottom:0.5rem">📐 Design Decisions</h4>
-        <ul style="list-style:none;padding:0">
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ How many sleds? (sizes measured)</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Shed footprint chosen</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Door size selected</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Foundation type decided</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Insulated or uninsulated?</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Electrical needed?</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Opener or manual door?</li>
-        </ul>
-      </div>
-      <div style="break-inside:avoid;margin-bottom:1rem">
-        <h4 style="color:var(--gold);margin-bottom:0.5rem">🏗️ Site Prep</h4>
-        <ul style="list-style:none;padding:0">
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Location chosen (trail access, wind direction)</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Ground graded and leveled</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Drainage planned</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Utilities located (call 811)</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Foundation materials ordered</li>
-        </ul>
-      </div>
-      <div style="break-inside:avoid;margin-bottom:1rem">
-        <h4 style="color:var(--gold);margin-bottom:0.5rem">🛒 Major Purchases</h4>
-        <ul style="list-style:none;padding:0">
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Overhead door ordered (lead time: 1–4 weeks)</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Lumber/steel priced and sourced</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Trusses ordered (if pre-built)</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Concrete scheduled (if slab)</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Siding and roofing materials</li>
-          <li style="padding:0.25rem 0;color:var(--muted)">☐ Opener + hardware</li>
-        </ul>
-      </div>
+  <div class="checklist-grid fade-in">
+    <div class="checklist-section">
+      <h4>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Permits & Codes
+      </h4>
+      <ul>
+        <li>Check if a permit is required (size threshold varies)</li>
+        <li>Verify setback requirements from property lines</li>
+        <li>Check HOA restrictions if applicable</li>
+        <li>Look up local ground snow load</li>
+        <li>Confirm wind speed zone for door rating</li>
+      </ul>
+    </div>
+    <div class="checklist-section">
+      <h4>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3H3v18h18V3z"/><path d="M9 3v18"/><path d="M3 9h18"/></svg>
+        Design Decisions
+      </h4>
+      <ul>
+        <li>How many sleds? (sizes measured)</li>
+        <li>Shed footprint chosen</li>
+        <li>Door size selected</li>
+        <li>Foundation type decided</li>
+        <li>Insulated or uninsulated?</li>
+        <li>Electrical needed?</li>
+        <li>Opener or manual door?</li>
+      </ul>
+    </div>
+    <div class="checklist-section">
+      <h4>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M5 20V8.2a1 1 0 0 1 .4-.8l6-4.5a1 1 0 0 1 1.2 0l6 4.5a1 1 0 0 1 .4.8V20"/></svg>
+        Site Prep
+      </h4>
+      <ul>
+        <li>Location chosen (trail access, wind direction)</li>
+        <li>Ground graded and leveled</li>
+        <li>Drainage planned</li>
+        <li>Utilities located (call 811)</li>
+        <li>Foundation materials ordered</li>
+      </ul>
+    </div>
+    <div class="checklist-section">
+      <h4>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        Major Purchases
+      </h4>
+      <ul>
+        <li>Overhead door ordered (lead time: 1–4 weeks)</li>
+        <li>Lumber/steel priced and sourced</li>
+        <li>Trusses ordered (if pre-built)</li>
+        <li>Concrete scheduled (if slab)</li>
+        <li>Siding and roofing materials</li>
+        <li>Opener + hardware</li>
+      </ul>
     </div>
   </div>
 
-  <div class="callout callout-gold">
+  <div class="callout callout-gold fade-in">
     <div class="callout-title">⏰ Timing Tip</div>
     <p>Build in late summer or early fall. You want the foundation cured and the structure weather-tight before the ground freezes. Ordering the overhead door early is critical — popular sizes can have 2–4 week lead times, and that stretches longer in peak building season. Don't be the person frantically trying to finish a shed in November with snow in the forecast.</p>
   </div>
@@ -747,24 +1408,94 @@ footer a{color:var(--gold)}
 
 <footer>
   <p>Built for people who actually ride — by <a href="https://snippy.quest">snippy.quest</a></p>
-  <p style="margin-top:0.4rem;font-size:0.8rem">Last updated 2025. Prices are approximate US ranges and vary by region. Always verify local building codes.</p>
+  <p style="margin-top:0.5rem;font-size:0.8rem">Last updated 2025. Prices are approximate US ranges and vary by region. Always verify local building codes.</p>
 </footer>
 
-<!-- Sticky TOC active state -->
 <script>
 (function(){
+  // === Hamburger menu ===
+  const hamburger = document.getElementById('hamburger');
+  const navOverlay = document.getElementById('navOverlay');
+  const navLinks = navOverlay.querySelectorAll('a');
+
+  hamburger.addEventListener('click', function(){
+    hamburger.classList.toggle('open');
+    navOverlay.classList.toggle('open');
+    document.body.style.overflow = navOverlay.classList.contains('open') ? 'hidden' : '';
+  });
+
+  navLinks.forEach(function(link){
+    link.addEventListener('click', function(){
+      hamburger.classList.remove('open');
+      navOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // === Scroll progress bar ===
+  const progressBar = document.getElementById('progressBar');
+  const header = document.getElementById('siteHeader');
+
+  function updateProgress(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = progress + '%';
+    if(scrollTop > 50){
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  }
+
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  // === Active nav link ===
   const sections = document.querySelectorAll('section[id]');
-  const links = document.querySelectorAll('.toc-bar a');
-  const obs = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        links.forEach(l=>l.classList.remove('active'));
-        const a = document.querySelector('.toc-bar a[href="#'+e.target.id+'"]');
+  const allNavLinks = document.querySelectorAll('.nav-overlay a');
+
+  const navObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        allNavLinks.forEach(function(l){l.classList.remove('active')});
+        var a = document.querySelector('.nav-overlay a[href="#'+entry.target.id+'"]');
         if(a) a.classList.add('active');
       }
     });
-  },{rootMargin:'-80px 0px -70% 0px',threshold:0});
-  sections.forEach(s=>obs.observe(s));
+  },{rootMargin:'-100px 0px -60% 0px',threshold:0});
+
+  sections.forEach(function(s){navObserver.observe(s)});
+
+  // === Fade-in on scroll ===
+  var fadeElements = document.querySelectorAll('.fade-in');
+  var fadeObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  },{rootMargin:'0px 0px -60px 0px',threshold:0.1});
+
+  fadeElements.forEach(function(el){fadeObserver.observe(el)});
+
+  // === Animate cost bars ===
+  var costBars = document.querySelectorAll('.cost-bar');
+  var costObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var bars = entry.target.querySelectorAll('.cost-bar');
+        bars.forEach(function(bar, i){
+          setTimeout(function(){bar.classList.add('animated')}, i * 80);
+        });
+        costObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.2});
+
+  var costSection = document.getElementById('costBars');
+  if(costSection) costObserver.observe(costSection);
 })();
 </script>
 
