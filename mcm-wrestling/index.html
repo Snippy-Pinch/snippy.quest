@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCM Wrestling — 2026 Region 2B Results</title>
+<meta name="description" content="McCook Central/Montrose Fighting Cougars wrestling results from the 2026 SDHSAA Region 2B Tournament at Elk Point-Jefferson.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;
+  --gold:#c9a227;--gold-bright:#e8c547;--gold-dim:#a68520;
+  --text:#e6edf3;--muted:#8b949e;--blue:#58a6ff;
+  --royal:#1a3a7a;--royal-bright:#2955a8;
+  --glass:rgba(22,27,34,.72);--glass-border:rgba(201,162,39,.18);
+  --radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;
+  overflow-x:hidden;min-height:100vh;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:3px}
+
+/* ─── Utility ─── */
+.container{max-width:760px;margin:0 auto;padding:0 20px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* ─── Animations ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 6px rgba(201,162,39,.4))}50%{filter:drop-shadow(0 0 14px rgba(201,162,39,.7))}}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
+/* ─── Hero ─── */
+.hero{
+  position:relative;padding:80px 20px 60px;text-align:center;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%,rgba(26,58,122,.45),transparent),
+    radial-gradient(ellipse 60% 40% at 50% 100%,rgba(201,162,39,.15),transparent),
+    var(--bg);
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30Z' fill='none' stroke='rgba(201,162,39,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+  opacity:.5;
+}
+.hero-content{position:relative;z-index:1}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 18px;border-radius:50px;
+  background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.25);
+  color:var(--gold);font-size:.82rem;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;
+  margin-bottom:24px;animation:fadeIn 1s ease;
+}
+.hero-badge svg{animation:glow 3s ease-in-out infinite}
+
+.hero h1{
+  font-size:clamp(2.2rem,7vw,3.6rem);font-weight:800;
+  letter-spacing:-.02em;line-height:1.1;margin-bottom:8px;
+  animation:fadeUp .8s ease;
+}
+.hero h1 .gold{color:var(--gold)}
+.hero h1 .blue{color:var(--blue)}
+
+.hero-sub{
+  font-size:clamp(1rem,3vw,1.25rem);color:var(--muted);
+  margin-bottom:28px;animation:fadeUp .8s ease .15s both;
+}
+
+.hero-stats{
+  display:flex;justify-content:center;gap:32px;flex-wrap:wrap;
+  animation:fadeUp .8s ease .3s both;
+}
+.hero-stat{text-align:center}
+.hero-stat-value{
+  font-size:clamp(2rem,5vw,2.8rem);font-weight:800;
+  background:linear-gradient(135deg,var(--gold),var(--gold-bright));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-stat-label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+
+/* ─── Section ─── */
+section{padding:48px 0}
+.section-header{text-align:center;margin-bottom:36px}
+.section-header h2{
+  font-size:clamp(1.5rem,4.5vw,2rem);font-weight:700;
+  margin-bottom:6px;
+}
+.section-header h2 svg{vertical-align:middle;margin-right:8px}
+.section-header p{color:var(--muted);font-size:.95rem}
+.section-divider{
+  width:60px;height:3px;border-radius:2px;margin:12px auto 0;
+  background:linear-gradient(90deg,var(--royal-bright),var(--gold));
+}
+
+/* ─── Glass Card ─── */
+.glass{
+  background:var(--glass);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius);
+}
+
+/* ─── Standings ─── */
+.standings{overflow:hidden}
+.standings-row{
+  display:grid;grid-template-columns:36px 1fr auto;
+  align-items:center;gap:12px;
+  padding:12px 18px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  transition:background .2s;
+}
+.standings-row:last-child{border-bottom:none}
+.standings-row:hover{background:rgba(255,255,255,.03)}
+.standings-row.mcm{
+  background:linear-gradient(90deg,rgba(26,58,122,.25),rgba(201,162,39,.1));
+  border-left:3px solid var(--gold);
+  position:relative;
+}
+.standings-row.mcm::after{
+  content:'';position:absolute;inset:0;
+  border-radius:0;pointer-events:none;
+  box-shadow:inset 0 0 20px rgba(201,162,39,.06);
+}
+.standings-rank{
+  font-weight:700;font-size:.95rem;color:var(--muted);
+  text-align:center;
+}
+.standings-row.mcm .standings-rank{color:var(--gold)}
+.standings-team{font-weight:500;font-size:.95rem}
+.standings-row.mcm .standings-team{color:var(--gold);font-weight:700}
+.standings-pts{
+  font-weight:700;font-size:.95rem;color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+.standings-row.mcm .standings-pts{color:var(--gold-bright)}
+
+/* ─── Wrestler Cards ─── */
+.wrestler-grid{display:flex;flex-direction:column;gap:16px}
+
+.wrestler-card{
+  padding:20px;position:relative;overflow:hidden;
+  transition:transform .25s,box-shadow .25s;
+}
+.wrestler-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+
+.wrestler-card.champion{border:1px solid rgba(201,162,39,.35)}
+.wrestler-card.runner-up{border:1px solid rgba(192,192,192,.25)}
+.wrestler-card.fifth{border:1px solid rgba(205,127,50,.2)}
+.wrestler-card.sixth{border:1px solid rgba(255,255,255,.08)}
+
+.wrestler-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+}
+.wrestler-card.champion::before{background:linear-gradient(90deg,var(--gold),var(--gold-bright),var(--gold))}
+.wrestler-card.runner-up::before{background:linear-gradient(90deg,#8a8a8a,#c0c0c0,#8a8a8a)}
+.wrestler-card.fifth::before{background:linear-gradient(90deg,#8a5c2a,#cd7f32,#8a5c2a)}
+.wrestler-card.sixth::before{background:linear-gradient(90deg,rgba(255,255,255,.1),rgba(255,255,255,.2),rgba(255,255,255,.1))}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
+
+.card-weight{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--gold);
+  padding:4px 10px;border-radius:6px;
+  background:rgba(201,162,39,.1);border:1px solid rgba(201,162,39,.2);
+}
+.card-placement{
+  display:flex;align-items:center;gap:6px;
+  font-size:.82rem;font-weight:700;
+  padding:4px 12px;border-radius:50px;white-space:nowrap;
+}
+.placement-1st{background:rgba(201,162,39,.15);color:var(--gold-bright)}
+.placement-2nd{background:rgba(192,192,192,.12);color:#d4d4d4}
+.placement-5th{background:rgba(205,127,50,.12);color:#cd9b5a}
+.placement-6th{background:rgba(255,255,255,.06);color:var(--muted)}
+
+.card-name{
+  font-size:1.3rem;font-weight:700;line-height:1.2;margin-bottom:4px;
+}
+.card-meta{
+  display:flex;flex-wrap:wrap;gap:12px;
+  font-size:.85rem;color:var(--muted);margin-bottom:14px;
+}
+.card-meta span{display:inline-flex;align-items:center;gap:4px}
+.card-meta svg{flex-shrink:0}
+
+.card-result{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;border-radius:var(--radius-sm);
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);
+  font-size:.88rem;
+}
+.card-result.win{border-color:rgba(63,185,80,.2);background:rgba(63,185,80,.06)}
+.card-result.loss{border-color:rgba(248,81,73,.15);background:rgba(248,81,73,.04)}
+.card-result-icon{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:700;flex-shrink:0;
+}
+.win .card-result-icon{background:rgba(63,185,80,.15);color:#3fb950}
+.loss .card-result-icon{background:rgba(248,81,73,.12);color:#f85149}
+.card-result-text{line-height:1.35}
+.card-result-text strong{font-weight:600}
+.card-result-opponent{color:var(--muted);font-size:.82rem}
+
+/* ─── State Qualifier Banner ─── */
+.qualifier-section{
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 100%,rgba(26,58,122,.3),transparent),
+    var(--bg);
+}
+.qualifier-banner{
+  padding:32px 24px;text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(26,58,122,.3),rgba(201,162,39,.08));
+  border:1px solid rgba(201,162,39,.2);
+}
+.qualifier-banner h2{
+  font-size:clamp(1.3rem,4vw,1.7rem);font-weight:700;margin-bottom:4px;
+}
+.qualifier-banner h2 svg{vertical-align:middle;margin-right:6px}
+.qualifier-sub{color:var(--muted);font-size:.9rem;margin-bottom:24px}
+
+.qualifiers-list{
+  display:flex;flex-direction:column;gap:12px;
+  max-width:400px;margin:0 auto 24px;
+}
+.qualifier-chip{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;border-radius:var(--radius-sm);
+  background:rgba(255,255,255,.04);border:1px solid rgba(201,162,39,.15);
+  text-align:left;transition:transform .2s;
+}
+.qualifier-chip:hover{transform:translateX(4px)}
+.qualifier-place{
+  font-size:1.3rem;width:36px;text-align:center;flex-shrink:0;
+}
+.qualifier-info{flex:1}
+.qualifier-name{font-weight:700;font-size:.95rem}
+.qualifier-detail{color:var(--muted);font-size:.82rem}
+
+.state-info{
+  margin-top:8px;padding:16px 20px;border-radius:var(--radius-sm);
+  background:rgba(88,166,255,.06);border:1px solid rgba(88,166,255,.15);
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.88rem;color:var(--blue);
+}
+.state-info svg{flex-shrink:0}
+
+/* ─── Event Info ─── */
+.event-info{
+  padding:24px;
+  display:grid;grid-template-columns:1fr;gap:16px;
+}
+.event-item{display:flex;align-items:flex-start;gap:14px}
+.event-icon{
+  width:40px;height:40px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.12);
+}
+.event-icon svg{color:var(--gold)}
+.event-label{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.event-value{font-weight:600;font-size:.95rem}
+
+/* ─── Footer ─── */
+footer{
+  text-align:center;padding:40px 20px;
+  border-top:1px solid rgba(255,255,255,.06);
+  color:var(--muted);font-size:.82rem;
+}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+footer p{margin-bottom:4px}
+
+/* ─── Media ─── */
+@media(min-width:640px){
+  .hero{padding:100px 20px 80px}
+  .hero-stats{gap:48px}
+  .event-info{grid-template-columns:1fr 1fr}
+  .standings-row{padding:14px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero">
+  <div class="hero-content container">
+    <div class="hero-badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      2026 SDHSAA Region 2B
+    </div>
+    <h1><span class="gold">MCM</span> Wrestling</h1>
+    <p class="hero-sub">McCook Central/Montrose Fighting Cougars</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value">4th</div>
+        <div class="hero-stat-label">Team Place</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">120</div>
+        <div class="hero-stat-label">Team Points</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">3</div>
+        <div class="hero-stat-label">State Qualifiers</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ TEAM STANDINGS ═══════════ -->
+<section>
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8m-4-4v4m-5-9a5 5 0 0 1 10 0V5a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v7z"/><path d="M3 11h2m14 0h2"/></svg>
+        Team Standings
+      </h2>
+      <p>Region 2B Final Scores — 14 Teams</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="glass standings reveal">
+      <div class="standings-row">
+        <span class="standings-rank">1</span>
+        <span class="standings-team">Canton</span>
+        <span class="standings-pts">239</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">2</span>
+        <span class="standings-team">Tri-Valley</span>
+        <span class="standings-pts">226.5</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">3</span>
+        <span class="standings-team">Elk Point-Jefferson</span>
+        <span class="standings-pts">127.5</span>
+      </div>
+      <div class="standings-row mcm">
+        <span class="standings-rank">4</span>
+        <span class="standings-team">McCook Central/Montrose</span>
+        <span class="standings-pts">120</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">5</span>
+        <span class="standings-team">Flandreau</span>
+        <span class="standings-pts">92.5</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">6</span>
+        <span class="standings-team">Parker</span>
+        <span class="standings-pts">87.5</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">7</span>
+        <span class="standings-team">Garretson</span>
+        <span class="standings-pts">74.5</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">8</span>
+        <span class="standings-team">Howard</span>
+        <span class="standings-pts">72</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">9</span>
+        <span class="standings-team">Chester</span>
+        <span class="standings-pts">49.5</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">10</span>
+        <span class="standings-team">Marion/Freeman</span>
+        <span class="standings-pts">39</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">11</span>
+        <span class="standings-team">Canistota</span>
+        <span class="standings-pts">22</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">12</span>
+        <span class="standings-team">Baltic</span>
+        <span class="standings-pts">20.5</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">13</span>
+        <span class="standings-team">Hanson</span>
+        <span class="standings-pts">15.5</span>
+      </div>
+      <div class="standings-row">
+        <span class="standings-rank">14</span>
+        <span class="standings-team">Viborg-Hurley</span>
+        <span class="standings-pts">8</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ INDIVIDUAL RESULTS ═══════════ -->
+<section>
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a7 7 0 0 1 7-7h4a7 7 0 0 1 7 7v2"/></svg>
+        Individual Results
+      </h2>
+      <p>MCM wrestlers on the mat</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="wrestler-grid">
+
+      <!-- ── CHAMPION: Flogstad ── -->
+      <div class="wrestler-card glass champion reveal">
+        <div class="card-top">
+          <span class="card-weight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+            120 lbs
+          </span>
+          <span class="card-placement placement-1st">🥇 Champion</span>
+        </div>
+        <div class="card-name">Landon Flogstad</div>
+        <div class="card-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h20v5H2zM12 8v13"/><path d="M2 8l4 13h12l4-13"/></svg>
+            Senior
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            52-4
+          </span>
+        </div>
+        <div class="card-result win">
+          <div class="card-result-icon">W</div>
+          <div class="card-result-text">
+            <strong>Dec 2-0</strong>
+            <div class="card-result-opponent">over Carter Kendrick (Canton)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RUNNER-UP: Traupel ── -->
+      <div class="wrestler-card glass runner-up reveal reveal-delay-1">
+        <div class="card-top">
+          <span class="card-weight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+            126 lbs
+          </span>
+          <span class="card-placement placement-2nd">🥈 Runner-Up</span>
+        </div>
+        <div class="card-name">Trystan Traupel</div>
+        <div class="card-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h20v5H2zM12 8v13"/><path d="M2 8l4 13h12l4-13"/></svg>
+            Senior
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            41-3
+          </span>
+        </div>
+        <div class="card-result loss">
+          <div class="card-result-icon">L</div>
+          <div class="card-result-text">
+            <strong>Dec 8-4</strong>
+            <div class="card-result-opponent">vs Zach Bartels (Canton)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RUNNER-UP: Johnson ── -->
+      <div class="wrestler-card glass runner-up reveal reveal-delay-2">
+        <div class="card-top">
+          <span class="card-weight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+            285 lbs
+          </span>
+          <span class="card-placement placement-2nd">🥈 Runner-Up</span>
+        </div>
+        <div class="card-name">Jacob Johnson</div>
+        <div class="card-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h20v5H2zM12 8v13"/><path d="M2 8l4 13h12l4-13"/></svg>
+            Junior
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            32-16
+          </span>
+        </div>
+        <div class="card-result loss">
+          <div class="card-result-icon">L</div>
+          <div class="card-result-text">
+            <strong>Fall</strong>
+            <div class="card-result-opponent">vs Hunter Richmond (Canton)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 5TH: Hoffman ── -->
+      <div class="wrestler-card glass fifth reveal">
+        <div class="card-top">
+          <span class="card-weight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+            106 lbs
+          </span>
+          <span class="card-placement placement-5th">5th Place</span>
+        </div>
+        <div class="card-name">Caleb Hoffman</div>
+        <div class="card-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h20v5H2zM12 8v13"/><path d="M2 8l4 13h12l4-13"/></svg>
+            Freshman
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            21-25
+          </span>
+        </div>
+        <div class="card-result win">
+          <div class="card-result-icon">W</div>
+          <div class="card-result-text">
+            <strong>MD 18-8</strong>
+            <div class="card-result-opponent">over Josh Oleson (Marion/Freeman)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 5TH: C. Bartlett ── -->
+      <div class="wrestler-card glass fifth reveal reveal-delay-1">
+        <div class="card-top">
+          <span class="card-weight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+            113 lbs
+          </span>
+          <span class="card-placement placement-5th">5th Place</span>
+        </div>
+        <div class="card-name">Channing Bartlett</div>
+        <div class="card-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h20v5H2zM12 8v13"/><path d="M2 8l4 13h12l4-13"/></svg>
+            Freshman
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            16-25
+          </span>
+        </div>
+        <div class="card-result win">
+          <div class="card-result-icon">W</div>
+          <div class="card-result-text">
+            <strong>TF 17-0</strong>
+            <div class="card-result-opponent">over David Wollmann (Marion/Freeman)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 5TH: Peterson ── -->
+      <div class="wrestler-card glass fifth reveal reveal-delay-2">
+        <div class="card-top">
+          <span class="card-weight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+            190 lbs
+          </span>
+          <span class="card-placement placement-5th">5th Place</span>
+        </div>
+        <div class="card-name">Tucker Peterson</div>
+        <div class="card-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h20v5H2zM12 8v13"/><path d="M2 8l4 13h12l4-13"/></svg>
+            Sophomore
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            22-31
+          </span>
+        </div>
+        <div class="card-result win">
+          <div class="card-result-icon">W</div>
+          <div class="card-result-text">
+            <strong>Fall</strong>
+            <div class="card-result-opponent">over Cole Schleuter (Garretson)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 6TH: E. Bartlett ── -->
+      <div class="wrestler-card glass sixth reveal">
+        <div class="card-top">
+          <span class="card-weight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+            138 lbs
+          </span>
+          <span class="card-placement placement-6th">6th Place</span>
+        </div>
+        <div class="card-name">Elliott Bartlett</div>
+        <div class="card-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h20v5H2zM12 8v13"/><path d="M2 8l4 13h12l4-13"/></svg>
+            Senior
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            28-24
+          </span>
+        </div>
+        <div class="card-result loss">
+          <div class="card-result-icon">L</div>
+          <div class="card-result-text">
+            <strong>Fall</strong>
+            <div class="card-result-opponent">vs Gabriel Frias (Flandreau)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 6TH: Uberty ── -->
+      <div class="wrestler-card glass sixth reveal reveal-delay-1">
+        <div class="card-top">
+          <span class="card-weight">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+            144 lbs
+          </span>
+          <span class="card-placement placement-6th">6th Place</span>
+        </div>
+        <div class="card-name">Otto Uberty</div>
+        <div class="card-meta">
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h20v5H2zM12 8v13"/><path d="M2 8l4 13h12l4-13"/></svg>
+            Sophomore
+          </span>
+          <span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            13-34
+          </span>
+        </div>
+        <div class="card-result loss">
+          <div class="card-result-icon">L</div>
+          <div class="card-result-text">
+            <strong>Fall</strong>
+            <div class="card-result-opponent">vs Hoyt Kizer (Howard)</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ STATE QUALIFIERS ═══════════ -->
+<section class="qualifier-section">
+  <div class="container">
+    <div class="qualifier-banner glass reveal">
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 7 7 7 7m11-3a2.5 2.5 0 0 1 0 5H16m-7 6 3 3 3-3"/><path d="M12 19V9"/><path d="M5 12h14"/></svg>
+        State Bound
+      </h2>
+      <p class="qualifier-sub">Top 4 in each weight class advance to the State Tournament</p>
+
+      <div class="qualifiers-list">
+        <div class="qualifier-chip reveal reveal-delay-1">
+          <div class="qualifier-place">🥇</div>
+          <div class="qualifier-info">
+            <div class="qualifier-name">Landon Flogstad</div>
+            <div class="qualifier-detail">120 lbs · Senior · 52-4 · Region Champion</div>
+          </div>
+        </div>
+        <div class="qualifier-chip reveal reveal-delay-2">
+          <div class="qualifier-place">🥈</div>
+          <div class="qualifier-info">
+            <div class="qualifier-name">Trystan Traupel</div>
+            <div class="qualifier-detail">126 lbs · Senior · 41-3 · Runner-Up</div>
+          </div>
+        </div>
+        <div class="qualifier-chip reveal reveal-delay-3">
+          <div class="qualifier-place">🥈</div>
+          <div class="qualifier-info">
+            <div class="qualifier-name">Jacob Johnson</div>
+            <div class="qualifier-detail">285 lbs · Junior · 32-16 · Runner-Up</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-info">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Feb 27–March 1 · Denny Sanford PREMIER Center · Sioux Falls
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EVENT INFO ═══════════ -->
+<section>
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Tournament Info
+      </h2>
+      <p>2026 Region 2B Details</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="glass event-info reveal">
+      <div class="event-item">
+        <div class="event-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="event-label">Venue</div>
+          <div class="event-value">Elk Point-Jefferson High School</div>
+        </div>
+      </div>
+      <div class="event-item">
+        <div class="event-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M5 21H3a2 2 0 0 1-2-2v-2m0-6h24"/></svg>
+        </div>
+        <div>
+          <div class="event-label">Address</div>
+          <div class="event-value">402 S Douglas St, Elk Point, SD</div>
+        </div>
+      </div>
+      <div class="event-item">
+        <div class="event-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        </div>
+        <div>
+          <div class="event-label">Classification</div>
+          <div class="event-value">SDHSAA Class B — Region 2B</div>
+        </div>
+      </div>
+      <div class="event-item">
+        <div class="event-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <div class="event-label">Teams</div>
+          <div class="event-value">14 schools competing</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="container">
+    <p>Go Cougars! 🤼</p>
+    <p>Data sourced from <a href="https://www.flowrestling.org" target="_blank" rel="noopener">FlowRestling</a> &amp; <a href="https://www.605sports.com" target="_blank" rel="noopener">605sports</a></p>
+  </div>
+</footer>
+
+<!-- ═══════════ SCROLL REVEAL ═══════════ -->
+<script>
+(function(){
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+</script>
+
+</body>
+</html>
